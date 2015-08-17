@@ -1,5 +1,5 @@
 (function () { 
- return angular.module('mobileApp')
-.constant('ENV', {"name":"development","production":false,"apiEndpoint":"/backofficemobile/control/","mockApiEndpoint":"http://localhost:8100/nobackend/"});
+ return angular.module('smartHome')
+.constant('ENV', {"name":"development","production":false,"apiEndpoint":"/api/","socketEndpoint":"192.168.1.250:9000"});
 
 })();

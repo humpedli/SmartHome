@@ -1,8 +1,8 @@
 'use strict';
 
 angular
-    .module('smartHome')
-    .config(MainRouteConfig);
+	.module('smartHome')
+	.config(MainRouteConfig);
 
 
 /**
@@ -11,30 +11,25 @@ angular
 /*@ngInject*/
 function MainRouteConfig($stateProvider) {
 
-    var name = 'app';
+	var name = 'app';
 
-    $stateProvider
-        .state(name, {
-            url: '/' + name,
-            abstract: true,
-            data: {
-                roles: ['ROLE_USER']
-            },
-            views: {
-                'menu': {
-                    templateUrl: 'views/menu.tpl.html',
-                    controller: 'MenuController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                /*@ngInject*/
-                'authorize': ['AuthService',
-                    function (AuthService) {
-                        return AuthService.authorize();
-                    }
-                ]
-            }
-        });
+	$stateProvider
+		.state(name, {
+			url: '/' + name,
+			abstract: true,
+			views: {
+				'menu': {
+					templateUrl: 'views/menu.tpl.html',
+					controller: 'MenuController',
+					controllerAs: 'vm'
+				}
+			},
+			resolve: {
+				/*@ngInject*/
+				'authorize': function (AuthService) {
+					return AuthService.authorize();
+				}
+			}
+		});
 
 }

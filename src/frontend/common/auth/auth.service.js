@@ -1,64 +1,63 @@
 'use strict';
 
-angular.module('mobileApp')
-    .factory('AuthService', AuthService);
+angular.module('smartHome')
+	.factory('AuthService', AuthService);
 
 /**
  * Auth service - it handles login, logout and authorize functions,
- * this is the connection between Principal and AuthServerProvider
+ * this is the connection between Principal and AuthDataService
  * @param $rootScope
  * @param $q
  * @param $log
  * @param Principal
- * @param AuthServerService
+ * @param AuthDataService
  */
 /*@ngInject*/
-function AuthService($rootScope, $q, $log, Principal, AuthServerService) {
-    var name = 'AuthService';
+function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
+	var name = 'AuthService';
 
-    /**
-     * Login a user with credentials
-     * @param credentials
-     * @returns {*}
-     */
-    function login(credentials) {
-        return $q(function (resolve, reject) {
-            $log.debug(name + ': Logging in with credentials...');
-            AuthServerService.login(credentials).then(function (data) {
-                //If the login was successful
-                if (data._LOGIN_PASSED_ !== undefined) {
-                    $log.debug(name + ': Login was successful.');
-                    return resolve(authorize());
-                }
+	/**
+	 * Login a user with credentials
+	 * @param credentials
+	 * @returns {*}
+	 */
+	function login(credentials) {
+		return $q(function (resolve, reject) {
+			$log.debug(name + ': Logging in with credentials...');
 
-                //If there was an error
-                else {
-                    $log.error(data._ERROR_MESSAGE_);
-                    return reject(data._ERROR_MESSAGE_);
-                }
-            }).catch(function (error) {
-                $log.error(name + ': ' + error);
-                return reject(error);
-            });
-        });
-    }
+			AuthDataService.login(credentials).$promise
+				//If the login was successful
+				.then(function () {
+					return resolve(authorize());
 
-    function logout() {
-        $log.debug(name + ': Logging out...');
-        AuthServerService.logout().then(function () {
-            $log.debug(name + ': Logged out!');
-            Principal.authenticate(null);
-            $rootScope.$broadcast('event:logout');
-        });
-    }
+				})
+				//If there was an error
+				.catch(function (error) {
+					$log.error(name + ': ' + error);
+					return reject(error);
+				});
+		});
+	}
 
-    function authorize() {
-        return Principal.getIdentity();
-    }
+	function logout() {
+		$log.debug(name + ': Logging out...');
 
-    return {
-        login: login,
-        logout: logout,
-        authorize: authorize
-    };
+		AuthDataService.logout().$promise
+			.then(function () {
+				$log.debug(name + ': Logged out!');
+
+				Principal.authenticate(null);
+				$rootScope.$broadcast('Auth:loginRequired');
+			});
+	}
+
+	function authorize() {
+		return Principal.getIdentity();
+	}
+
+	return {
+		login: login,
+		logout: logout,
+		authorize: authorize
+	};
 }

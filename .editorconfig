@@ -13,13 +13,9 @@ charset = utf-8
 # Set default charset
 [*.js]
 indent_style = tab
-indent_size = 1
-trim_trailing_whitespace = true
 
 [*.html]
 indent_style = tab
-indent_size = 1
 
 [*.scss]
 indent_style = tab
-indent_size = 1

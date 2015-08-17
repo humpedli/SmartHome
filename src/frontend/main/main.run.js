@@ -8,7 +8,7 @@ angular
  * This function runs when the app starts
  */
 /*@ngInject*/
-function SmartHomeInit($rootScope, $state, $window, Principal, AuthService) {
+function SmartHomeInit($rootScope, $state, Principal, AuthService) {
 
     // event listener - before state change
     $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
@@ -17,7 +17,7 @@ function SmartHomeInit($rootScope, $state, $window, Principal, AuthService) {
 
         // authorize current user
         if (Principal.isIdentityResolved()) {
-            AuthService.authorize();
+			AuthService.authorize();
         }
     });
 
@@ -28,12 +28,7 @@ function SmartHomeInit($rootScope, $state, $window, Principal, AuthService) {
     });
 
     // event listener - if a request response with 401, then redirect to logout
-    $rootScope.$on('event:auth-loginRequired', function () {
-        $state.go('login');
-    });
-
-    // go to login page after logout
-    $rootScope.$on('event:logout', function () {
+    $rootScope.$on('Auth:loginRequired', function () {
         $state.go('login');
     });
 

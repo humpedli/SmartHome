@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<base href="/">
 	<meta charset="utf-8">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
@@ -16,7 +17,7 @@
 <body ng-app="smartHome">
 
 <div ui-view="menu"></div>
-<div ui-view="content"></div>
+<div ui-view="content" class="container"></div>
 
 <loader></loader>
 

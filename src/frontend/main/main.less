@@ -1,0 +1,52 @@
+/*
+* We are using only bootstrap css for this project, so we import it here
+*/
+@import "../../../bower_components/bootstrap/less/bootstrap.less";
+
+/*
+* Import less files from modules (must add manually)
+*/
+@import "../common/directives/loader/loader.less";
+@import "../menu/menu.less";
+@import "../account/login/login.less";
+@import "../dashboard/dashboard.less";
+
+
+/*
+* Common
+*/
+* {
+  font-size: 12px;
+}
+
+html, body {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+body {
+  background: url('../images/bg-login.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  &.main {
+    background-image: url('../images/bg@2x.png');
+    background-size: 256px 256px;
+    background-repeat: repeat;
+  }
+}
+
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-top: 0;
+}

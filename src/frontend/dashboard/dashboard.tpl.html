@@ -1,67 +1,74 @@
 <div class="well">
 	<h1>Irányítópult</h1>
+
 	<div class="row">
 		<div class="col-xs-12 col-sm-6">
-		    <div class="thumbnail">
-			    <div class="caption">
-			        <h3>Gázkazán</h3>
-			        <hr />
-			        <br />
-			        <div class="row">
-			        	<div class="col-xs-6 vcenter">
-			        		<strong>Manuális kapcsolás:</strong>
-			        	</div><!--
-			        	--><div class="col-xs-6 vcenter">
-			        		<input bs-switch id="gazkazan" ng-model="sw1" type="checkbox" switch-size="medium" switch-animate="true" switch-on-text="Be" switch-off-text="Ki" switch-on-color="success" switch-off-color="danger" ng-change="switch()" />
-			        	</div>
-			        </div>
-			        <div class="row">
-			        	<div class="col-xs-6 vcenter">
-			        		<strong>Automata kapcsolás:</strong>
-			        	</div><!--
-			        	--><div class="col-xs-6 vcenter">
-			        		<input bs-switch id="gazkazan" ng-model="sw2" type="checkbox" switch-active="true" switch-size="medium" switch-animate="true" switch-on-text="Be" switch-off-text="Ki" switch-on-color="success" switch-off-color="danger" />
-			        	</div>
-			        </div>
-		    	</div>
-		  	</div>
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Gázkazán</h3>
+					<hr/>
+					<br/>
+
+					<div class="row">
+						<div class="col-xs-6 vcenter">
+							<strong>Manuális kapcsolás:</strong>
+						</div><!--
+						--><div class="col-xs-6 vcenter">
+							<toggle-switch ng-model="vm.sw1" ng-change="vm.switch()" on-label="Be" off-label="Ki">
+							</toggle-switch>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6 vcenter">
+							<strong>Automata kapcsolás:</strong>
+						</div><!--
+						--><div class="col-xs-6 vcenter">
+							<toggle-switch ng-model="vm.sw2" on-label="Be" off-label="Ki">
+							</toggle-switch>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="col-xs-12 col-sm-6">
-		    <div class="thumbnail">
-			    <div class="caption">
-			        <h3>Relé 2</h3>
-			        <hr />
-			        <br />
-			        <div class="row">
-			        	<div class="col-xs-6 vcenter">
-			        		<strong>Manuális kapcsolás:</strong>
-			        	</div><!--
-			        	--><div class="col-xs-6 vcenter">
-			        		<input bs-switch id="gazkazan" ng-model="sw3" type="checkbox" switch-active="true" switch-size="medium" switch-animate="true" switch-on-text="Be" switch-off-text="Ki" switch-on-color="success" switch-off-color="danger" />
-			        	</div>
-			        </div>
-			        <div class="row">
-			        	<div class="col-xs-6 vcenter">
-			        		<strong>Automata kapcsolás:</strong>
-			        	</div><!--
-			        	--><div class="col-xs-6 vcenter">
-			        		<input bs-switch id="gazkazan" ng-model="sw4" type="checkbox" switch-active="true" switch-size="medium" switch-animate="true" switch-on-text="Be" switch-off-text="Ki" switch-on-color="success" switch-off-color="danger" />
-			        	</div>
-			        </div>
-		    	</div>
-		  	</div>
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Relé 2</h3>
+					<hr/>
+					<br/>
+
+					<div class="row">
+						<div class="col-xs-6 vcenter">
+							<strong>Manuális kapcsolás:</strong>
+						</div><!--
+                        --><div class="col-xs-6 vcenter">
+							<toggle-switch ng-model="vm.sw3" on-label="Be" off-label="Ki">
+							</toggle-switch>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6 vcenter">
+							<strong>Automata kapcsolás:</strong>
+						</div><!--
+                        --><div class="col-xs-6 vcenter">
+							<toggle-switch ng-model="vm.sw4" on-label="Be" off-label="Ki">
+							</toggle-switch>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-6 col-sm-3" ng-repeat="sensor in sensors">
+		<div class="col-xs-6 col-sm-3" ng-repeat="sensor in vm.sensors">
 			<div class="thumbnail">
-			    <div class="caption">
-			        <h4>{{sensor.name}}</h4>
-			        <h6>{{sensor.lasttime}}</h6>
-			        <br />
-			        <strong><h4>{{sensor.lastvalue | number: 1}} °C</h4></strong>
-		    	</div>
-		  	</div>
+				<div class="caption">
+					<h4>{{sensor.name}}</h4>
+					<h6>{{sensor.lasttime}}</h6>
+					<br/>
+					<strong><h4>{{sensor.lastvalue | number: 1}} °C</h4></strong>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

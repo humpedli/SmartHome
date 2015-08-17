@@ -45,6 +45,7 @@ files = {
 };
 
 files.styles = [files.css, '**/main.less'];
+//files.styles = [files.css, files.less];
 
 //Order of the files
 order.js = [
@@ -163,7 +164,7 @@ gulp.task('templates', function () {
         .pipe($.flatten())
         .pipe($.if(IS_RELEASE_BUILD, $.minifyHtml()))
         .pipe($.if(IS_RELEASE_BUILD, $.angularTemplatecache({
-            module: 'mobileApp',
+            module: 'smartHome',
             root: paths.views
         })))
         .pipe($.if(IS_RELEASE_BUILD, $.rev()))
@@ -266,7 +267,7 @@ gulp.task('config', function () {
 
     return gulp.src(source, {
         cwd: paths.app
-    }).pipe($.ngConfig('mobileApp', {
+    }).pipe($.ngConfig('smartHome', {
         createModule: false,
         wrap: true
     }))
@@ -372,21 +373,12 @@ gulp.task('serve', ['index', 'watch'], function () {
             livereload: true,
             open: true,
             host: (IS_HOST_DEFINED) ? $.util.env.host : undefined,
-            port: 6000,
+            port: 8000,
             proxies: [{
-                source: '/backofficemobile/control/',
-                target: 'http://localhost:8080/backofficemobile/control/'
+                source: '/api/',
+                target: 'http://nas.kinsztler.hu/api/'
             }]
         }));
-});
-
-/**
- * Copy the contents of the dist folder to the component
- */
-gulp.task('copyToComponent', ['index'], function () {
-    gulp.src('**/*.*', {cwd: paths.build})
-        .pipe($.if(IS_DEBUG, $.debug()))
-        .pipe(gulp.dest('../hot-deploy/cabi/webapp/backofficemobile'));
 });
 
 gulp.task('default', ['index']);
