@@ -1,0 +1,8 @@
+{
+  "ENV": {
+    "name": "production",
+    "production": true,
+    "apiEndpoint": "/backofficemobile/control/",
+    "mockApiEndpoint": "http://localhost:8100/nobackend/"
+  }
+}
