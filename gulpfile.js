@@ -18,7 +18,8 @@ paths = {
     views: 'views',
     styles: 'css',
     fonts: 'fonts',
-    images: 'images'
+    images: 'images',
+	backendMain: 'dist/api'
 };
 
 //App path
@@ -41,7 +42,8 @@ files = {
     },
     images: 'assets/images/**/*',
     fonts: 'assets/fonts/**/*',
-    icons: 'assets/icons/**/*'
+    icons: 'assets/icons/**/*',
+	backendMain: ['backend/.htaccess', 'backend/index.php']
 };
 
 files.styles = [files.css, '**/main.less'];
@@ -257,6 +259,16 @@ gulp.task('icons', function () {
         .pipe(gulp.dest(paths.build));
 });
 
+/*
+ *  Backend main files copy
+ */
+gulp.task('backend', function () {
+//Get extra files
+	return gulp.src(files.backendMain, {
+		cwd: paths.src
+	})
+		.pipe($.if(IS_RELEASE_BUILD, gulp.dest(paths.backendMain)));
+});
 
 /*
  *  Config
@@ -279,7 +291,7 @@ gulp.task('config', function () {
 /*
  * Compile index and inject css and scripts tags
  */
-gulp.task('index', ['styles', 'images', 'icons', 'scripts', 'templates'], function () {
+gulp.task('index', ['styles', 'images', 'icons', 'scripts', 'templates', 'backend'], function () {
     var libraries, scripts, styles;
 
     //Add scripts
