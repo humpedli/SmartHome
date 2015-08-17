@@ -2,7 +2,7 @@
 
 include BASE_DIR . DS . 'config' . DS . 'config.php';
 
-require ROOT_DIR . 'vendor' . DS . 'autoload.php';
+require ROOT_DIR . DS . 'vendor' . DS . 'autoload.php';
 
 // New Slim app
 $app = new \Slim\Slim();
