@@ -21,7 +21,6 @@ function Principal($rootScope, $q, $log, AuthDataService) {
 
 	/**
 	 * Check if the identity is resolved.
-	 * @returns {boolean}
 	 */
 	this.isIdentityResolved = function () {
 		return this.identity !== undefined;
@@ -29,7 +28,6 @@ function Principal($rootScope, $q, $log, AuthDataService) {
 
 	/**
 	 * Check if the user is authenticated
-	 * @returns {boolean}
 	 */
 	this.isAuthenticated = function () {
 		return this.authenticated;
@@ -62,7 +60,6 @@ function Principal($rootScope, $q, $log, AuthDataService) {
 
 	/**
 	 * Get the identity
-	 * @returns {*} A promise
 	 */
 	this.getIdentity = function () {
 		return $q(function (resolve, reject) {
@@ -84,4 +81,5 @@ function Principal($rootScope, $q, $log, AuthDataService) {
 				});
 		});
 	};
+
 }

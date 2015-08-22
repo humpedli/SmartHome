@@ -16,6 +16,7 @@ function SettingsController($modal, $window, $log, $q, $scope, SensorDataService
 	// controllerAs with vm
 	var vm = this;
 
+	// tabs DTO object
 	vm.settingsTabs = {
 		thermalSensors: {
 			title: 'Hőmérséklet érzékelők',
@@ -23,17 +24,24 @@ function SettingsController($modal, $window, $log, $q, $scope, SensorDataService
 		}
 	};
 
+	/**
+	 * Get all sensor data from backend
+	 */
 	vm.getSensors = function() {
 		vm.sensors = SensorDataService.query();
 		$log.debug('Thermal sensor list loaded');
 	};
 
+	/**
+	 * New sensor popup and backend save
+	 */
 	vm.addSensor = function() {
 		var modal = $modal({
 			title: 'Új érzékelő hozzáadása',
 			contentTemplate: Utils.getTemplateUrl('SettingsAddThermalSensorModal')
 		});
 
+		// modal ViewModel data
 		modal.$scope.vm = {
 			formData: {},
 			addSensor: function(formData) {
@@ -47,6 +55,11 @@ function SettingsController($modal, $window, $log, $q, $scope, SensorDataService
 		};
 	};
 
+	/**
+	 * Move sensor position in the list and backend save
+	 * @param sensor - sensor DTO object
+	 * @param direction - up/down position change
+	 */
 	vm.moveSensor = function(sensor, direction) {
 		// declare variables
 		var currentSensor = sensor;
@@ -82,6 +95,9 @@ function SettingsController($modal, $window, $log, $q, $scope, SensorDataService
 		}
 	};
 
+	/**
+	 * Edit sensor name (called by ng-change)
+	 */
 	vm.editSensor = function(sensor) {
 		if(angular.isDefined(sensor.name)) {
 			sensor.$save();
@@ -89,12 +105,16 @@ function SettingsController($modal, $window, $log, $q, $scope, SensorDataService
 		}
 	};
 
+	/**
+	 * Remove sensor popup and backend save
+	 */
 	vm.removeSensor = function(sensor) {
 		var modal = $modal({
 			title: 'Érzékelő eltávolítása',
 			contentTemplate: Utils.getTemplateUrl('SettingsRemoveThermalSensorModal'),
 		});
 
+		// modal ViewModel data
 		modal.$scope.vm = {
 			sensor: sensor,
 			removeSensor: function() {
@@ -109,6 +129,7 @@ function SettingsController($modal, $window, $log, $q, $scope, SensorDataService
 		};
 	};
 
+	// previously defined get sensors function call
 	vm.getSensors();
 
 }

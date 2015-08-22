@@ -1,39 +1,41 @@
 <div class="panel panel-default">
 	<div class="panel-body">
-		<table class="table">
-			<thead>
-			<tr>
-				<th>#</th>
-				<th>Azonosító</th>
-				<th>Név</th>
-				<th>Utolsó érték</th>
-				<th>Utolsó beolvasás ideje</th>
-				<th>Lehetőségek</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr ng-repeat="sensor in vm.sensors">
-				<td>{{sensor.position}}</td>
-				<td>{{sensor.sensorid}}</td>
-				<td><input type="text" class="form-control" data-ng-model="sensor.name"
-						   data-ng-change="vm.editSensor(sensor)" data-ng-model-options="{ debounce: 500 }"/></td>
-				<td>{{sensor.lastvalue}}</td>
-				<td>{{sensor.lasttime}}</td>
-				<td>
-					<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'up')">
-						<i class="icon icon-circle-up"></i>
-					</button>
-					<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'down')">
-						<i class="icon icon-circle-down"></i>
-					</button>
-					<button type="button" class="btn btn-danger" data-ng-click="vm.removeSensor(sensor)">
-						<i class="icon icon-bin"></i>
-					</button>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-		<div class="buttons">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th>Azonosító</th>
+					<th>Név</th>
+					<th>Utolsó érték</th>
+					<th>Utolsó beolvasás ideje</th>
+					<th>Lehetőségek</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat="sensor in vm.sensors">
+					<td>{{sensor.position}}</td>
+					<td>{{sensor.sensorid}}</td>
+					<td><input type="text" class="form-control" data-ng-model="sensor.name"
+							   data-ng-change="vm.editSensor(sensor)" data-ng-model-options="{ debounce: 500 }"/></td>
+					<td>{{sensor.lastvalue}}</td>
+					<td>{{sensor.lasttime}}</td>
+					<td>
+						<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'up')">
+							<i class="icon icon-circle-up"></i>
+						</button>
+						<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'down')">
+							<i class="icon icon-circle-down"></i>
+						</button>
+						<button type="button" class="btn btn-danger" data-ng-click="vm.removeSensor(sensor)">
+							<i class="icon icon-bin"></i>
+						</button>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="form-group">
 			<button type="button" class="btn btn-success" data-ng-click="vm.addSensor()">
 				Új érzékelő hozzáadása
 			</button>

@@ -4,7 +4,6 @@ angular
 	.module('smartHome')
 	.config(SettingsRouteConfig);
 
-
 /**
  * Settings state config
  */

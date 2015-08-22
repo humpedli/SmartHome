@@ -19,7 +19,6 @@ function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
 	/**
 	 * Login a user with credentials
 	 * @param credentials
-	 * @returns {*}
 	 */
 	function login(credentials) {
 		return $q(function (resolve, reject) {
@@ -39,6 +38,9 @@ function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
 		});
 	}
 
+	/**
+	 * Logout user
+	 */
 	function logout() {
 		$log.debug(name + ': Logging out...');
 
@@ -51,6 +53,9 @@ function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
 			});
 	}
 
+	/**
+	 * Authorize user
+	 */
 	function authorize() {
 		return Principal.getIdentity();
 	}
