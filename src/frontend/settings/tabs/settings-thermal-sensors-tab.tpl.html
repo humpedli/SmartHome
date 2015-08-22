@@ -12,20 +12,21 @@
 			</tr>
 			</thead>
 			<tbody>
-			<tr ng-repeat="sensor in vm.sensors | orderBy: 'position'">
+			<tr ng-repeat="sensor in vm.sensors">
 				<td>{{sensor.position}}</td>
 				<td>{{sensor.sensorid}}</td>
-				<td><input type="text" class="form-control" value="{{sensor.name}}" /></td>
+				<td><input type="text" class="form-control" data-ng-model="sensor.name"
+						   data-ng-change="vm.editSensor(sensor)" data-ng-model-options="{ debounce: 500 }"/></td>
 				<td>{{sensor.lastvalue}}</td>
 				<td>{{sensor.lasttime}}</td>
 				<td>
-					<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor($index, 'up')">
+					<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'up')">
 						<i class="icon icon-circle-up"></i>
 					</button>
-					<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor($index, 'down')">
+					<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'down')">
 						<i class="icon icon-circle-down"></i>
 					</button>
-					<button type="button" class="btn btn-danger" data-ng-click="vm.deleteSensor($index)">
+					<button type="button" class="btn btn-danger" data-ng-click="vm.removeSensor(sensor)">
 						<i class="icon icon-bin"></i>
 					</button>
 				</td>

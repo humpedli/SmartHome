@@ -1,0 +1,22 @@
+<div class="modal-inner-content">
+	<p>Biztosan törlöd az érzékelőt?</p>
+
+	<div>
+		<table class="table">
+			<tbody>
+			<tr>
+				<td><strong>Érzékelő azonosítója:</strong></td>
+				<td>{{vm.sensor.sensorid}}</td>
+			</tr>
+			<tr>
+				<td><strong>Érzékelő neve:</strong></td>
+				<td>{{vm.sensor.name}}</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="modal-footer modal-inner-footer">
+	<button type="button" class="btn btn-default" ng-click="$hide()">Vissza</button>
+	<button type="button" class="btn btn-danger" ng-click="vm.removeSensor()">Törlés</button>
+</div>

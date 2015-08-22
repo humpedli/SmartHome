@@ -1,14 +1,15 @@
 <div class="modal-inner-content">
 	<div class="form-group">
 		<label for="sensorid">Érzékelő azonosítója</label>
-		<input type="text" class="form-control" id="sensorid" placeholder="Pl: 28-000005abcdef">
+		<input type="text" class="form-control" id="sensorid" placeholder="Pl: 28-000005abcdef"
+			   data-ng-model="vm.formData.sensorid">
 	</div>
 	<div class="form-group">
 		<label for="name">Érzékelő neve</label>
-		<input type="text" class="form-control" id="name" placeholder="Pl: Udvar">
+		<input type="text" class="form-control" id="name" placeholder="Pl: Udvar" data-ng-model="vm.formData.name">
 	</div>
 </div>
 <div class="modal-footer modal-inner-footer">
 	<button type="button" class="btn btn-default" ng-click="$hide()">Vissza</button>
-	<button type="button" class="btn btn-success" ng-click="vm.deleteSensor(); $hide()">Mentés</button>
+	<button type="button" class="btn btn-success" ng-click="vm.addSensor(vm.formData)">Mentés</button>
 </div>
