@@ -28,7 +28,7 @@ $app->get('/sensors/:sensorid', function($sensorid) use ($app) {
     }
 });
 
-$app->post('/sensors', function($sensorid) use ($app) {
+$app->post('/sensors/:sensorid', function($sensorid) use ($app) {
     $response = array();
 
     $normalParams = $app->request->params();
@@ -36,18 +36,19 @@ $app->post('/sensors', function($sensorid) use ($app) {
     $params = ($jsonParams == null ? $normalParams : $jsonParams);
 
     $sensorsModel = new SensorsModel();
-    if(isset($sensorid)) {
-        $data = $sensorsModel->editSensor($sensorid, $params['name'], $params['position']);
+    $data = $sensorsModel->getSensor($sensorid);
+    if($data) {
+        $data2 = $sensorsModel->editSensor($sensorid, $params['name'], $params['position']);
     } else {
-        $data = $sensorsModel->addSensor($id, $params['name']);
+        $data2 = $sensorsModel->addSensor($params['sensorid'], $params['name']);
     }
     
-    if($data === true) {
-        $response["message"] = 'Success';
-        echoResponse(200, $response);
+    if($data2 === true) {
+        $response = null;
+        echoResponse((isset($sensorid) ? 200 : 201), $response);
     } else {
-        $response["message"] = $data;
-        echoResponse(401, $response);
+        $response["message"] = $data2;
+        echoResponse(400, $response);
     }
 });
 
@@ -57,11 +58,11 @@ $app->delete('/sensors/:sensorid', function($sensorid) use ($app) {
     $sensorsModel = new SensorsModel();
     $data = $sensorsModel->deleteSensor($sensorid);
     if($data === true) {
-        $response["message"] = 'Success';
+        $response = null;
         echoResponse(200, $response);
     } else {
         $response["message"] = $data;
-        echoResponse(401, $response);
+        echoResponse(400, $response);
     }
 });
 

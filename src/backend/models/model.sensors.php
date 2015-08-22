@@ -21,7 +21,7 @@ class SensorsModel extends Model {
 
     public function getSensor($sensorid) {
 
-        $sql = "SELECT * FROM sensors WHERE sensorid = '" . intval($sensorid) . "';";
+        $sql = "SELECT * FROM sensors WHERE sensorid = '" . $this->db->secure($sensorid) . "';";
         $this->db->query($sql);
         $result = $this->db->result();
 
@@ -48,7 +48,7 @@ class SensorsModel extends Model {
                 return true;
             }
             catch(Exception $e) {
-                return $e;
+                return $e->getMessage();
             }
         } else {
             return 'Invalid parameters!';
@@ -63,15 +63,15 @@ class SensorsModel extends Model {
                 $sql = "
                     UPDATE sensors
                     SET sensors.name = '" . $this->db->secure($name) . "',
-                        sensors.position = '" . intval($position) . "',
-                    WHERE sensorid = '" . intval($sensorid) . "';
+                        sensors.position = '" . intval($position) . "'
+                    WHERE sensorid = '" . $this->db->secure($sensorid) . "';
                 ";
                 $this->db->query($sql);
 
                 return true;
             }
             catch(Exception $e) {
-                return $e;
+                return $e->getMessage();
             }
         } else {
             return 'Invalid parameters!';
@@ -84,14 +84,14 @@ class SensorsModel extends Model {
         try {
             $sql = "
                 DELETE FROM sensors 
-                WHERE sensorid = '" . intval($sensorid) . "';
+                WHERE sensorid = '" . $this->db->secure($sensorid) . "';
             ";
             $this->db->query($sql);
 
             return true;
         }
         catch(Exception $e) {
-            return $e;
+            return $e->getMessage();
         }
 
     }

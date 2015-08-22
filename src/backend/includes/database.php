@@ -59,7 +59,12 @@ class Database {
 
 	public function result() {
 		if($this->count > 0) {
-			return $this->result->fetch_assoc();
+			$data = $this->result->fetch_assoc();
+			// convert numeric string to the real type
+			foreach ($data as &$val) {
+		        if (is_numeric($val)) $val = $val + 0;
+		    }
+		    return $data;
 		} else {
 			return false;
 		}
@@ -69,6 +74,10 @@ class Database {
 		if($this->count > 0) {
 			$ret = array();
 			while ($data = $this->result->fetch_assoc()){
+				// convert numeric string to the real type
+				foreach ($data as &$val) {
+			        if (is_numeric($val)) $val = $val + 0;
+			    }
 	            $ret[] = $data;
 	        }
 	        return $ret;
