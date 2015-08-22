@@ -28,7 +28,7 @@ $app->get('/sensors/:sensorid', function($sensorid) use ($app) {
     }
 });
 
-$app->post('/sensors', function() use ($app) {
+$app->post('/sensors', function($sensorid) use ($app) {
     $response = array();
 
     $normalParams = $app->request->params();
@@ -36,25 +36,12 @@ $app->post('/sensors', function() use ($app) {
     $params = ($jsonParams == null ? $normalParams : $jsonParams);
 
     $sensorsModel = new SensorsModel();
-    $data = $sensorsModel->addSensor($id, $params['name']);
-    if($data === true) {
-        $response["message"] = 'Success';
-        echoResponse(200, $response);
+    if(isset($sensorid)) {
+        $data = $sensorsModel->editSensor($sensorid, $params['name'], $params['position']);
     } else {
-        $response["message"] = $data;
-        echoResponse(401, $response);
+        $data = $sensorsModel->addSensor($id, $params['name']);
     }
-});
-
-$app->put('/sensors/:sensorid', function($sensorid) use ($app) {
-    $response = array();
-
-    $normalParams = $app->request->params();
-    $jsonParams = json_decode($app->request->getBody(), true);
-    $params = ($jsonParams == null ? $normalParams : $jsonParams);
-
-    $sensorsModel = new SensorsModel();
-    $data = $sensorsModel->editSensor($sensorid, $params['name'], $params['position']);
+    
     if($data === true) {
         $response["message"] = 'Success';
         echoResponse(200, $response);

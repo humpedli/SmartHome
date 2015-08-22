@@ -48,8 +48,11 @@ function SettingsController($modal, $window, $log, SensorDataService, Utils) {
 			var currentSensor = vm.sensors[index];
 			var otherSensor = vm.sensors[(index - 1)];
 
-			SensorDataService.save(currentSensor.sensorid, currentSensor.name, otherSensor.position);
-			SensorDataService.save(otherSensor.sensorid, otherSensor.name, currentSensor.position);
+			currentSensor.position = otherSensor.position;
+			otherSensor.position = currentSensor.position;
+
+			currentSensor.$save();
+			otherSensor.$save();
 
 			vm.getSensors();
 		}
