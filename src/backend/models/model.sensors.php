@@ -10,7 +10,7 @@ class SensorsModel extends Model {
 
     }
 
-    public function getAllSensors() {
+    public function getSensors() {
 
         $sql = "SELECT * FROM sensors ORDER BY position ASC;";
         $this->db->query($sql);
@@ -26,6 +26,74 @@ class SensorsModel extends Model {
         $result = $this->db->result();
 
         return $result;
+    }
+
+    public function addSensor($sensorid, $name) {
+
+        if(isset($name)) {
+            try {
+                $this->getSensors();
+                $position = $this->db->numRows() + 1;
+
+                $sql = "
+                    INSERT INTO sensors
+                    SET sensors.sensorid = '" . $this->db->secure($sensorid) . "',
+                        sensors.name = '" . $this->db->secure($name) . "',
+                        sensors.position = '" . intval($position) . "',
+                        sensors.lastvalue = 0,
+                        sensors.lasttime = NOW();
+                ";
+                $this->db->query($sql);
+
+                return true;
+            }
+            catch(Exception $e) {
+                return $e;
+            }
+        } else {
+            return 'Invalid parameters!';
+        }
+
+    }
+
+    public function editSensor($sensorid, $name, $position) {
+
+        if(isset($name) && isset($position)) {
+            try {
+                $sql = "
+                    UPDATE sensors
+                    SET sensors.name = '" . $this->db->secure($name) . "',
+                        sensors.position = '" . intval($position) . "',
+                    WHERE sensorid = '" . intval($sensorid) . "';
+                ";
+                $this->db->query($sql);
+
+                return true;
+            }
+            catch(Exception $e) {
+                return $e;
+            }
+        } else {
+            return 'Invalid parameters!';
+        }
+
+    }
+
+    public function deleteSensor($sensorid) {
+
+        try {
+            $sql = "
+                DELETE FROM sensors 
+                WHERE sensorid = '" . intval($sensorid) . "';
+            ";
+            $this->db->query($sql);
+
+            return true;
+        }
+        catch(Exception $e) {
+            return $e;
+        }
+
     }
 
     public function graph($callback, $start, $end) {

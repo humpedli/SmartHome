@@ -4,13 +4,77 @@ $app->get('/sensors', function() use ($app) {
     $response = array();
 
     $sensorsModel = new SensorsModel();
-    $data = $sensorsModel->getAllSensors();
+    $data = $sensorsModel->getSensors();
     if($data) {
         $response = $data;
         echoResponse(200, $response);
     } else {
         $response["message"] = 'No data';
         echoResponse(404, $response);
+    }
+});
+
+$app->get('/sensors/:id', function($id) use ($app) {
+    $response = array();
+
+    $sensorsModel = new SensorsModel();
+    $data = $sensorsModel->getSensor($id);
+    if($data) {
+        $response = $data;
+        echoResponse(200, $response);
+    } else {
+        $response["message"] = 'No data';
+        echoResponse(404, $response);
+    }
+});
+
+$app->post('/sensors', function() use ($app) {
+    $response = array();
+
+    $normalParams = $app->request->params();
+    $jsonParams = json_decode($app->request->getBody(), true);
+    $params = ($jsonParams == null ? $normalParams : $jsonParams);
+
+    $sensorsModel = new SensorsModel();
+    $data = $sensorsModel->addSensor($id, $params['name']);
+    if($data === true) {
+        $response["message"] = 'Success';
+        echoResponse(200, $response);
+    } else {
+        $response["message"] = $data;
+        echoResponse(401, $response);
+    }
+});
+
+$app->put('/sensors/:id', function($id) use ($app) {
+    $response = array();
+
+    $normalParams = $app->request->params();
+    $jsonParams = json_decode($app->request->getBody(), true);
+    $params = ($jsonParams == null ? $normalParams : $jsonParams);
+
+    $sensorsModel = new SensorsModel();
+    $data = $sensorsModel->editSensor($id, $params['name'], $params['position']);
+    if($data === true) {
+        $response["message"] = 'Success';
+        echoResponse(200, $response);
+    } else {
+        $response["message"] = $data;
+        echoResponse(401, $response);
+    }
+});
+
+$app->delete('/sensors/:id', function($id) use ($app) {
+    $response = array();
+
+    $sensorsModel = new SensorsModel();
+    $data = $sensorsModel->deleteSensor($id);
+    if($data === true) {
+        $response["message"] = 'Success';
+        echoResponse(200, $response);
+    } else {
+        $response["message"] = $data;
+        echoResponse(401, $response);
     }
 });
 

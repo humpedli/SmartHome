@@ -2,17 +2,24 @@
   border-radius: 0;
 
   .navbar-brand {
-    .icon {
-      display: inline-block;
-      fill: #9d9d9d;
-      height: 18px;
-      margin-right: 5px;
-      vertical-align: top;
-      width: 18px;
+    > * {
+      vertical-align: middle;
     }
-    &:hover .icon {
-      fill: #ffffff;
+    .icon {
+      font-size: 18px;
+      margin-right: 10px;
     }
   }
+}
 
+@media (max-width: 767px) {
+  .navbar-nav {
+    margin: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar .collapse {
+    display: block !important;
+  }
 }

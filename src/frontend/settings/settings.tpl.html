@@ -1,0 +1,8 @@
+<div class="well">
+	<h1>Beállítások</h1>
+
+	<div class="settings-tabs" bs-tabs>
+		<div ng-repeat="(name, tab) in vm.settingsTabs" data-name="{{name}}" data-title="{{tab.title}}"
+			 ng-include="tab.template" bs-pane></div>
+	</div>
+</div>

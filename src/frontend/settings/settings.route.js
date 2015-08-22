@@ -2,16 +2,16 @@
 
 angular
 	.module('smartHome')
-	.config(DashboardRouteConfig);
+	.config(SettingsRouteConfig);
 
 
 /**
- * Dashboard state config
+ * Settings state config
  */
 /*@ngInject*/
-function DashboardRouteConfig($stateProvider) {
+function SettingsRouteConfig($stateProvider) {
 
-	var name = 'dashboard';
+	var name = 'settings';
 
 	$stateProvider
 		.state(name, {
@@ -20,7 +20,7 @@ function DashboardRouteConfig($stateProvider) {
 			views: {
 				'content@': {
 					templateUrl: 'views/' + name + '.tpl.html',
-					controller: 'DashboardController',
+					controller: 'SettingsController',
 					controllerAs: 'vm'
 				}
 			}
