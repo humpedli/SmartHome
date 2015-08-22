@@ -5,17 +5,16 @@ angular.module('smartHome')
 
 /**
  * Controller for settings
+ * @param $modal
  * @param $window
  * @param SensorDataService
  * @param Utils
  */
 /*@ngInject*/
-function SettingsController($window, SensorDataService, Utils) {
+function SettingsController($modal, $window, $log, SensorDataService, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
-
-	vm.sensors = SensorDataService.query();
 
 	vm.settingsTabs = {
 		thermalSensors: {
@@ -24,23 +23,35 @@ function SettingsController($window, SensorDataService, Utils) {
 		}
 	};
 
+	vm.getSensors = function() {
+		vm.sensors = SensorDataService.query();
+	};
+
 	vm.addSensor = function() {
-		vm.sensors.push({
+		$modal({
+			title: 'Új érzékelő hozzáadása',
+			contentTemplate: Utils.getTemplateUrl('SettingsAddThermalSensorModal')
+		});
+
+		/*vm.sensors.push({
 			sensorid: '',
 			name: '',
 			position: (vm.sensors.length + 1),
 			lastvalue: 0,
 			lasttime: $window.moment().format('YYYY-DD-MM HH:mm:ss')
-		});
+		});*/
 	};
 
 	vm.moveSensor = function(index, direction) {
 		console.log(index);
 		if(index > 0 && direction === 'up') {
-			var tempPosition = vm.sensors[index].position;
+			var currentSensor = vm.sensors[index];
+			var otherSensor = vm.sensors[(index - 1)];
 
-			vm.sensors[index].position = tempPosition - 1;
-			vm.sensors[(index - 1)].position = tempPosition;
+			SensorDataService.save(currentSensor.sensorid, currentSensor.name, otherSensor.position);
+			SensorDataService.save(otherSensor.sensorid, otherSensor.name, currentSensor.position);
+
+			vm.getSensors();
 		}
 
 		if(index < vm.sensors.length && direction === 'down') {
@@ -50,6 +61,9 @@ function SettingsController($window, SensorDataService, Utils) {
 
 	vm.deleteSensor = function(index) {
 		vm.sensors.splice(index, 1);
+		$log.debug('Thermal sensor deleted: ' + index);
 	};
+
+	vm.getSensors();
 
 }

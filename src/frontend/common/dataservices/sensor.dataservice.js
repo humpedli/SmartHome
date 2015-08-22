@@ -11,8 +11,5 @@ angular.module('smartHome')
  */
 /*@ngInject*/
 function SensorDataService($resource, ENV) {
-	return $resource(ENV.apiEndpoint + 'sensors', {}, {
-		'get': {method: 'GET'},
-		'query': {method: 'GET', isArray: true}
-	});
+	return $resource(ENV.apiEndpoint + 'sensors/:sensorid', {sensorid: '@sensorid'});
 }
