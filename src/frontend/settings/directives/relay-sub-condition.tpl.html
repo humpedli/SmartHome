@@ -8,6 +8,7 @@
 	ha
 	<select class="form-control"
 			data-ng-model="vm.ngModel.conditionType"
+			data-ng-change="vm.conditionTypeChanged(vm.ngModel.conditionType)"
 			data-ng-options="conditionType.id as conditionType.label for conditionType in vm.conditionTypes">
 		<option value="">Válassz kategóriát!</option>
 	</select>
@@ -15,7 +16,7 @@
 		a
 		<select class="form-control"
 				data-ng-model="vm.ngModel.conditionValue1"
-				data-ng-options="sensor.sensorid as sensor.name for sensor in vm.sensors">
+				data-ng-options="sensor as sensor.name for sensor in vm.sensors">
 			<option value="">Válassz érzékelőt!</option>
 		</select>
 		-ban/ben
@@ -41,7 +42,7 @@
 			<option value="">Válassz feltételt!</option>
 		</select>
 		<select class="form-control"
-				data-ng-model="vm.ngModel.conditionValue2"
+				data-ng-model="vm.ngModel.conditionValue1"
 				data-ng-options="dayOption.value as dayOption.label for dayOption in vm.dayOptions">
 			<option value="">Válassz értéket!</option>
 		</select>
@@ -69,7 +70,7 @@
 			   data-arrow-behavior="picker"
 			   data-icon-up="icon icon-chevron-up"
 			   data-icon-down="icon icon-chevron-down"
-			   data-template="views/timepicker.tpl.html"
+			   data-template-url="views/timepicker.tpl.html"
 			   placeholder="Válassz időpontot!"
 			   bs-timepicker>
 	</span>
@@ -77,7 +78,7 @@
 		, a(z)
 		<select class="form-control"
 				data-ng-model="vm.ngModel.conditionValue1"
-				data-ng-options="relay.relayid as relay.name for relay in vm.relays">
+				data-ng-options="relay as relay.name for relay in vm.relays | filter: {relayid: '!' + $parent.$parent.vm.ngModel.relay.relayid}">
 			<option value="">Válassz relét!</option>
 		</select> relé
 		<select class="form-control"
@@ -90,6 +91,6 @@
 		-val/vel
 	</span>
 	<button type="button" class="btn btn-danger delete" data-ng-click="$parent.vm.removeSubCondition($parent.$index)">
-		<span aria-hidden="true">&nbsp;&times;&nbsp;</span>
+		<span aria-hidden="true">&times;</span>
 	</button>
 </div>

@@ -16,6 +16,7 @@ function RelaySubCondition(SensorDataService, RelayDataService, $log, CONDITIONS
 	// Wired functions
 	vm.getSensorsList = getSensorsList;
 	vm.getTempValuesArray = getTempValuesArray;
+	vm.conditionTypeChanged = conditionTypeChanged;
 
 	/**
 	 * Constructor, initialize
@@ -25,7 +26,7 @@ function RelaySubCondition(SensorDataService, RelayDataService, $log, CONDITIONS
 		vm.conditionTypes = CONDITION_TYPES;
 		vm.connectionTypes = CONNECTION_TYPES;
 		vm.dayOptions = DAY_OPTIONS;
-		vm.operations = OPERATIONS
+		vm.operations = OPERATIONS;
 
 		getSensorsList();
 		getRelaysList();
@@ -57,6 +58,18 @@ function RelaySubCondition(SensorDataService, RelayDataService, $log, CONDITIONS
 			array.push(i);
 		}
 		return array;
+	}
+
+	/**
+	 * Called, if condition type is changed
+	 * This function sets default values, for specified condition types
+	 */
+	function conditionTypeChanged(conditionType) {
+		if(conditionType === 'TEMP') {
+			vm.ngModel.conditionValue2 = 0;
+		} else {
+			vm.ngModel.conditionValue2 = undefined;
+		}
 	}
 
 }

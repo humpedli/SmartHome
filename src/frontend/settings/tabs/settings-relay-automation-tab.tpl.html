@@ -3,15 +3,21 @@
 		<div class="main-condition"
 			 ng-repeat="mainCondition in vm.mainConditions"
 			 compile="mainCondition.template"></div>
+		<div ng-show="vm.mainConditions.length === 0">
+			Automatizáció definiálásához először adj hozzá egy vagy több relét a listához!
+		</div>
 		<div class="add-main-condition">
 			<button type="button" class="btn btn-primary" data-ng-click="vm.addMainCondition()">
 				+ Relé hozzáadása
 			</button>
 		</div>
-		<br />
+		<div class="bg-info">
+			<i class="icon icon-info"></i>
+			Figyelj arra, hogy ne alakuljon ki ellentmondó feltétel, mert a relé működése kiszámíthatatlanná válhat!
+		</div>
 		<div class="form-group">
 			<button type="button" class="btn btn-success" data-ng-click="vm.save()">
-				Mentés
+				Automatizáció mentése
 			</button>
 		</div>
 	</div>

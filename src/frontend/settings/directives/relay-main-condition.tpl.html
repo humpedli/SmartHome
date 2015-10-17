@@ -2,7 +2,7 @@
 	A(z)
 	<select class="form-control"
 			ng-model="vm.ngModel.relay"
-			ng-options="relay.relayid as relay.name for relay in vm.relays">
+			ng-options="relay as relay.name for relay in vm.relays">
 		<option value="">Válassz relét!</option>
 	</select>
 	<select class="form-control"
@@ -10,6 +10,9 @@
 			ng-options="operation.operation as operation.label for operation in vm.operations">
 		<option value="">Válassz műveletet!</option>
 	</select>
+	<span ng-if="vm.ngModel.operation">
+		(és egyébként legyen {{(vm.ngModel.operation === 'on' ? 'kikapcsolva' : 'bekapcsolva')}})
+	</span>
 	<button type="button" class="btn btn-danger delete" data-ng-click="$parent.vm.removeMainCondition($parent.$index)">
 		<i class="icon icon-bin"></i>
 	</button>
@@ -17,6 +20,9 @@
 <div class="sub-condition"
 	 ng-repeat="subCondition in vm.ngModel.subConditions"
 	 compile="subCondition.template"></div>
+<div ng-if="vm.ngModel.subConditions.length === 0" class="sub-condition">
+	Nincsenek feltételek megadva!
+</div>
 <div class="add-sub-condition">
 	<button type="button" class="btn btn-primary" data-ng-click="vm.addSubCondition()">
 		+ Feltétel hozzáadása

@@ -40,8 +40,9 @@ function RelayMainCondition(RelayDataService, $log, OPERATIONS) {
 	 */
 	function addSubCondition() {
 		var subConditionDTO = {
-			connectedWithPrevious: null,
+			connectedWithPrevious: 'and',
 			conditionType: null,
+			condition: null,
 			conditionValue1: null,
 			conditionValue2: null
 		};
