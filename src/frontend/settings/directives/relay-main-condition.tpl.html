@@ -1,17 +1,17 @@
 <div class="form-inline main-form-group">
-	A(z)
+	A(z)&nbsp;
 	<select class="form-control"
 			ng-model="vm.ngModel.relay"
 			ng-options="relay as relay.name for relay in vm.relays">
-		<option value="">Válassz relét!</option>
+		<option label="Válassz relét!"></option>
 	</select>
 	<select class="form-control"
 			ng-model="vm.ngModel.operation"
 			ng-options="operation.operation as operation.label for operation in vm.operations">
-		<option value="">Válassz műveletet!</option>
+		<option label="Válassz műveletet!"></option>
 	</select>
 	<span ng-if="vm.ngModel.operation">
-		(és egyébként legyen {{(vm.ngModel.operation === 'on' ? 'kikapcsolva' : 'bekapcsolva')}})
+		&nbsp;(és egyébként legyen {{(vm.ngModel.operation === 'on' ? 'kikapcsolva' : 'bekapcsolva')}})
 	</span>
 	<button type="button" class="btn btn-danger delete" data-ng-click="$parent.vm.removeMainCondition($parent.$index)">
 		<i class="icon icon-bin"></i>
