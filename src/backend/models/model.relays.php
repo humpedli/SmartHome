@@ -12,7 +12,7 @@ class RelaysModel extends Model {
 
     public function getRelays() {
 
-        $sql = "SELECT * FROM relays ORDER BY id ASC;";
+        $sql = "SELECT * FROM relays ORDER BY relayid ASC;";
         $this->db->query($sql);
         $results = $this->db->results();
 
