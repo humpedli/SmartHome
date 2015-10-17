@@ -66,7 +66,6 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 	 */
 	function isRelayNotSelectedYet(relay) {
 		if(angular.isDefined(relay)) {
-			console.log(vm.selectedRelays);
 			return (vm.selectedRelays.indexOf(relay.relayid) === -1);
 		}
 
@@ -97,54 +96,12 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 		for(var i = 0; i < vm.mainConditions.length; i++) {
 			var mainCondition = vm.mainConditions[i].dto;
 
-			if(angular.isUndefinedOrNull(mainCondition.relay)) {
-				errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoportban nincs kiválasztva relé!');
-			}
-			if(angular.isUndefinedOrNull(mainCondition.operation)) {
-				errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoportban nincs kiválasztva művelet!');
-			}
+			errorList = errorList.concat(validateMainCondition(mainCondition, i));
 
 			for(var j = 0; j < mainCondition.subConditions.length; j++) {
-				var subCondition = mainCondition.subConditions[i].dto;
+				var subCondition = mainCondition.subConditions[j].dto;
 
-				if(angular.isUndefinedOrNull(subCondition.connectedWithPrevious)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva kapcsolódás!');
-				}
-				if(angular.isUndefinedOrNull(subCondition.conditionType)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva kategória!');
-				}
-				if(angular.isUndefinedOrNull(subCondition.condition) && subCondition.conditionType !== 'RELAY') {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva feltétel!');
-				}
-				if(!angular.isUndefinedOrNull(subCondition.conditionType)) {
-					if (subCondition.conditionType === 'TEMP') {
-						if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-							errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-								'.</b> feltételénél nincs kiválasztva érzékelő!');
-						}
-						if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-							errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-								'.</b> feltételénél nincs kiválasztva hőmérséklet!');
-						}
-					} else if(subCondition.conditionType === 'RELAY') {
-						if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-							errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-								'.</b> feltételénél nincs kiválasztva relé!');
-						}
-						if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-							errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-								'.</b> feltételénél nincs kiválasztva állapot!');
-						}
-					} else {
-						if(angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-							errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-								'.</b> feltételénél nincs kiválasztva érték!');
-						}
-					}
-				}
+				errorList = errorList.concat(validateSubCondition(subCondition, i, j));
 			}
 		}
 
@@ -159,6 +116,70 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Validates a main condition
+	 */
+	function validateMainCondition(mainCondition, i) {
+		var errorList = [];
+
+		if(angular.isUndefinedOrNull(mainCondition.relay)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoportban nincs kiválasztva relé!');
+		}
+		if(angular.isUndefinedOrNull(mainCondition.operation)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoportban nincs kiválasztva művelet!');
+		}
+
+		return errorList;
+	}
+
+	/**
+	 * Validates a sub condition
+	 */
+	function validateSubCondition(subCondition, i, j) {
+		var errorList = [];
+
+		if(angular.isUndefinedOrNull(subCondition.connectedWithPrevious)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva kapcsolódás!');
+		}
+		if(angular.isUndefinedOrNull(subCondition.conditionType)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva kategória!');
+		}
+		if(angular.isUndefinedOrNull(subCondition.condition) && subCondition.conditionType !== 'RELAY') {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva feltétel!');
+		}
+		if(!angular.isUndefinedOrNull(subCondition.conditionType)) {
+			if (subCondition.conditionType === 'TEMP') {
+				if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
+					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+						'.</b> feltételénél nincs kiválasztva érzékelő!');
+				}
+				if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
+					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+						'.</b> feltételénél nincs kiválasztva hőmérséklet!');
+				}
+			} else if(subCondition.conditionType === 'RELAY') {
+				if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
+					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+						'.</b> feltételénél nincs kiválasztva relé!');
+				}
+				if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
+					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+						'.</b> feltételénél nincs kiválasztva állapot!');
+				}
+			} else {
+				if(angular.isUndefinedOrNull(subCondition.conditionValue1)) {
+					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+						'.</b> feltételénél nincs kiválasztva érték!');
+				}
+			}
+		}
+
+		return errorList;
 	}
 
 	/**
