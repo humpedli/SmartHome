@@ -34,6 +34,7 @@ $app->options('/(:anything+)', function() {
 include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.auth.php';
 include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.sensors.php';
 include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.relays.php';
+include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.automation.php';
 
 $app->run();
 
