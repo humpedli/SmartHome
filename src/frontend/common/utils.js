@@ -11,8 +11,7 @@ function Utils() {
 
 	/**
 	 * Convert camelcase to dashed
-	 * @param {string} str
-	 * @returns {string}
+	 * @param str
 	 */
 	function camelCaseToDashed(str) {
 		var dashed = str.replace(/([A-Z])/g, function ($1) {
@@ -25,8 +24,7 @@ function Utils() {
 
 	/**
 	 * Generate a template url using the viewName
-	 * @param {string} viewName View name in camel case
-	 * @returns {string}
+	 * @param viewName
 	 */
 	function getTemplateUrl(viewName) {
 		return 'views/' + camelCaseToDashed(viewName) + '.tpl.html';

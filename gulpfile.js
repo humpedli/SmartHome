@@ -47,7 +47,7 @@ files = {
 };
 
 files.styles = [files.css, '**/main.less'];
-//files.styles = [files.css, files.less];
+files.watchStyles = [files.css, files.less];
 
 //Order of the files
 order.js = [
@@ -371,7 +371,7 @@ gulp.task('watch', ['index'], function () {
         $.livereload.listen();
         gulp.watch(prepend(paths.app, files.index), ['index']);
         gulp.watch(prepend(paths.app, files.templates), ['templates']);
-        gulp.watch(prepend(paths.app, files.styles), ['styles', 'index']);
+		gulp.watch(prepend(paths.app, files.watchStyles), ['styles', 'index']);
         gulp.watch(prepend(paths.app, files.js), ['index']);
     }
 });

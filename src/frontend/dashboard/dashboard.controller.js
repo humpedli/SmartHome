@@ -5,22 +5,45 @@ angular.module('smartHome')
 
 /**
  * Controller for dashboard
- * @param $log
+ * @param sensorsData
+ * @param relaysData
+ * @param SocketDataService
  */
 /*@ngInject*/
-function DashboardController(SensorDataService, SocketDataService) {
+function DashboardController(sensorsData, relaysData, SocketDataService) {
 
 	// controllerAs with vm
 	var vm = this;
 
-	vm.sensors = SensorDataService.query();
+	// Wired functions
+	vm.switchRelay = switchRelay;
 
-	SocketDataService.on('relay1.message', function (data) {
-		vm.sw1 = data.status;
-	});
+	/**
+	 * Constructor, initialize
+	 */
+	function init() {
+		vm.switches = [];
 
-	vm.switch = function() {
-		SocketDataService.emit('relay1.trigger', { signal: vm.sw1 });
-	};
+		vm.sensors = sensorsData;
+		vm.relays = relaysData;
+
+		// ToDo: implement this completely
+		SocketDataService.on('relay1.message', function (data) {
+			vm.switches['1a'] = data.status;
+		});
+	}
+	init();
+
+	/**
+	 * Switches relay status
+	 * @param relayId
+	 * @param relayType
+	 */
+	function switchRelay(relayId, relayType) {
+		// ToDo: implement this completely
+		if(relayId === 1 && relayType === 'a') {
+			SocketDataService.emit('relay1.trigger', { signal: vm.switches['1a'] });
+		}
+	}
 
 }

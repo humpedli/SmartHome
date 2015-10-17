@@ -2,10 +2,10 @@
 	<h1>Irányítópult</h1>
 
 	<div class="row">
-		<div class="col-xs-12 col-sm-6">
+		<div class="col-xs-12 col-sm-6" ng-repeat="relay in vm.relays">
 			<div class="thumbnail">
 				<div class="caption">
-					<h3>Gázkazán</h3>
+					<h3>{{relay.name}}</h3>
 					<hr/>
 					<br/>
 
@@ -14,8 +14,11 @@
 							<strong>Manuális kapcsolás:</strong>
 						</div><!--
                         --><div class="col-xs-6 vcenter">
-							<div data-ng-model="vm.sw1" data-ng-change="vm.switch()" data-on-label="Be"
-								 data-off-label="Ki" toggle-switch></div>
+							<div data-ng-model="vm.switches[relay.relayid + 'a']"
+								 data-ng-change="vm.switch(relay.relayid, 'a')"
+								 data-on-label="Be"
+								 data-off-label="Ki"
+								 toggle-switch></div>
 						</div>
 					</div>
 					<div class="row">
@@ -23,33 +26,11 @@
 							<strong>Automata kapcsolás:</strong>
 						</div><!--
                         --><div class="col-xs-6 vcenter">
-							<div data-ng-model="vm.sw2" data-on-label="Be" data-off-label="Ki" toggle-switch></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-12 col-sm-6">
-			<div class="thumbnail">
-				<div class="caption">
-					<h3>Relé 2</h3>
-					<hr/>
-					<br/>
-
-					<div class="row">
-						<div class="col-xs-6 vcenter">
-							<strong>Manuális kapcsolás:</strong>
-						</div><!--
-                        --><div class="col-xs-6 vcenter">
-							<div data-ng-model="vm.sw3" data-on-label="Be" data-off-label="Ki" toggle-switch></div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6 vcenter">
-							<strong>Automata kapcsolás:</strong>
-						</div><!--
-                        --><div class="col-xs-6 vcenter">
-							<div data-ng-model="vm.sw4" data-on-label="Be" data-off-label="Ki" toggle-switch></div>
+							<div data-ng-model="vm.switches[relay.relayid + 'b']"
+								 data-ng-change="vm.switch(relay.relayid, 'b')"
+								 data-on-label="Be"
+								 data-off-label="Ki"
+								 toggle-switch></div>
 						</div>
 					</div>
 				</div>

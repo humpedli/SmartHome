@@ -1,0 +1,18 @@
+<div class="panel panel-default" ng-controller="SettingsRelayAutomationTabController as vm">
+	<div class="panel-body">
+		<div class="main-condition"
+			 ng-repeat="mainCondition in vm.mainConditions"
+			 compile="mainCondition.template"></div>
+		<div class="add-main-condition">
+			<button type="button" class="btn btn-primary" data-ng-click="vm.addSubCondition()">
+				+ Relé hozzáadása
+			</button>
+		</div>
+		<br />
+		<div class="form-group">
+			<button type="button" class="btn btn-success" data-ng-click="vm.save()">
+				Mentés
+			</button>
+		</div>
+	</div>
+</div>

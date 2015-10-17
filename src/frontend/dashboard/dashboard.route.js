@@ -23,6 +23,16 @@ function DashboardRouteConfig($stateProvider) {
 					controller: 'DashboardController',
 					controllerAs: 'vm'
 				}
+			},
+			resolve: {
+				/*@ngInject*/
+				'sensorsData': function (SensorDataService) {
+					return SensorDataService.query();
+				},
+				/*@ngInject*/
+				'relaysData': function (RelayDataService) {
+					return RelayDataService.query();
+				}
 			}
 		});
 

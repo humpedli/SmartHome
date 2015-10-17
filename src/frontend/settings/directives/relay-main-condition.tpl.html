@@ -1,0 +1,21 @@
+<div class="form-inline">
+	A(z)
+	<select class="form-control"
+			ng-model="vm.ngModel.relay"
+			ng-options="relay.relayid as relay.name for relay in vm.relays">
+		<option value="">Válassz relét!</option>
+	</select>
+	<select class="form-control"
+			ng-model="vm.ngModel.operation"
+			ng-options="operation.operation as operation.label for operation in vm.operations">
+		<option value="">Válassz műveletet!</option>
+	</select>
+</div>
+<div class="sub-condition"
+	 ng-repeat="subCondition in vm.ngModel.subConditions"
+	 compile="subCondition.template"></div>
+<div class="add-sub-condition">
+	<button type="button" class="btn btn-primary" data-ng-click="vm.addSubCondition()">
+		+ Feltétel hozzáadása
+	</button>
+</div>

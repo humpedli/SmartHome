@@ -4,7 +4,7 @@
   "dependencies": {
     "angular": "1.4.1",
     "angular-resource": "1.4.1",
-    "angular-strap": "2.2.4",
+    "angular-strap": "2.3.2",
     "angular-ui-router": "0.2.15",
     "angular-motion": "0.4.2",
     "angular-sanitize": "1.4.1",

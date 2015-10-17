@@ -14,4 +14,49 @@
       }
     }
   }
+  .nav-tabs > li {
+    cursor: pointer;
+  }
+}
+
+.main-condition {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+
+  select {
+    margin: 5px 0;
+  }
+}
+
+.sub-condition {
+  padding: 5px 50px;
+
+  &:nth-child(odd) {
+    background-color: #efefef;
+  }
+
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  select {
+    margin: 5px 0;
+  }
+
+  .delete {
+    margin: 8px 0 5px 10px;
+    float: right;
+  }
+}
+
+.add-main-condition {
+  margin: 10px 0 30px 0;
+}
+
+.add-sub-condition {
+  margin-top: 5px;
+  padding-left: 50px;
 }

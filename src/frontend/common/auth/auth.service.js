@@ -14,7 +14,14 @@ angular.module('smartHome')
  */
 /*@ngInject*/
 function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
+
 	var name = 'AuthService';
+
+	return {
+		login: login,
+		logout: logout,
+		authorize: authorize
+	};
 
 	/**
 	 * Login a user with credentials
@@ -60,9 +67,4 @@ function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
 		return Principal.getIdentity();
 	}
 
-	return {
-		login: login,
-		logout: logout,
-		authorize: authorize
-	};
 }

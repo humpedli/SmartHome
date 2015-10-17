@@ -16,7 +16,18 @@ function LoginController($state, $modal, AuthService) {
 	// controllerAs with vm
 	var vm = this;
 
-	vm.login = function () {
+	// Wired functions
+	vm.login = login;
+
+	/**
+	 * Constructor, initialize
+	 */
+	function init() {
+
+	}
+	init();
+
+	function login() {
 		AuthService.login({
 			username: vm.username,
 			password: vm.password
@@ -31,5 +42,6 @@ function LoginController($state, $modal, AuthService) {
 					'Hibás felhasználónév vagy jelszó!'
 				});
 			});
-	};
+	}
+	
 }

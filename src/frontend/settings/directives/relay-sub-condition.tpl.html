@@ -1,0 +1,95 @@
+<div class="form-inline">
+	<select class="form-control"
+			data-ng-disabled="index === 0"
+			data-ng-model="vm.ngModel.connectedWithPrevious"
+			data-ng-options="connectionType.value as connectionType.label for connectionType in vm.connectionTypes"
+			data-ng-show="$parent.$index !== 0">
+	</select>
+	ha
+	<select class="form-control"
+			data-ng-model="vm.ngModel.conditionType"
+			data-ng-options="conditionType.id as conditionType.label for conditionType in vm.conditionTypes">
+		<option value="">Válassz kategóriát!</option>
+	</select>
+	<span ng-if="vm.ngModel.conditionType === 'TEMP'">
+		a
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue1"
+				data-ng-options="sensor.sensorid as sensor.name for sensor in vm.sensors">
+			<option value="">Válassz érzékelőt!</option>
+		</select>
+		-ban/ben
+	</span>
+	<span ng-if="vm.ngModel.conditionType !== 'RELAY' && vm.ngModel.conditionType !== 'DAY'">
+		<select class="form-control"
+				data-ng-model="vm.ngModel.condition"
+				data-ng-options="condition.sign as condition.label for condition in vm.conditions">
+			<option value="">Válassz feltételt!</option>
+		</select>
+	</span>
+	<span ng-if="vm.ngModel.conditionType === 'TEMP'">
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue2"
+				data-ng-options="value for value in vm.getTempValuesArray()">
+			<option value="">Válassz értéket!</option>
+		</select>
+	</span>
+	<span ng-if="vm.ngModel.conditionType === 'DAY'">
+		<select class="form-control"
+				data-ng-model="vm.ngModel.condition"
+				data-ng-options="condition.sign as condition.label for condition in vm.conditions | filter: {boolComparable: true}">
+			<option value="">Válassz feltételt!</option>
+		</select>
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue2"
+				data-ng-options="dayOption.value as dayOption.label for dayOption in vm.dayOptions">
+			<option value="">Válassz értéket!</option>
+		</select>
+	</span>
+	<span ng-if="vm.ngModel.conditionType === 'DATE'">
+		<input type="text"
+			   class="form-control"
+			   data-ng-model="vm.ngModel.conditionValue1"
+			   data-start-week="1"
+			   data-date-format="yyyy-MM-dd"
+			   data-use-native="true"
+			   data-icon-left="icon icon-chevron-left"
+			   data-icon-right="icon icon-chevron-right"
+			   placeholder="Válassz dátumot!"
+			   bs-datepicker>
+	</span>
+	<span ng-if="vm.ngModel.conditionType === 'TIME'">
+		<input type="text"
+			   class="form-control"
+			   data-ng-model="vm.ngModel.conditionValue1"
+			   data-time-format="HH:mm"
+			   data-use-native="true"
+			   data-length="1"
+			   data-minute-step="1"
+			   data-arrow-behavior="picker"
+			   data-icon-up="icon icon-chevron-up"
+			   data-icon-down="icon icon-chevron-down"
+			   data-template="views/timepicker.tpl.html"
+			   placeholder="Válassz időpontot!"
+			   bs-timepicker>
+	</span>
+	<span ng-if="vm.ngModel.conditionType === 'RELAY'">
+		, a(z)
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue1"
+				data-ng-options="relay.relayid as relay.name for relay in vm.relays">
+			<option value="">Válassz relét!</option>
+		</select> relé
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue2"
+				data-ng-options="operation.operation as operation.label2 for operation in vm.operations">
+			<option value="">Válassz állapotot!</option>
+		</select>
+	</span>
+	<span ng-if="(vm.ngModel.condition === '=' || vm.ngModel.condition === '!=') && vm.ngModel.conditionType !== 'RELAY'">
+		-val/vel
+	</span>
+	<button type="button" class="btn btn-danger delete" data-ng-click="$parent.vm.removeSubCondition($parent.$index)">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
