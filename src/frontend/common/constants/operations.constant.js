@@ -11,7 +11,7 @@ angular.module('smartHome')
 			label2: 'be van kapcsolva'
 		},
 		{
-			operation: 'on',
+			operation: 'off',
 			label: 'kapcsoljon ki',
 			label2: 'ki van kapcsolva'
 		}
