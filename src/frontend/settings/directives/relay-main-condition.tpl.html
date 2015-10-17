@@ -1,4 +1,4 @@
-<div class="form-inline">
+<div class="form-inline main-form-group">
 	A(z)
 	<select class="form-control"
 			ng-model="vm.ngModel.relay"
@@ -10,6 +10,9 @@
 			ng-options="operation.operation as operation.label for operation in vm.operations">
 		<option value="">Válassz műveletet!</option>
 	</select>
+	<button type="button" class="btn btn-danger delete" data-ng-click="$parent.vm.removeMainCondition($parent.$index)">
+		<i class="icon icon-bin"></i>
+	</button>
 </div>
 <div class="sub-condition"
 	 ng-repeat="subCondition in vm.ngModel.subConditions"

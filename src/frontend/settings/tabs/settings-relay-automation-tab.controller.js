@@ -14,6 +14,7 @@ function SettingsRelayAutomationTabController() {
 
 	// Wired functions
 	vm.addMainCondition = addMainCondition;
+	vm.removeMainCondition = removeMainCondition;
 	vm.save = save;
 
 	/**
@@ -40,6 +41,13 @@ function SettingsRelayAutomationTabController() {
 			template: '<relay-main-condition ng-model="mainCondition.dto"></relay-main-condition>',
 			dto: mainConditionDTO
 		});
+	}
+
+	/**
+	 * Removes a mainCondition with the specified index
+	 */
+	function removeMainCondition(index) {
+		vm.mainConditions.splice(index, 1);
 	}
 
 	/**

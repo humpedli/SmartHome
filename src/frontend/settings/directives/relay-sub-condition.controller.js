@@ -7,7 +7,8 @@ angular.module('smartHome')
  * Controller for relay sub condition directive
  */
 /*@ngInject*/
-function RelaySubCondition(SensorDataService, $log, CONDITIONS, CONDITION_TYPES, CONNECTION_TYPES, DAY_OPTIONS) {
+function RelaySubCondition(SensorDataService, RelayDataService, $log, CONDITIONS, CONDITION_TYPES, CONNECTION_TYPES,
+						   DAY_OPTIONS, OPERATIONS) {
 
 	// controllerAs with vm
 	var vm = this;
@@ -24,8 +25,10 @@ function RelaySubCondition(SensorDataService, $log, CONDITIONS, CONDITION_TYPES,
 		vm.conditionTypes = CONDITION_TYPES;
 		vm.connectionTypes = CONNECTION_TYPES;
 		vm.dayOptions = DAY_OPTIONS;
+		vm.operations = OPERATIONS
 
 		getSensorsList();
+		getRelaysList();
 	}
 	init();
 
@@ -35,6 +38,14 @@ function RelaySubCondition(SensorDataService, $log, CONDITIONS, CONDITION_TYPES,
 	function getSensorsList() {
 		vm.sensors = SensorDataService.query();
 		$log.debug('Thermal sensor list loaded');
+	}
+
+	/**
+	 * Gets all relay data from backend
+	 */
+	function getRelaysList() {
+		vm.relays = RelayDataService.query();
+		$log.debug('Relay list loaded');
 	}
 
 	/**
