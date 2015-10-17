@@ -98,5 +98,6 @@ class Model {
 include BASE_DIR . DS . 'models' . DS . 'model.auth.php';
 include BASE_DIR . DS . 'models' . DS . 'model.users.php';
 include BASE_DIR . DS . 'models' . DS . 'model.sensors.php';
+include BASE_DIR . DS . 'models' . DS . 'model.relays.php';
 
 ?>

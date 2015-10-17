@@ -43,5 +43,5 @@ function LoginController($state, $modal, AuthService) {
 				});
 			});
 	}
-	
+
 }
