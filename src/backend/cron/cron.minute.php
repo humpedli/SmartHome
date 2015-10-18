@@ -54,6 +54,29 @@ function relayAutomation() {
                     if($condition['type'] == 'DAY') {
                         $conditionsAreApplied &= Helper::determineCurrentDay($condition['value1'], $condition['cond']);
                     }
+                    if($condition['type'] == 'DATE') {
+                        $setDate = new DateTime($condition['value1']);
+                        $currentDate = new DateTime(date('Y-m-d'));
+
+                        $conditionsAreApplied &= Helper::compare($currentDate,
+                            $setDate, $condition['cond']);
+                    }
+                    if($condition['type'] == 'TIME') {
+                        $setTime = intval(ltrim(str_replace(':', '', $condition['value1']), '0'));
+                        $currentTime = intval(ltrim(date('Hi'), '0'));
+
+                        $conditionsAreApplied &= Helper::compare($currentTime,
+                                                    $setTime, $condition['cond']);
+                    }
+                    if($condition['type'] == 'RELAY') {
+                        $relayData = $relaysModel->getRelay($condition['value1']);
+                        if(($condition['value2'] == 'on' && $relayData['status']) ||
+                            ($condition['value2'] == 'off' && !$relayData['status'])) {
+                            $conditionsAreApplied &= true;
+                        } else {
+                            $conditionsAreApplied &= false;
+                        }
+                    }
                 }
             }
 
