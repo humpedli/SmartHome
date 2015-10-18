@@ -6,7 +6,7 @@
 angular.module('smartHome')
 	.constant('CONDITIONS', [
 		{
-			sign: '=',
+			sign: '==',
 			label: 'egyenlő',
 			boolComparable: true
 		},

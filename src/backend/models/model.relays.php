@@ -21,7 +21,7 @@ class RelaysModel extends Model {
 
     public function getRelay($relayid) {
 
-        $sql = "SELECT * FROM relays WHERE relayid = '" . $this->db->secure($relayid) . "';";
+        $sql = "SELECT * FROM relays WHERE relayid = '" . intval($relayid) . "';";
         $this->db->query($sql);
         $result = $this->db->result();
 
@@ -58,7 +58,7 @@ class RelaysModel extends Model {
                     UPDATE relays
                     SET relays.name = '" . $this->db->secure($name) . "',
                         relays.gpio = '" . intval($gpio) . "'
-                    WHERE relayid = '" . $this->db->secure($relayid) . "';
+                    WHERE relayid = '" . intval($relayid) . "';
                 ";
                 $this->db->query($sql);
 
@@ -78,7 +78,7 @@ class RelaysModel extends Model {
         try {
             $sql = "
                 DELETE FROM relays
-                WHERE relayid = '" . $this->db->secure($relayid) . "';
+                WHERE relayid = '" . intval($relayid) . "';
             ";
             $this->db->query($sql);
 
@@ -86,6 +86,50 @@ class RelaysModel extends Model {
         }
         catch(Exception $e) {
             return $e->getMessage();
+        }
+
+    }
+
+    public function updateRelayState($relayid, $state) {
+
+        if($state == 'manual' || $state == 'auto') {
+            try {
+                $sql = "
+                    UPDATE relays
+                    SET relays.state = '" . $this->db->secure($state) . "'
+                    WHERE relayid = '" . intval($relayid) . "';
+                ";
+                $this->db->query($sql);
+
+                return true;
+            }
+            catch(Exception $e) {
+                return $e->getMessage();
+            }
+        } else {
+            return 'Invalid parameters!';
+        }
+
+    }
+
+    public function updateRelayStatus($relayid, $status) {
+
+        if(isset($status)) {
+            try {
+                $sql = "
+                    UPDATE relays
+                    SET relays.status = '" . intval($status) . "'
+                    WHERE relayid = '" . intval($relayid) . "';
+                ";
+                $this->db->query($sql);
+
+                return true;
+            }
+            catch(Exception $e) {
+                return $e->getMessage();
+            }
+        } else {
+            return 'Invalid parameters!';
         }
 
     }

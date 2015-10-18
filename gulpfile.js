@@ -19,7 +19,8 @@ paths = {
     styles: 'css',
     fonts: 'fonts',
     images: 'images',
-	backendMain: 'dist/api'
+	backendMain: 'dist/api',
+	cron: 'dist/cron'
 };
 
 //App path
@@ -43,7 +44,8 @@ files = {
     images: 'assets/images/**/*',
     fonts: 'assets/fonts/**/*',
     icons: 'assets/icons/**/*',
-	backendMain: ['backend/.htaccess', 'backend/index.php']
+	backendMain: ['backend/.htaccess', 'backend/index.php'],
+	cron: ['backend/cron/*']
 };
 
 files.styles = [files.css, '**/main.less'];
@@ -271,6 +273,17 @@ gulp.task('backend', function () {
 });
 
 /*
+ *  Cron main files copy
+ */
+gulp.task('cron', function () {
+//Get extra files
+	return gulp.src(files.cron, {
+		cwd: paths.src
+	})
+		.pipe($.if(IS_RELEASE_BUILD, gulp.dest(paths.cron)));
+});
+
+/*
  *  Config
  */
 gulp.task('config', function () {
@@ -291,7 +304,7 @@ gulp.task('config', function () {
 /*
  * Compile index and inject css and scripts tags
  */
-gulp.task('index', ['styles', 'images', 'icons', 'scripts', 'templates', 'backend'], function () {
+gulp.task('index', ['styles', 'images', 'icons', 'scripts', 'templates', 'backend', 'cron'], function () {
     var libraries, scripts, styles;
 
     //Add scripts

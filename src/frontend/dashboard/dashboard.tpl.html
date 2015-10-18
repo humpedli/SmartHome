@@ -7,27 +7,34 @@
 				<div class="caption">
 					<h3>{{relay.name}}</h3>
 					<hr/>
-					<br/>
 
 					<div class="row">
 						<div class="col-xs-6 vcenter">
-							<strong>Manuális kapcsolás:</strong>
+							<strong>Jelenlegi állapot:</strong>
 						</div><!--
-                        --><div class="col-xs-6 vcenter">
-							<div data-ng-model="vm.switches[relay.relayid + 'a']"
-								 data-ng-change="vm.switch(relay.relayid, 'a')"
-								 data-on-label="Be"
-								 data-off-label="Ki"
-								 toggle-switch></div>
+						--><div class="col-xs-6 vcenter relay-status" ng-class="{'green': relay.status}">
+							{{(relay.status ? 'Bekapcsolva' : 'Kikapcsolva')}}
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-6 vcenter">
-							<strong>Automata kapcsolás:</strong>
+							<strong>Üzemmód:</strong>
+						</div><!--
+						--><div class="col-xs-6 vcenter">
+							<select class="form-control relay-state-select"
+									data-ng-model="relay.state">
+								<option value="auto">Automata</option>
+								<option value="manual">Manuális</option>
+							</select>
+						</div>
+					</div>
+					<div class="row" ng-if="relay.state === 'manual'">
+						<div class="col-xs-6 vcenter">
+							<strong>Kapcsoló:</strong>
 						</div><!--
                         --><div class="col-xs-6 vcenter">
-							<div data-ng-model="vm.switches[relay.relayid + 'b']"
-								 data-ng-change="vm.switch(relay.relayid, 'b')"
+							<div data-ng-model="relay.status"
+								 data-ng-change="vm.switch(relay.relayid, relay.status)"
 								 data-on-label="Be"
 								 data-off-label="Ki"
 								 toggle-switch></div>
