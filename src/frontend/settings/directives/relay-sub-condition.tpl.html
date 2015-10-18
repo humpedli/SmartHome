@@ -82,7 +82,7 @@
 			<option label="Válassz állapotot!"></option>
 		</select>
 	</span>
-	<span ng-if="(vm.ngModel.condition === '=' || vm.ngModel.condition === '!=') && vm.ngModel.conditionType !== 'RELAY'">
+	<span ng-if="(vm.ngModel.condition === '==' || vm.ngModel.condition === '!=') && vm.ngModel.conditionType !== 'RELAY'">
 		&nbsp;-val/vel&nbsp;
 	</span>
 	<button type="button" class="btn btn-danger delete" data-ng-click="$parent.vm.removeSubCondition($parent.$index)">

@@ -25,29 +25,37 @@ class Helper {
 
     public static function determineCurrentDay($input, $operator) {
 
-        $output = false;
-
-        switch(lowercase($input)) {
+        switch(strtolower($input)) {
             case 'sunday':
-                $output = (date('w') == 0)
+                $output = (date('w') == 0);
+                break;
             case 'monday':
-                $output = (date('w') == 1)
+                $output = (date('w') == 1);
+                break;
             case 'tuesday':
-                $output = (date('w') == 2)
+                $output = (date('w') == 2);
+                break;
             case 'wednesday':
-                $output = (date('w') == 3)
+                $output = (date('w') == 3);
+                break;
             case 'thursday':
-                $output = (date('w') == 4)
+                $output = (date('w') == 4);
+                break;
             case 'friday':
-                $output = (date('w') == 5)
+                $output = (date('w') == 5);
+                break;
             case 'saturday':
-                $output = (date('w') == 6)
+                $output = (date('w') == 6);
+                break;
             case 'weekday':
-                $output = (date('w') > 0 && date('w') < 6)
+                $output = (date('w') > 0 && date('w') < 6);
+                break;
             case 'weekend':
-                $output = (date('w') == 0 || date('w') == 6)
+                $output = (date('w') == 0 || date('w') == 6);
+                break;
             default:
                 $output = false;
+                break;
         }
 
         if($operator == '==') {

@@ -58,7 +58,6 @@ function relayAutomation() {
             }
 
             echo $operation['relayid'] . ': ' . ($conditionsAreApplied ? 'true' : 'false');
-            echo date('w');
         }
     }
 }
