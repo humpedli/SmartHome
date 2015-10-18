@@ -186,6 +186,7 @@ function SettingsRelayAutomationTabController($modal, $log, SensorDataService, R
 	function save() {
 		if(validate()) {
 			AutomationDataService.save(vm.mainConditions).$promise.then(function () {
+				vm.mainConditions = [];
 				loadExistingAutomation();
 
 				$log.debug('Automation saved');
