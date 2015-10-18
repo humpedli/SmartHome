@@ -7,7 +7,7 @@ angular.module('smartHome')
  * Controller for relay main condition directive
  */
 /*@ngInject*/
-function RelayMainCondition(RelayDataService, $log, OPERATIONS) {
+function RelayMainCondition($scope, $log, OPERATIONS) {
 
 	// controllerAs with vm
 	var vm = this;
@@ -21,35 +21,47 @@ function RelayMainCondition(RelayDataService, $log, OPERATIONS) {
 	 */
 	function init() {
 		vm.operations = OPERATIONS;
+		vm.relays = $scope.$parent.vm.relays;
+		vm.sensors = $scope.$parent.vm.sensors;
 
-		getRelaysList();
-		addSubCondition();
+		loadExistingAutomation();
 	}
 	init();
 
 	/**
-	 * Gets all relay data from backend
+	 * Load existing automation (helper)
 	 */
-	function getRelaysList() {
-		vm.relays = RelayDataService.query();
-		$log.debug('Relay list loaded');
+	function loadExistingAutomation() {
+		var existingSubConditions = [];
+		angular.copy(vm.ngModel.subConditions, existingSubConditions);
+		vm.ngModel.subConditions = [];
+
+		for(var i = 0; i < existingSubConditions.length; i++) {
+			addSubCondition(existingSubConditions[i]);
+		}
+
+		if(existingSubConditions.length === 0) {
+			addSubCondition();
+		}
+
+		$log.debug('Automation loaded (sub part)');
 	}
 
 	/**
 	 * Adds an extra empty subCondition to the mainCondition's subConditions list
 	 */
-	function addSubCondition() {
+	function addSubCondition(existingDTO) {
 		var subConditionDTO = {
-			connectedWithPrevious: 'and',
 			conditionType: null,
 			condition: null,
+			conditionid: null,
 			conditionValue1: null,
 			conditionValue2: null
 		};
 
 		vm.ngModel.subConditions.push({
 			template: '<relay-sub-condition ng-model="subCondition.dto"></relay-sub-condition>',
-			dto: subConditionDTO
+			dto: (angular.isDefined(existingDTO) ? existingDTO : subConditionDTO)
 		});
 	}
 

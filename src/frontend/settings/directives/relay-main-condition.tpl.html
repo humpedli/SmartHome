@@ -2,9 +2,10 @@
 	A(z)&nbsp;
 	<select class="form-control"
 			ng-model="vm.ngModel.relay"
-			ng-options="relay as relay.name for relay in vm.relays">
+			ng-options="relay as relay.name for relay in vm.relays track by relay.relayid">
 		<option label="Válassz relét!"></option>
 	</select>
+	&nbsp;
 	<select class="form-control"
 			ng-model="vm.ngModel.operation"
 			ng-options="operation.operation as operation.label for operation in vm.operations">

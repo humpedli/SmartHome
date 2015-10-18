@@ -195,6 +195,8 @@ class AutomationModel extends Model {
     public function getAutomation() {
 
         $data = array();
+        $relaysModel = new RelaysModel();
+        $sensorsModel = new SensorsModel();
 
         $operations = $this->getRelayOperations();
         if(count($operations) > 0) {
@@ -204,17 +206,28 @@ class AutomationModel extends Model {
 
                 if(count($conditions) > 0) {
                     foreach($conditions as $condition) {
-                        $conditionData[] = array(
+                        $oneCondition = array(
                             'conditionid' => $condition['conditionid'],
                             'conditionType' => $condition['type'],
                             'condition' => $condition['cond'],
                             'conditionValue1' => $condition['value1'],
                             'conditionValue2' => $condition['value2'],
                         );
+
+                        if($condition['type'] == 'TEMP') {
+                            $oneCondition['conditionValue1'] = $sensorsModel->getSensor($condition['value1']);
+                        }
+                        if($condition['type'] == 'RELAY') {
+                            $oneCondition['conditionValue1'] = $relaysModel->getRelay($condition['value1']);
+                        }
+
+                        $conditionData[] = $oneCondition;
                     }
                 }
 
                 $operation['subConditions'] = $conditionData;
+                $operation['relay'] = $relaysModel->getRelay($operation['relayid']);
+                unset($operation['relayid']);
                 $data[] = $operation;
             }
         }
@@ -245,7 +258,7 @@ class AutomationModel extends Model {
             }
 
             for($j = 0; $j < count($operation['subConditions']); $j++) {
-                $condition = $operation['subConditions'][$i]['dto'];
+                $condition = $operation['subConditions'][$j]['dto'];
                 $conditionid = (isset($condition['conditionid']) ? $condition['conditionid'] : null);
 
                 if(isset($condition['conditionType']) && isset($condition['conditionValue1'])) {
@@ -317,7 +330,7 @@ class AutomationModel extends Model {
     public function clearUnusedOperationsAndConditions($usedOperations, $usedConditions) {
 
         $operations = $this->getRelayOperations();
-        if(count($operations) > 0) {
+        if(is_array($operations) && count($operations) > 0) {
             foreach($operations as $operation) {
                 if(!in_array($operation['operationid'], $usedOperations)) {
                     $this->deleteRelayOperation($operation['operationid']);
@@ -326,7 +339,7 @@ class AutomationModel extends Model {
         }
 
         $conditions = $this->getRelayConditions();
-        if(count($conditions) > 0) {
+        if(is_array($conditions) && count($conditions) > 0) {
             foreach($conditions as $condition) {
                 if(!in_array($condition['conditionid'], $usedConditions)) {
                     $this->deleteRelayCondition($condition['conditionid']);

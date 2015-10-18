@@ -1,14 +1,8 @@
 <div class="form-inline sub-form-group">
-	<select class="form-control"
-			data-ng-disabled="index === 0"
-			data-ng-model="vm.ngModel.connectedWithPrevious"
-			data-ng-options="connectionType.value as connectionType.label for connectionType in vm.connectionTypes"
-			data-ng-show="$parent.$index !== 0">
-	</select>
+	<span ng-if="$parent.$index !== 0">és</span>
 	&nbsp;ha&nbsp;
 	<select class="form-control"
 			data-ng-model="vm.ngModel.conditionType"
-			data-ng-change="vm.conditionTypeChanged(vm.ngModel.conditionType)"
 			data-ng-options="conditionType.id as conditionType.label for conditionType in vm.conditionTypes">
 		<option label="Válassz kategóriát!"></option>
 	</select>
@@ -16,7 +10,7 @@
 		&nbsp;a&nbsp;
 		<select class="form-control"
 				data-ng-model="vm.ngModel.conditionValue1"
-				data-ng-options="sensor as sensor.name for sensor in vm.sensors">
+				data-ng-options="sensor as sensor.name for sensor in vm.sensors track by sensor.sensorid">
 			<option label="Válassz érzékelőt!"></option>
 		</select>
 		&nbsp;-ban/ben&nbsp;
@@ -29,11 +23,10 @@
 		</select>
 	</span>
 	<span ng-if="vm.ngModel.conditionType === 'TEMP'">
-		<select class="form-control"
-				data-ng-model="vm.ngModel.conditionValue2"
-				data-ng-options="value for value in vm.getTempValuesArray()">
-			<option label="Válassz értéket!"></option>
-		</select>
+		<input class="form-control"
+			   data-ng-model="vm.ngModel.conditionValue2"
+			   placeholder="Írj be értéket!"
+			   only-real-number />
 	</span>
 	<span ng-if="vm.ngModel.conditionType === 'DAY'">
 		<select class="form-control"
@@ -41,6 +34,7 @@
 				data-ng-options="condition.sign as condition.label for condition in vm.conditions | filter: {boolComparable: true}">
 			<option label="Válassz feltételt!"></option>
 		</select>
+		&nbsp;
 		<select class="form-control"
 				data-ng-model="vm.ngModel.conditionValue1"
 				data-ng-options="dayOption.value as dayOption.label for dayOption in vm.dayOptions">
@@ -75,10 +69,10 @@
 			   bs-timepicker>
 	</span>
 	<span ng-if="vm.ngModel.conditionType === 'RELAY'">
-		&nbsp;, a(z)&nbsp;
+		, a(z)&nbsp;
 		<select class="form-control"
 				data-ng-model="vm.ngModel.conditionValue1"
-				data-ng-options="relay as relay.name for relay in vm.relays | filter: {relayid: '!' + $parent.$parent.vm.ngModel.relay.relayid}">
+				data-ng-options="relay as relay.name for relay in vm.relays | filter: {relayid: '!' + $parent.$parent.vm.ngModel.relay.relayid} track by relay.relayid">
 			<option label="Válassz relét!"></option>
 		</select>
 		&nbsp;relé&nbsp;

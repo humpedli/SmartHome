@@ -7,16 +7,17 @@ angular.module('smartHome')
  * Controller for settings relay automation tab
  */
 /*@ngInject*/
-function SettingsRelayAutomationTabController($modal, $log, AutomationDataService, Utils) {
+function SettingsRelayAutomationTabController($modal, $log, SensorDataService, RelayDataService,
+											  AutomationDataService, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
 
 	// Wired functions
+	vm.getSensorsList = getSensorsList;
+	vm.getRelaysList = getRelaysList;
 	vm.addMainCondition = addMainCondition;
 	vm.removeMainCondition = removeMainCondition;
-	vm.isRelayNotSelectedYet = isRelayNotSelectedYet;
-	vm.refreshSelectedRelayList = refreshSelectedRelayList;
 	vm.save = save;
 
 	/**
@@ -24,31 +25,60 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 	 */
 	function init() {
 		vm.mainConditions = [];
-		vm.selectedRelays = []; // NOT USED YET!
 
+		getSensorsList();
+		getRelaysList();
 		loadExistingAutomation();
 	}
 	init();
 
+	/**
+	 * Gets all sensor data from backend
+	 */
+	function getSensorsList() {
+		vm.sensors = SensorDataService.query();
+		$log.debug('Thermal sensor list loaded');
+	}
+
+	/**
+	 * Gets all relay data from backend
+	 */
+	function getRelaysList() {
+		vm.relays = RelayDataService.query();
+		$log.debug('Relay list loaded');
+	}
+
+	/**
+	 * Load existing automation helper
+	 */
 	function loadExistingAutomation() {
-		// ToDo: need to implement if backend is ready, now we are showing an empty condition DTO on the page
-		addMainCondition();
-		$log.debug('Automation loaded');
+		AutomationDataService.query().$promise.then(function (data) {
+			for(var i = 0; i < data.length; i++) {
+				addMainCondition(data[i]);
+			}
+
+			if(data.length === 0) {
+				addMainCondition();
+			}
+		});
+
+		$log.debug('Automation loaded (main part)');
 	}
 
 	/**
 	 * Adds an extra empty mainCondition to the mainConditions list
 	 */
-	function addMainCondition() {
+	function addMainCondition(existingDTO) {
 		var mainConditionDTO = {
 			relay: null,
+			operationid: null,
 			operation: null,
 			subConditions: []
 		};
 
 		vm.mainConditions.push({
 			template: '<relay-main-condition ng-model="mainCondition.dto"></relay-main-condition>',
-			dto: mainConditionDTO
+			dto: (angular.isDefined(existingDTO) ? existingDTO : mainConditionDTO)
 		});
 	}
 
@@ -57,34 +87,6 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 	 */
 	function removeMainCondition(index) {
 		vm.mainConditions.splice(index, 1);
-	}
-
-	/**
-	 * NOT USED YET!
-	 * Determines if relay is already added or not
-	 * @param relay - relay DTO object
-	 */
-	function isRelayNotSelectedYet(relay) {
-		if(angular.isDefined(relay)) {
-			return (vm.selectedRelays.indexOf(relay.relayid) === -1);
-		}
-
-		return true;
-	}
-
-	/**
-	 * NOT USED YET!
-	 * Refreshes already selected relay list
-	 * @param relay - relay DTO object
-	 */
-	function refreshSelectedRelayList(relay) {
-		if(angular.isDefined(relay)) {
-			if (isRelayNotSelectedYet(relay)) {
-				vm.selectedRelays.push(relay.relayid);
-			} else {
-				vm.selectedRelays.splice(vm.selectedRelays.indexOf(relay.relayid), 1);
-			}
-		}
 	}
 
 	/**
@@ -140,10 +142,6 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 	function validateSubCondition(subCondition, i, j) {
 		var errorList = [];
 
-		if(angular.isUndefinedOrNull(subCondition.connectedWithPrevious)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-				'.</b> feltételénél nincs kiválasztva kapcsolódás!');
-		}
 		if(angular.isUndefinedOrNull(subCondition.conditionType)) {
 			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva kategória!');
@@ -188,8 +186,7 @@ function SettingsRelayAutomationTabController($modal, $log, AutomationDataServic
 	function save() {
 		if(validate()) {
 			AutomationDataService.save(vm.mainConditions).$promise.then(function () {
-				// ToDo: reload automation list
-				// loadExistingAutomation();
+				loadExistingAutomation();
 
 				$log.debug('Automation saved');
 			});

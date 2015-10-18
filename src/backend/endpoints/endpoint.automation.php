@@ -17,9 +17,8 @@ $app->get('/automation', function() use ($app) {
 $app->post('/automation', function() use ($app) {
     $response = array();
 
-    $normalParams = $app->request->params();
     $jsonParams = json_decode($app->request->getBody(), true);
-    $params = ($jsonParams == null ? $normalParams : $jsonParams);
+    $params = $jsonParams;
 
     $automationModel = new AutomationModel();
     $data = $automationModel->saveAutomation($params);
