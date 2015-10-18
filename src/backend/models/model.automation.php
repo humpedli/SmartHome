@@ -199,7 +199,7 @@ class AutomationModel extends Model {
         $sensorsModel = new SensorsModel();
 
         $operations = $this->getRelayOperations();
-        if(count($operations) > 0) {
+        if(is_array($operations) && count($operations) > 0) {
             foreach($operations as $operation) {
                 $conditions = $this->getRelayConditionsByOperation($operation['operationid']);
                 $conditionData = array();
