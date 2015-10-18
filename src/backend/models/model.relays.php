@@ -32,8 +32,6 @@ class RelaysModel extends Model {
 
         if(isset($name) && isset($gpio)) {
             try {
-                $this->getRelays();
-
                 $sql = "
                     INSERT INTO relays
                     SET relays.name = '" . $this->db->secure($name) . "',

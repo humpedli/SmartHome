@@ -22,7 +22,7 @@ $app->post('/automation', function() use ($app) {
     $params = ($jsonParams == null ? $normalParams : $jsonParams);
 
     $automationModel = new AutomationModel();
-    $data = $relaysModel->saveAutomation($params);
+    $data = $automationModel->saveAutomation($params);
 
     if($data === true) {
         $response = null;
