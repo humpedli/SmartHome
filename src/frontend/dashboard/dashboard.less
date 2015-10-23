@@ -1,6 +1,18 @@
 .well {
   h1 {
-    margin-bottom: 30px
+    margin-bottom: 30px;
+    .label {
+      vertical-align: middle;
+      float: right;
+      font-size: 12px;
+      padding: 5px;
+      margin-top: 10px;
+    }
+    &:after {
+      content: '';
+      clear: both;
+      display: table;
+    }
   }
 
   .relay-state-select {

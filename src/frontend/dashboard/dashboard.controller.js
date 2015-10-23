@@ -16,6 +16,7 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	var vm = this;
 
 	// Wired functions
+	vm.switchRelayState = switchRelayState;
 	vm.switchRelayStatus = switchRelayStatus;
 
 	/**
@@ -24,6 +25,15 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	function init() {
 		vm.relays = relaysData;
 		vm.sensors = sensorsData;
+		vm.isLiveData = false;
+
+		SocketDataService.on('connect', function () {
+			vm.isLiveData = true;
+		});
+
+		SocketDataService.on('disconnect', function () {
+			vm.isLiveData = false;
+		});
 
 		// If relays are changed by node script, refresh the data on frontend
 		SocketDataService.on('Relays::statusChanged', function () {
@@ -58,12 +68,29 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	}
 
 	/**
+	 * Switches relay state
+	 * @param relay - Relay object
+	 */
+	function switchRelayState(relay) {
+		RelayDataService.save({
+			relayid: relay.relayid,
+			subfunction: 'state',
+			state: relay.state
+		});
+	}
+
+	/**
 	 * Switches relay status
 	 * @param relay - Relay object
 	 */
 	function switchRelayStatus(relay) {
-		SocketDataService.emit('Relays::changeStatus', relay);
-
+		RelayDataService.save({
+			relayid: relay.relayid,
+			subfunction: 'status',
+			status: relay.status
+		}).$promise.then(function () {
+				SocketDataService.emit('Relays::changeStatus', relay);
+			});
 	}
 
 }

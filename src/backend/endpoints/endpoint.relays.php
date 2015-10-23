@@ -28,7 +28,7 @@ $app->get('/relays/:relayid', function($relayid) use ($app) {
     }
 });
 
-$app->post('/relays/:relayid', function($relayid) use ($app) {
+$app->post('/relays/:relayid/:subfunction', function($relayid, $subfunction) use ($app) {
     $response = array();
 
     $normalParams = $app->request->params();
@@ -38,7 +38,13 @@ $app->post('/relays/:relayid', function($relayid) use ($app) {
     $relaysModel = new RelaysModel();
     $data = $relaysModel->getRelay($relayid);
     if($data) {
-        $data2 = $relaysModel->editRelay($relayid, $params['name'], $params['gpio']);
+        if($subfunction == 'state') {
+            $data2 = $relaysModel->updateRelayState($relayid, $params['state']);
+        } else if($subfunction == 'status') {
+            $data2 = $relaysModel->updateRelayStatus($relayid, $params['status']);
+        } else {
+            $data2 = $relaysModel->editRelay($relayid, $params['name'], $params['gpio']);
+        }
     } else {
         $data2 = $relaysModel->addRelay($params['name'], $params['gpio']);
     }

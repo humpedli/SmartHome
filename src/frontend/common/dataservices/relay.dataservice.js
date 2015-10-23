@@ -11,5 +11,8 @@ angular.module('smartHome')
  */
 /*@ngInject*/
 function RelayDataService($resource, ENV) {
-	return $resource(ENV.apiEndpoint + 'relays/:relayid', {relayid: '@relayid'});
+	return $resource(ENV.apiEndpoint + 'relays/:relayid/:subfunction', {
+		relayid: '@relayid',
+		subfunction: '@subfunction'}
+	);
 }

@@ -1,5 +1,10 @@
 <div class="well">
-	<h1>Irányítópult</h1>
+	<h1>Irányítópult&nbsp;
+		<span class="label"
+			  ng-class="{'label-success' : vm.isLiveData , 'label-danger' : !vm.isLiveData}">
+			{{(vm.isLiveData ? 'Élő kapcsolat' : 'Nincs kapcsolat')}}
+		</span>
+	</h1>
 
 	<div class="row">
 		<div class="col-xs-12 col-sm-6" ng-repeat="relay in vm.relays">
@@ -22,7 +27,8 @@
 						</div><!--
 						--><div class="col-xs-6 vcenter">
 							<select class="form-control relay-state-select"
-									data-ng-model="relay.state">
+									data-ng-model="relay.state"
+									data-ng-change="vm.switchRelayState(relay)">
 								<option value="auto">Automata</option>
 								<option value="manual">Manuális</option>
 							</select>
