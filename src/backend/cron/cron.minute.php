@@ -36,9 +36,19 @@ function relayAutomation() {
     $relaysModel = new RelaysModel();
     $sensorsModel = new SensorsModel();
 
+    function statusDecider($conditionsAreApplied, $operation) {
+        if($conditionsAreApplied) {
+            return $operation == 'on';
+        } else {
+            return $operation != 'on';
+        }
+    }
+
     $operations = $automationModel->getRelayOperations();
 
     if(is_array($operations) && count($operations) > 0) {
+        $relayStates = array();
+
         foreach($operations as $operation) {
             $conditions = $automationModel->getRelayConditionsByOperation($operation['operationid']);
 
@@ -80,7 +90,21 @@ function relayAutomation() {
                 }
             }
 
-            echo $operation['relayid'] . ': ' . ($conditionsAreApplied ? 'true' : 'false');
+            if(array_key_exists($operation['relayid'], $relayStates)) {
+                $relayStates[$operation['relayid']] |= statusDecider($conditionsAreApplied, $operation['operation']);
+            } else {
+                $relayStates[$operation['relayid']] = statusDecider($conditionsAreApplied, $operation['operation']);
+            }
+        }
+
+        if(count($relayStates) > 0) {
+            foreach($relayStates as $key => $relayState) {
+                $relayData = $relaysModel->getRelay($key);
+
+                if($relayData['state'] == 'auto') {
+                    $relayData->updateRelayStatus($key, $relayState);
+                }
+            }
         }
     }
 }

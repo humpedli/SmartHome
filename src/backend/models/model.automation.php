@@ -52,7 +52,7 @@ class AutomationModel extends Model {
 
     public function editRelayOperation($operationid, $relayid, $operation) {
 
-        if(isset($name) && isset($gpio)) {
+        if(isset($relayid) && isset($operation)) {
             try {
                 $sql = "
                     UPDATE relay_operations
