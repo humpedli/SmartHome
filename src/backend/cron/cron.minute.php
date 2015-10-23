@@ -102,7 +102,7 @@ function relayAutomation() {
                 $relayData = $relaysModel->getRelay($key);
 
                 if($relayData['state'] == 'auto') {
-                    $relayData->updateRelayStatus($key, $relayState);
+                    $relaysModel->updateRelayStatus($key, $relayState);
                 }
             }
         }

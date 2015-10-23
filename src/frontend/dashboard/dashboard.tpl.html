@@ -3,7 +3,7 @@
 
 	<div class="row">
 		<div class="col-xs-12 col-sm-6" ng-repeat="relay in vm.relays">
-			<div class="thumbnail">
+			<div class="thumbnail relay-container">
 				<div class="caption">
 					<h3>{{relay.name}}</h3>
 					<hr/>
@@ -34,7 +34,7 @@
 						</div><!--
                         --><div class="col-xs-6 vcenter">
 							<div data-ng-model="relay.status"
-								 data-ng-change="vm.switch(relay.relayid, relay.status)"
+								 data-ng-change="vm.switchRelayStatus(relay)"
 								 data-on-label="Be"
 								 data-off-label="Ki"
 								 toggle-switch></div>
@@ -46,7 +46,7 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-6 col-sm-3" ng-repeat="sensor in vm.sensors">
-			<div class="thumbnail">
+			<div class="thumbnail sensor-container">
 				<div class="caption">
 					<h4>{{sensor.name}}</h4>
 					<h6>{{sensor.lasttime}}</h6>

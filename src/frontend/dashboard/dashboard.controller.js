@@ -10,40 +10,60 @@ angular.module('smartHome')
  * @param SocketDataService
  */
 /*@ngInject*/
-function DashboardController(sensorsData, relaysData, SocketDataService) {
+function DashboardController($log, sensorsData, relaysData, SocketDataService, RelayDataService, SensorDataService) {
 
 	// controllerAs with vm
 	var vm = this;
 
 	// Wired functions
-	vm.switchRelay = switchRelay;
+	vm.switchRelayStatus = switchRelayStatus;
 
 	/**
 	 * Constructor, initialize
 	 */
 	function init() {
-		vm.switches = [];
-
-		vm.sensors = sensorsData;
 		vm.relays = relaysData;
+		vm.sensors = sensorsData;
 
-		// ToDo: implement this completely
-		SocketDataService.on('relay1.message', function (data) {
-			vm.switches['1a'] = data.status;
+		// If relays are changed by node script, refresh the data on frontend
+		SocketDataService.on('Relays::statusChanged', function () {
+			refreshRelaysList();
+		});
+
+		// If sensors are changed by node script, refresh the data on frontend
+		SocketDataService.on('Sensors::tempChanged', function () {
+			refreshSensorsList();
 		});
 	}
 	init();
 
 	/**
-	 * Switches relay status
-	 * @param relayId
-	 * @param relayType
+	 * Refreshes all relay data from backend
 	 */
-	function switchRelay(relayId, relayType) {
-		// ToDo: implement this completely
-		if(relayId === 1 && relayType === 'a') {
-			SocketDataService.emit('relay1.trigger', { signal: vm.switches['1a'] });
-		}
+	function refreshRelaysList() {
+		RelayDataService.query(function(data) {
+			 vm.relays = data;
+		});
+		$log.debug('Relay list loaded');
+	}
+
+	/**
+	 * Refreshes all sensor data from backend
+	 */
+	function refreshSensorsList() {
+		SensorDataService.query(function(data) {
+			vm.sensors = data;
+		});
+		$log.debug('Thermal sensor list loaded');
+	}
+
+	/**
+	 * Switches relay status
+	 * @param relay - Relay object
+	 */
+	function switchRelayStatus(relay) {
+		SocketDataService.emit('Relays::changeStatus', relay);
+
 	}
 
 }
