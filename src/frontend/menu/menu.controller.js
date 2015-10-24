@@ -8,11 +8,17 @@ angular.module('smartHome')
  * @param $rootScope
  */
 /*@ngInject*/
-function MenuController($rootScope) {
+function MenuController($rootScope, SocketDataService) {
 
 	// controllerAs with vm
 	var vm = this;
 
-	vm.authenticated = $rootScope.authenticated;
+	SocketDataService.on('connect', function () {
+		$rootScope.isLiveData = true;
+	});
+
+	SocketDataService.on('disconnect', function () {
+		$rootScope.isLiveData = false;
+	});
 
 }

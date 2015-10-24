@@ -1,8 +1,8 @@
 <div class="well">
 	<h1>Irányítópult&nbsp;
 		<span class="label"
-			  ng-class="{'label-success' : vm.isLiveData , 'label-danger' : !vm.isLiveData}">
-			{{(vm.isLiveData ? 'Élő kapcsolat' : 'Nincs kapcsolat')}}
+			  ng-class="{'label-success' : isLiveData , 'label-danger' : !isLiveData}">
+			{{(isLiveData ? 'Kapcsolat: Aktív' : 'Nincs kapcsolat')}}
 		</span>
 	</h1>
 

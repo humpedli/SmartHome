@@ -10,7 +10,8 @@ angular.module('smartHome')
  * @param SocketDataService
  */
 /*@ngInject*/
-function DashboardController($log, sensorsData, relaysData, SocketDataService, RelayDataService, SensorDataService) {
+function DashboardController($log, sensorsData, relaysData, SocketDataService, RelayDataService,
+							 SensorDataService) {
 
 	// controllerAs with vm
 	var vm = this;
@@ -25,23 +26,14 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	function init() {
 		vm.relays = relaysData;
 		vm.sensors = sensorsData;
-		vm.isLiveData = false;
-
-		SocketDataService.on('connect', function () {
-			vm.isLiveData = true;
-		});
-
-		SocketDataService.on('disconnect', function () {
-			vm.isLiveData = false;
-		});
 
 		// If relays are changed by node script, refresh the data on frontend
-		SocketDataService.on('Relays::statusChanged', function () {
+		SocketDataService.on('Relays::changed', function () {
 			refreshRelaysList();
 		});
 
 		// If sensors are changed by node script, refresh the data on frontend
-		SocketDataService.on('Sensors::tempChanged', function () {
+		SocketDataService.on('Sensors::changed', function () {
 			refreshSensorsList();
 		});
 	}
@@ -76,7 +68,9 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 			relayid: relay.relayid,
 			subfunction: 'state',
 			state: relay.state
-		});
+		}).$promise.then(function () {
+				SocketDataService.emit('Relays::change', relay);
+			});
 	}
 
 	/**
@@ -89,7 +83,7 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 			subfunction: 'status',
 			status: relay.status
 		}).$promise.then(function () {
-				SocketDataService.emit('Relays::changeStatus', relay);
+				SocketDataService.emit('Relays::change', relay);
 			});
 	}
 
