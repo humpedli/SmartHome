@@ -40,6 +40,25 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 	}
 
 	/**
+	 * Check if relay is already added or not
+	 */
+	function checkIfRelayIsAlreadyAdded(formData) {
+		if(angular.isDefined(formData.relayid)) {
+			for (var i = 0; i < vm.relays.length; i++) {
+				if (vm.relays[i].relayid === parseInt(formData.relayid)) {
+					$modal({
+						title: 'Hiba!',
+						content: 'Ez a relé már létezik!',
+						templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					});
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Opens the new relay popup and calls backend endpoint
 	 */
 	function addRelay() {
@@ -52,12 +71,16 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 		modal.$scope.vm = {
 			formData: {},
 			addRelay: function (formData) {
-				RelayDataService.save(formData).$promise.then(function () {
-					getRelaysList();
+				if(!checkIfRelayIsAlreadyAdded(formData)) {
+					RelayDataService.save(formData).$promise.then(function () {
+						getRelaysList();
 
-					$log.debug('Relay added: ' + formData.relayid);
+						$log.debug('Relay added: ' + formData.relayid);
+						modal.hide();
+					});
+				} else {
 					modal.hide();
-				});
+				}
 			}
 		};
 	}
@@ -67,7 +90,7 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 	 * @param relay - relay DTO object
 	 */
 	function editRelay(relay) {
-		if (angular.isDefined(relay.name)) {
+		if (angular.isDefined(relay) && angular.isDefined(relay.name)) {
 			relay.$save();
 			$log.debug('Relay edited: ' + relay.relayid);
 		}
@@ -78,23 +101,25 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 	 * @param relay - relay DTO object
 	 */
 	function removeRelay(relay) {
-		var modal = $modal({
-			title: 'Relé eltávolítása',
-			templateUrl: Utils.getTemplateUrl('SettingsRemoveRelayModal')
-		});
-		console.log('asd');
-		// modal ViewModel data
-		modal.$scope.vm = {
-			relay: relay,
-			removeRelay: function () {
-				relay.$remove().then(function () {
-					getRelaysList();
+		if(angular.isDefined(relay)) {
+			var modal = $modal({
+				title: 'Relé eltávolítása',
+				templateUrl: Utils.getTemplateUrl('SettingsRemoveRelayModal')
+			});
 
-					$log.debug('Relay deleted: ' + relay.relayid);
-					modal.hide();
-				});
-			}
-		};
+			// modal ViewModel data
+			modal.$scope.vm = {
+				relay: relay,
+				removeRelay: function () {
+					relay.$remove().then(function () {
+						getRelaysList();
+
+						$log.debug('Relay deleted: ' + relay.relayid);
+						modal.hide();
+					});
+				}
+			};
+		}
 	}
 
 	/**
@@ -103,37 +128,39 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 	 * @param direction - up/down position change
 	 */
 	function moveRelay(relay, direction) {
-		// declare variables
-		var currentRelay = relay;
-		var currentRelayIndex = vm.relays.indexOf(relay);
-		var tempRelay = angular.copy(currentRelay); // copy without binding
-		var otherRelay; // initial value: undefined
+		if(angular.isDefined(relay) && angular.isDefined(direction)) {
+			// declare variables
+			var currentRelay = relay;
+			var currentRelayIndex = vm.relays.indexOf(relay);
+			var tempRelay = angular.copy(currentRelay); // copy without binding
+			var otherRelay; // initial value: undefined
 
-		// determine other relay based on direction
-		if (currentRelayIndex > 0 && direction === 'up') {
-			otherRelay = vm.relays[currentRelayIndex - 1];
-		} else if (currentRelayIndex < vm.relays.length && direction === 'down') {
-			otherRelay = vm.relays[currentRelayIndex + 1];
-		}
+			// determine other relay based on direction
+			if (currentRelayIndex > 0 && direction === 'up') {
+				otherRelay = vm.relays[currentRelayIndex - 1];
+			} else if (currentRelayIndex < vm.relays.length && direction === 'down') {
+				otherRelay = vm.relays[currentRelayIndex + 1];
+			}
 
-		// this block only runs if there are switchable relay positions
-		if (angular.isDefined(otherRelay)) {
-			// determine other relay index
-			var otherRelayIndex = vm.relays.indexOf(otherRelay);
+			// this block only runs if there are switchable relay positions
+			if (angular.isDefined(otherRelay)) {
+				// determine other relay index
+				var otherRelayIndex = vm.relays.indexOf(otherRelay);
 
-			// switch position between the two relays
-			currentRelay.position = otherRelay.position;
-			otherRelay.position = tempRelay.position;
+				// switch position between the two relays
+				currentRelay.position = otherRelay.position;
+				otherRelay.position = tempRelay.position;
 
-			// switch the two relays in the array (this will fix index problem)
-			vm.relays[currentRelayIndex] = otherRelay;
-			vm.relays[otherRelayIndex] = currentRelay;
+				// switch the two relays in the array (this will fix index problem)
+				vm.relays[currentRelayIndex] = otherRelay;
+				vm.relays[otherRelayIndex] = currentRelay;
 
-			// backend save
-			currentRelay.$save();
-			otherRelay.$save();
+				// backend save
+				currentRelay.$save();
+				otherRelay.$save();
 
-			$log.debug('Relay position changed: ' + relay.relayid);
+				$log.debug('Relay position changed: ' + relay.relayid);
+			}
 		}
 	}
 

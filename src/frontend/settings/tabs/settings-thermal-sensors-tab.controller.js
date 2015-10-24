@@ -38,6 +38,25 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	}
 
 	/**
+	 * Check if sensor is already added or not
+	 */
+	function checkIfSensorIsAlreadyAdded(formData) {
+		if(angular.isDefined(formData.sensorid)) {
+			for (var i = 0; i < vm.sensors.length; i++) {
+				if (vm.sensors[i].sensorid === parseInt(formData.sensorid)) {
+					$modal({
+						title: 'Hiba!',
+						content: 'Ez az érzékelő már létezik!',
+						templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					});
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Opens the new sensor popup and calls backend endpoint
 	 */
 	function addSensor() {
@@ -50,12 +69,16 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 		modal.$scope.vm = {
 			formData: {},
 			addSensor: function (formData) {
-				SensorDataService.save(formData).$promise.then(function () {
-					getSensorsList();
+				if(!checkIfSensorIsAlreadyAdded(formData)) {
+					SensorDataService.save(formData).$promise.then(function () {
+						getSensorsList();
 
-					$log.debug('Thermal sensor added: ' + formData.sensorid);
+						$log.debug('Thermal sensor added: ' + formData.sensorid);
+						modal.hide();
+					});
+				} else {
 					modal.hide();
-				});
+				}
 			}
 		};
 	}
@@ -65,7 +88,7 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	 * @param sensor - sensor DTO object
 	 */
 	function editSensor(sensor) {
-		if (angular.isDefined(sensor.name)) {
+		if (angular.isDefined(sensor) && angular.isDefined(sensor.name)) {
 			sensor.$save();
 			$log.debug('Thermal sensor edited: ' + sensor.sensorid);
 		}
@@ -76,23 +99,25 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	 * @param sensor - sensor DTO object
 	 */
 	function removeSensor(sensor) {
-		var modal = $modal({
-			title: 'Érzékelő eltávolítása',
-			templateUrl: Utils.getTemplateUrl('SettingsRemoveThermalSensorModal')
-		});
+		if(angular.isDefined(sensor)) {
+			var modal = $modal({
+				title: 'Érzékelő eltávolítása',
+				templateUrl: Utils.getTemplateUrl('SettingsRemoveThermalSensorModal')
+			});
 
-		// modal ViewModel data
-		modal.$scope.vm = {
-			sensor: sensor,
-			removeSensor: function () {
-				sensor.$remove().then(function () {
-					getSensorsList();
+			// modal ViewModel data
+			modal.$scope.vm = {
+				sensor: sensor,
+				removeSensor: function () {
+					sensor.$remove().then(function () {
+						getSensorsList();
 
-					$log.debug('Thermal sensor deleted: ' + sensor.sensorid);
-					modal.hide();
-				});
-			}
-		};
+						$log.debug('Thermal sensor deleted: ' + sensor.sensorid);
+						modal.hide();
+					});
+				}
+			};
+		}
 	}
 
 	/**
@@ -101,37 +126,39 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	 * @param direction - up/down position change
 	 */
 	function moveSensor(sensor, direction) {
-		// declare variables
-		var currentSensor = sensor;
-		var currentSensorIndex = vm.sensors.indexOf(sensor);
-		var tempSensor = angular.copy(currentSensor); // copy without binding
-		var otherSensor; // initial value: undefined
+		if(angular.isDefined(sensor) && angular.isDefined(direction)) {
+			// declare variables
+			var currentSensor = sensor;
+			var currentSensorIndex = vm.sensors.indexOf(sensor);
+			var tempSensor = angular.copy(currentSensor); // copy without binding
+			var otherSensor; // initial value: undefined
 
-		// determine other sensor based on direction
-		if (currentSensorIndex > 0 && direction === 'up') {
-			otherSensor = vm.sensors[currentSensorIndex - 1];
-		} else if (currentSensorIndex < vm.sensors.length && direction === 'down') {
-			otherSensor = vm.sensors[currentSensorIndex + 1];
-		}
+			// determine other sensor based on direction
+			if (currentSensorIndex > 0 && direction === 'up') {
+				otherSensor = vm.sensors[currentSensorIndex - 1];
+			} else if (currentSensorIndex < vm.sensors.length && direction === 'down') {
+				otherSensor = vm.sensors[currentSensorIndex + 1];
+			}
 
-		// this block only runs if there are switchable sensor positions
-		if (angular.isDefined(otherSensor)) {
-			// determine other sensor index
-			var otherSensorIndex = vm.sensors.indexOf(otherSensor);
+			// this block only runs if there are switchable sensor positions
+			if (angular.isDefined(otherSensor)) {
+				// determine other sensor index
+				var otherSensorIndex = vm.sensors.indexOf(otherSensor);
 
-			// switch position between the two sensors
-			currentSensor.position = otherSensor.position;
-			otherSensor.position = tempSensor.position;
+				// switch position between the two sensors
+				currentSensor.position = otherSensor.position;
+				otherSensor.position = tempSensor.position;
 
-			// switch the two sensors in the array (this will fix index problem)
-			vm.sensors[currentSensorIndex] = otherSensor;
-			vm.sensors[otherSensorIndex] = currentSensor;
+				// switch the two sensors in the array (this will fix index problem)
+				vm.sensors[currentSensorIndex] = otherSensor;
+				vm.sensors[otherSensorIndex] = currentSensor;
 
-			// backend save
-			currentSensor.$save();
-			otherSensor.$save();
+				// backend save
+				currentSensor.$save();
+				otherSensor.$save();
 
-			$log.debug('Thermal sensor position changed: ' + sensor.sensorid);
+				$log.debug('Thermal sensor position changed: ' + sensor.sensorid);
+			}
 		}
 	}
 

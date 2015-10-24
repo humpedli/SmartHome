@@ -17,12 +17,12 @@ function blink($timeout) {
 			var delay = angular.isDefined(attrs.delay) ? Number(attrs.delay) : 500;
 
 			function showElement() {
-				element.css("visibility", "visible");
+				element.css('visibility', 'visible');
 				$timeout(hideElement, delay);
 			}
 
 			function hideElement() {
-				element.css("visibility", "hidden");
+				element.css('visibility', 'hidden');
 				$timeout(showElement, delay);
 			}
 			showElement();
