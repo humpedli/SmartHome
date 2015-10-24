@@ -12,7 +12,7 @@ class RelaysModel extends Model {
 
     public function getRelays() {
 
-        $sql = "SELECT * FROM relays ORDER BY relayid ASC;";
+        $sql = "SELECT * FROM relays ORDER BY position ASC;";
         $this->db->query($sql);
         $results = $this->db->results();
 
@@ -28,14 +28,18 @@ class RelaysModel extends Model {
         return $result;
     }
 
-    public function addRelay($name, $gpio) {
+    public function addRelay($relayid, $name) {
 
-        if(isset($name) && isset($gpio)) {
+        if(isset($relayid) && isset($name)) {
             try {
+                $this->getRelays();
+                $position = $this->db->numRows() + 1;
+
                 $sql = "
                     INSERT INTO relays
-                    SET relays.name = '" . $this->db->secure($name) . "',
-                        relays.gpio = '" . intval($gpio) . "'
+                    SET relays.relayid = '" . intval($relayid) . "',
+                        relays.name = '" . $this->db->secure($name) . "',
+                        relays.position = '" . intval($position) . "';
                 ";
                 $this->db->query($sql);
 
@@ -50,14 +54,14 @@ class RelaysModel extends Model {
 
     }
 
-    public function editRelay($relayid, $name, $gpio) {
+    public function editRelay($relayid, $name, $position) {
 
-        if(isset($name) && isset($gpio)) {
+        if(isset($name) && isset($position)) {
             try {
                 $sql = "
                     UPDATE relays
                     SET relays.name = '" . $this->db->secure($name) . "',
-                        relays.gpio = '" . intval($gpio) . "'
+                        relays.position = '" . intval($position) . "'
                     WHERE relayid = '" . intval($relayid) . "';
                 ";
                 $this->db->query($sql);
@@ -81,6 +85,10 @@ class RelaysModel extends Model {
                 WHERE relayid = '" . intval($relayid) . "';
             ";
             $this->db->query($sql);
+
+            $automationModel = new AutomationModel();
+            $automationModel->deleteRelayOperationByRelay($relayid);
+            $automationModel->deleteRelayConditionByRelay($relayid);
 
             return true;
         }

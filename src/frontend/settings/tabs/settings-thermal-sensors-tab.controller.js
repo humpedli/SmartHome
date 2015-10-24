@@ -31,8 +31,10 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	 * Gets all sensor data from backend
 	 */
 	function getSensorsList() {
-		vm.sensors = SensorDataService.query();
-		$log.debug('Thermal sensor list loaded');
+		SensorDataService.query(function(data) {
+			vm.sensors = data;
+			$log.debug('Thermal sensor list loaded');
+		});
 	}
 
 	/**
@@ -84,8 +86,7 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 			sensor: sensor,
 			removeSensor: function () {
 				sensor.$remove().then(function () {
-					var sensorIndex = vm.sensors.indexOf(sensor);
-					vm.sensors.splice(sensorIndex, 1);
+					getSensorsList();
 
 					$log.debug('Thermal sensor deleted: ' + sensor.sensorid);
 					modal.hide();
@@ -118,7 +119,7 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 			// determine other sensor index
 			var otherSensorIndex = vm.sensors.indexOf(otherSensor);
 
-			// switch position between the two sensor
+			// switch position between the two sensors
 			currentSensor.position = otherSensor.position;
 			otherSensor.position = tempSensor.position;
 

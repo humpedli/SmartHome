@@ -1,0 +1,63 @@
+<div class="panel panel-default" ng-controller="SettingsRelaysTabController as vm">
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table relays-table">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th>Azonosító</th>
+					<th>Név</th>
+					<th>Üzemmód</th>
+					<th>Jelenlegi státusz</th>
+					<th>Lehetőségek</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat="relay in vm.relays">
+					<td>{{relay.position}}</td>
+					<td>GPIO-PIN-{{relay.relayid}}</td>
+					<td><input type="text" class="form-control" data-ng-model="relay.name"
+							   data-ng-change="vm.editRelay(relay)" data-ng-model-options="{ debounce: 500 }"/></td>
+					<td>
+						<select class="form-control"
+								data-ng-model="relay.state"
+								data-ng-change="vm.switchRelayState(relay)">
+							<option value="auto">Automata</option>
+							<option value="manual">Manuális</option>
+						</select>
+					</td>
+					<td>
+						<div data-ng-if="relay.state === 'manual'"
+							 data-ng-model="relay.status"
+							 data-ng-change="vm.switchRelayStatus(relay)"
+							 data-on-label="Be"
+							 data-off-label="Ki"
+							 toggle-switch></div>
+						<span class="relay-status"
+							  data-ng-if="relay.state !== 'manual'"
+							  ng-class="{'green': relay.status}">
+							{{(relay.status ? 'Bekapcsolva' : 'Kikapcsolva')}}
+						</span>
+					</td>
+					<td>
+						<button type="button" class="btn btn-primary" data-ng-click="vm.moveRelay(relay, 'up')">
+							<i class="icon icon-circle-up"></i>
+						</button>
+						<button type="button" class="btn btn-primary" data-ng-click="vm.moveRelay(relay, 'down')">
+							<i class="icon icon-circle-down"></i>
+						</button>
+						<button type="button" class="btn btn-danger" data-ng-click="vm.removeRelay(relay)">
+							<i class="icon icon-bin"></i>
+						</button>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-success" data-ng-click="vm.addRelay()">
+				Új relé hozzáadása
+			</button>
+		</div>
+	</div>
+</div>

@@ -96,6 +96,21 @@ class AutomationModel extends Model {
 
     }
 
+    public function deleteRelayOperationByRelay($relayid) {
+
+        try {
+            $sql = "SELECT * FROM relay_operations WHERE relayid = '" . intval($relayid) . "';";
+            $this->db->query($sql);
+            $result = $this->db->result();
+
+            return $this->deleteRelayOperation($result['operationid']);
+        }
+        catch(Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
     public function getRelayConditions() {
 
             $sql = "SELECT * FROM relay_conditions ORDER BY conditionid ASC;";
@@ -185,6 +200,38 @@ class AutomationModel extends Model {
             $this->db->query($sql);
 
             return true;
+        }
+        catch(Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function deleteRelayConditionBySensor($sensorid) {
+
+        try {
+            $sql = "SELECT * FROM relay_conditions WHERE type = 'TEMP'
+                    AND value1 = '" . $this->db->secure($sensorid) . "';";
+            $this->db->query($sql);
+            $result = $this->db->result();
+
+            return $this->deleteRelayCondition($result['conditionid']);
+        }
+        catch(Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function deleteRelayConditionByRelay($relayid) {
+
+        try {
+            $sql = "SELECT * FROM relay_conditions WHERE type = 'RELAY'
+                    AND value1 = '" . intval($relayid) . "';";
+            $this->db->query($sql);
+            $result = $this->db->result();
+
+            return $this->deleteRelayCondition($result['conditionid']);
         }
         catch(Exception $e) {
             return $e->getMessage();

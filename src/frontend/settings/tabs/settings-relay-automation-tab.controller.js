@@ -36,16 +36,20 @@ function SettingsRelayAutomationTabController($modal, $log, SensorDataService, R
 	 * Gets all sensor data from backend
 	 */
 	function getSensorsList() {
-		vm.sensors = SensorDataService.query();
-		$log.debug('Thermal sensor list loaded');
+		SensorDataService.query(function(data) {
+			vm.sensors = data;
+			$log.debug('Thermal sensor list loaded');
+		});
 	}
 
 	/**
 	 * Gets all relay data from backend
 	 */
 	function getRelaysList() {
-		vm.relays = RelayDataService.query();
-		$log.debug('Relay list loaded');
+		RelayDataService.query(function(data) {
+			vm.relays = data;
+			$log.debug('Relay list loaded');
+		});
 	}
 
 	/**

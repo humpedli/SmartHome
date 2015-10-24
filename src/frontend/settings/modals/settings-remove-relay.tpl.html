@@ -8,18 +8,18 @@
 				<h4 class="modal-title" ng-bind="title"></h4>
 			</div>
 			<div class="modal-body">
-				<p>Biztosan törlöd az érzékelőt?</p>
+				<p>Biztosan törlöd a relét?</p>
 
 				<div>
 					<table class="summary-table">
 						<tbody>
 						<tr>
-							<td><strong>Érzékelő azonosítója:</strong></td>
-							<td>{{vm.sensor.sensorid}}</td>
+							<td><strong>Relé azonosítója:</strong></td>
+							<td>GPIO-PIN-{{vm.relay.relayid}}</td>
 						</tr>
 						<tr>
-							<td><strong>Érzékelő neve:</strong></td>
-							<td>{{vm.sensor.name}}</td>
+							<td><strong>Relé neve:</strong></td>
+							<td>{{vm.relay.name}}</td>
 						</tr>
 						</tbody>
 					</table>
@@ -27,7 +27,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-ng-click="$hide()">Vissza</button>
-				<button type="button" class="btn btn-danger" data-ng-click="vm.removeSensor()">Törlés</button>
+				<button type="button" class="btn btn-danger" data-ng-click="vm.removeRelay()">Törlés</button>
 			</div>
 		</div>
 	</div>

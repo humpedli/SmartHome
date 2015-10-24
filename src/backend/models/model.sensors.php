@@ -30,7 +30,7 @@ class SensorsModel extends Model {
 
     public function addSensor($sensorid, $name) {
 
-        if(isset($name)) {
+        if(isset($sensorid) && isset($name)) {
             try {
                 $this->getSensors();
                 $position = $this->db->numRows() + 1;
@@ -87,6 +87,9 @@ class SensorsModel extends Model {
                 WHERE sensorid = '" . $this->db->secure($sensorid) . "';
             ";
             $this->db->query($sql);
+
+            $automationModel = new AutomationModel();
+            $automationModel->deleteRelayConditionBySensor($sensorid);
 
             return true;
         }

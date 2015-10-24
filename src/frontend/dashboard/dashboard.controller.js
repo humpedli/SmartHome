@@ -53,9 +53,9 @@ function DashboardController($window, $log, sensorsData, relaysData, SocketDataS
 	 */
 	function refreshRelaysList() {
 		RelayDataService.query(function(data) {
-			 vm.relays = data;
+			vm.relays = data;
+			$log.debug('Relay list loaded');
 		});
-		$log.debug('Relay list loaded');
 	}
 
 	/**
@@ -64,13 +64,13 @@ function DashboardController($window, $log, sensorsData, relaysData, SocketDataS
 	function refreshSensorsList() {
 		SensorDataService.query(function(data) {
 			vm.sensors = data;
+			$log.debug('Thermal sensor list loaded');
 		});
-		$log.debug('Thermal sensor list loaded');
 	}
 
 	/**
 	 * Switches relay state
-	 * @param relay - Relay object
+	 * @param relay - relay DTO object
 	 */
 	function switchRelayState(relay) {
 		if(angular.isDefined(relay)) {
@@ -86,7 +86,7 @@ function DashboardController($window, $log, sensorsData, relaysData, SocketDataS
 
 	/**
 	 * Switches relay status
-	 * @param relay - Relay object
+	 * @param relay - relay DTO object
 	 */
 	function switchRelayStatus(relay) {
 		if(angular.isDefined(relay)) {
@@ -102,7 +102,7 @@ function DashboardController($window, $log, sensorsData, relaysData, SocketDataS
 
 	/**
 	 * Determines sensor led status
-	 * @param sensor - Sensor object
+	 * @param sensor - sensor DTO object
 	 */
 	function getSensorLedStatus(sensor) {
 		if(angular.isDefined(sensor)) {
@@ -115,7 +115,7 @@ function DashboardController($window, $log, sensorsData, relaysData, SocketDataS
 
 	/**
 	 * Determines sensor color by temp
-	 * @param sensor - Sensor object
+	 * @param sensor - sensor DTO object
 	 */
 	function getSensorColorByTemp(sensor) {
 		if(angular.isDefined(sensor)) {

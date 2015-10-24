@@ -80,7 +80,9 @@ $app->get('/sensors/graph', function() use ($app) {
     $end = @$params['end'];
     $missing = false;
 
-    if(!preg_match('/^[a-zA-Z0-9_]+$/', $callback) || ($start && !preg_match('/^[0-9]+$/', $start)) || ($end && !preg_match('/^[0-9]+$/', $end))) {
+    if(!preg_match('/^[a-zA-Z0-9_]+$/', $callback) ||
+        ($start && !preg_match('/^[0-9]+$/', $start)) ||
+        ($end && !preg_match('/^[0-9]+$/', $end))) {
         $missing = true;
     }
     if(!$end) $end = time() * 1000;

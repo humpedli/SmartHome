@@ -43,10 +43,10 @@ $app->post('/relays/:relayid/:subfunction', function($relayid, $subfunction) use
         } else if($subfunction == 'status') {
             $data2 = $relaysModel->updateRelayStatus($relayid, $params['status']);
         } else {
-            $data2 = $relaysModel->editRelay($relayid, $params['name'], $params['gpio']);
+            $data2 = $relaysModel->editRelay($relayid, $params['name'], $params['position']);
         }
     } else {
-        $data2 = $relaysModel->addRelay($params['name'], $params['gpio']);
+        $data2 = $relaysModel->addRelay($params['name'], $params['position']);
     }
 
     if($data2 === true) {

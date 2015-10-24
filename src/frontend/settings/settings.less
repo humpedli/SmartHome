@@ -4,25 +4,27 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 
-    .sensors-table {
-      tbody tr {
-        &:nth-child(even) {
-          background-color: #f0f0f0;
+    tbody tr {
+      &:nth-child(even) {
+        background-color: #f0f0f0;
+      }
+      td {
+        vertical-align: middle;
+
+        .icon {
+          display: block;
         }
-        td {
+
+        input {
+          min-width: 100px;
+        }
+
+        button {
           vertical-align: middle;
+        }
 
-          .icon {
-            display: block;
-          }
-
-          input {
-            min-width: 100px;
-          }
-
-          button {
-            margin-bottom: 3px;
-          }
+        .toggle-switch {
+          vertical-align: middle;
         }
       }
     }

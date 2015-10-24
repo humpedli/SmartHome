@@ -23,6 +23,10 @@ function SettingsController(Utils) {
 				title: 'Hőmérséklet érzékelők',
 				template: Utils.getTemplateUrl('SettingsThermalSensorsTab')
 			},
+			relays: {
+				title: 'Relék',
+				template: Utils.getTemplateUrl('SettingsRelaysTab')
+			},
 			relayAutomation: {
 				title: 'Relé automatizáció',
 				template: Utils.getTemplateUrl('SettingsRelayAutomationTab')
