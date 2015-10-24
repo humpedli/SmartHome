@@ -80,9 +80,9 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 	function removeRelay(relay) {
 		var modal = $modal({
 			title: 'Relé eltávolítása',
-			templateUrl: Utils.getTemplateUrl('SettingsRemoveRelayModal'),
+			templateUrl: Utils.getTemplateUrl('SettingsRemoveRelayModal')
 		});
-
+		console.log('asd');
 		// modal ViewModel data
 		modal.$scope.vm = {
 			relay: relay,

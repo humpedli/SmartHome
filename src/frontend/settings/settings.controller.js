@@ -19,6 +19,10 @@ function SettingsController(Utils) {
 	function init() {
 		// tabs DTO object
 		vm.settingsTabs = {
+			general: {
+				title: 'Általános',
+				template: Utils.getTemplateUrl('SettingsGeneralTab')
+			},
 			thermalSensors: {
 				title: 'Hőmérséklet érzékelők',
 				template: Utils.getTemplateUrl('SettingsThermalSensorsTab')

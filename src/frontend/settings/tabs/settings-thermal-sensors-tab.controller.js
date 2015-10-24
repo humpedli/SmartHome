@@ -78,7 +78,7 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	function removeSensor(sensor) {
 		var modal = $modal({
 			title: 'Érzékelő eltávolítása',
-			templateUrl: Utils.getTemplateUrl('SettingsRemoveThermalSensorModal'),
+			templateUrl: Utils.getTemplateUrl('SettingsRemoveThermalSensorModal')
 		});
 
 		// modal ViewModel data

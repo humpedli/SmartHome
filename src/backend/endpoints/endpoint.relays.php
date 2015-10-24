@@ -28,7 +28,7 @@ $app->get('/relays/:relayid', function($relayid) use ($app) {
     }
 });
 
-$app->post('/relays/:relayid/:subfunction', function($relayid, $subfunction) use ($app) {
+$app->post('/relays/:relayid(/:subfunction)', function($relayid, $subfunction = null) use ($app) {
     $response = array();
 
     $normalParams = $app->request->params();
@@ -46,7 +46,7 @@ $app->post('/relays/:relayid/:subfunction', function($relayid, $subfunction) use
             $data2 = $relaysModel->editRelay($relayid, $params['name'], $params['position']);
         }
     } else {
-        $data2 = $relaysModel->addRelay($params['name'], $params['position']);
+        $data2 = $relaysModel->addRelay($params['relayid'], $params['name']);
     }
 
     if($data2 === true) {

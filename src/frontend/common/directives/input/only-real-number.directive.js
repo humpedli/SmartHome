@@ -7,6 +7,7 @@ angular
 /**
  * Directive which allows only real number entered in input field
  */
+/*@ngInject*/
 function onlyRealNumber() {
 	return {
 		require: '?ngModel',
