@@ -2,7 +2,7 @@
 	<h1>Irányítópult&nbsp;
 		<span class="label"
 			  ng-class="{'label-success' : isLiveData , 'label-danger' : !isLiveData}">
-			{{(isLiveData ? 'Kapcsolat: Aktív' : 'Nincs kapcsolat')}}
+			{{(isLiveData ? 'Raspberry: aktív' : 'Raspberry: inaktív')}}
 		</span>
 	</h1>
 
@@ -19,6 +19,12 @@
 						</div><!--
 						--><div class="col-xs-6 vcenter relay-status" ng-class="{'green': relay.status}">
 							{{(relay.status ? 'Bekapcsolva' : 'Kikapcsolva')}}
+							<i class="icon icon-info"
+							   data-placement="top-right"
+							   data-title="Információ"
+							   data-content="Automata módban előfordulhat, hogy a relé jelenlegi állapota 1-2 perces eltérésben van a valósággal."
+							   data-trigger="click"
+							   bs-popover></i>
 						</div>
 					</div>
 					<div class="row">
@@ -57,7 +63,18 @@
 					<h4>{{sensor.name}}</h4>
 					<h6>{{sensor.lasttime}}</h6>
 					<br/>
-					<strong><h4>{{sensor.lastvalue | number: 1}} °C</h4></strong>
+					<h4>
+						<strong style="color: {{vm.getSensorColorByTemp(sensor)}}">
+							{{sensor.lastvalue | number: 1}} °C
+						</strong>
+					</h4>
+					<span class="status-led"
+						  ng-class="{'off' : !vm.getSensorLedStatus(sensor)}"
+						  data-placement="auto"
+						  data-title="Információ"
+						  data-content="Ha a jelzés zöld, akkor a szenzorról a legfrissebb adatok elérhetők. Ha a jelzés piros, akkor valószínűleg megszakadt a kapcsolat a szenzorral."
+						  data-trigger="click"
+						  bs-popover></span>
 				</div>
 			</div>
 		</div>

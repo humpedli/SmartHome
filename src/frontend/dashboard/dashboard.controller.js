@@ -10,15 +10,20 @@ angular.module('smartHome')
  * @param SocketDataService
  */
 /*@ngInject*/
-function DashboardController($log, sensorsData, relaysData, SocketDataService, RelayDataService,
+function DashboardController($window, $log, sensorsData, relaysData, SocketDataService, RelayDataService,
 							 SensorDataService) {
 
 	// controllerAs with vm
 	var vm = this;
 
+	// Global variables
+	var chroma;
+
 	// Wired functions
 	vm.switchRelayState = switchRelayState;
 	vm.switchRelayStatus = switchRelayStatus;
+	vm.getSensorLedStatus = getSensorLedStatus;
+	vm.getSensorColorByTemp = getSensorColorByTemp;
 
 	/**
 	 * Constructor, initialize
@@ -26,6 +31,10 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	function init() {
 		vm.relays = relaysData;
 		vm.sensors = sensorsData;
+
+		// Generate color scale
+		// http://gka.github.io/palettes/#colors=darkblue,blue,green,gold,red,firebrick|steps=60|bez=0|coL=0
+		chroma = $window.chroma.scale(['darkblue', 'blue', 'green', 'gold', 'red', 'firebrick']).domain([-20,40]);
 
 		// If relays are changed by node script, refresh the data on frontend
 		SocketDataService.on('Relays::changed', function () {
@@ -64,13 +73,15 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	 * @param relay - Relay object
 	 */
 	function switchRelayState(relay) {
-		RelayDataService.save({
-			relayid: relay.relayid,
-			subfunction: 'state',
-			state: relay.state
-		}).$promise.then(function () {
-				SocketDataService.emit('Relays::change', relay);
-			});
+		if(angular.isDefined(relay)) {
+			RelayDataService.save({
+				relayid: relay.relayid,
+				subfunction: 'state',
+				state: relay.state
+			}).$promise.then(function () {
+					SocketDataService.emit('Relays::change', relay);
+				});
+		}
 	}
 
 	/**
@@ -78,13 +89,38 @@ function DashboardController($log, sensorsData, relaysData, SocketDataService, R
 	 * @param relay - Relay object
 	 */
 	function switchRelayStatus(relay) {
-		RelayDataService.save({
-			relayid: relay.relayid,
-			subfunction: 'status',
-			status: relay.status
-		}).$promise.then(function () {
-				SocketDataService.emit('Relays::change', relay);
-			});
+		if(angular.isDefined(relay)) {
+			RelayDataService.save({
+				relayid: relay.relayid,
+				subfunction: 'status',
+				status: relay.status
+			}).$promise.then(function () {
+					SocketDataService.emit('Relays::change', relay);
+				});
+		}
+	}
+
+	/**
+	 * Determines sensor led status
+	 * @param sensor - Sensor object
+	 */
+	function getSensorLedStatus(sensor) {
+		if(angular.isDefined(sensor)) {
+			var sensorLastTime = $window.moment(sensor.lasttime);
+			var currentTime = $window.moment();
+
+			return currentTime.diff(sensorLastTime, 'seconds') < 120;
+		}
+	}
+
+	/**
+	 * Determines sensor color by temp
+	 * @param sensor - Sensor object
+	 */
+	function getSensorColorByTemp(sensor) {
+		if(angular.isDefined(sensor)) {
+			return chroma(sensor.lastvalue).hex();
+		}
 	}
 
 }

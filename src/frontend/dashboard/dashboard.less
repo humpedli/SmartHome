@@ -25,11 +25,37 @@
     &.green {
       color: #00A000;
     }
+    
+    .icon-info {
+      position: absolute;
+      top: 4px;
+      right: 15px;
+      font-size: 12px;
+      color: #000000;
+      cursor: pointer;
+    }
   }
 }
 
 .sensor-container {
   min-height: 170px;
+
+  .status-led {
+    display: block;
+    position: absolute;
+    right: 23px;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    border: 1px solid #666666;
+    cursor: pointer;
+    background-color: #5cb85c;
+
+    &.off {
+      background-color: #d9534f;
+    }
+  }
 }
 
 .relay-container {

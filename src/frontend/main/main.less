@@ -72,3 +72,46 @@ h1, h2, h3, h4, h5 {
     vertical-align: top;
   }
 }
+
+.popover-content, .popover-title {
+  color: #000000;
+}
+
+@media (max-width: 767px) {
+  .nav-tabs {
+    border: 1px solid #ddd;
+
+    > li {
+      background: #fff;
+      margin-bottom: 0;
+      float: none;
+
+      a {
+        background: #fff;
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        border-radius: 0;
+        color: #666;
+        margin-right: 0;
+
+
+        &:hover {
+          background: #fff;
+          border: 0;
+          border-bottom: 1px solid #ddd;
+        }
+      }
+
+      &.active a {
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+
+        &:hover {
+          border: 0;
+          border-bottom: 1px solid #ddd;
+        }
+      }
+    }
+  }
+}

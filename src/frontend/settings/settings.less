@@ -4,12 +4,25 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 
-    table {
-      td {
-        vertical-align: middle;
+    .sensors-table {
+      tbody tr {
+        &:nth-child(even) {
+          background-color: #f0f0f0;
+        }
+        td {
+          vertical-align: middle;
 
-        .icon {
-          display: block;
+          .icon {
+            display: block;
+          }
+
+          input {
+            min-width: 100px;
+          }
+
+          button {
+            margin-bottom: 3px;
+          }
         }
       }
     }
@@ -29,13 +42,14 @@
   }
 
   .delete {
-    margin: 8px 5px 5px 10px;
+    margin: 8px 0 5px 10px;
     float: right;
   }
 
   .main-form-group {
-    border-bottom: 1px dotted #ddd;
-    padding-bottom: 10px;
+    background: #efefef;
+    border: 1px dotted #aaa;
+    padding: 5px;
 
     &:after {
       content: '';
@@ -50,10 +64,13 @@
 }
 
 .sub-condition {
-  padding: 5px 0 5px 50px;
+  margin-left: 40px;
+  padding: 5px 5px 5px 10px;
+  border: 1px dotted #ccc;
+  border-top: 0;
 
   &:nth-child(odd) {
-    background-color: #efefef;
+    background-color: #f0f0f0;
   }
 
   &:after {
@@ -67,7 +84,7 @@
   }
 
   .delete {
-    margin: 8px 5px 5px 10px;
+    margin: 8px 0 5px 5px;
     float: right;
     min-width: 40px;
   }
