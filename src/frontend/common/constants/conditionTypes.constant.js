@@ -11,11 +11,11 @@ angular.module('smartHome')
 		},
 		{
 			id: 'DAY',
-			label: 'a mai nap'
+			label: 'a jelenlegi nap'
 		},
 		{
 			id: 'DATE',
-			label: 'a mai dátum'
+			label: 'a jelenlegi dátum'
 		},
 		{
 			id: 'TIME',
@@ -24,5 +24,9 @@ angular.module('smartHome')
 		{
 			id: 'RELAY',
 			label: 'egy másik relé'
+		},
+		{
+			id: 'WEATHER',
+			label: 'az időjárás jelentés alapján'
 		}
 	]);

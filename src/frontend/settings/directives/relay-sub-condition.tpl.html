@@ -3,11 +3,12 @@
 	&nbsp;ha&nbsp;
 	<select class="form-control"
 			data-ng-model="vm.ngModel.conditionType"
-			data-ng-options="conditionType.id as conditionType.label for conditionType in vm.conditionTypes">
+			data-ng-options="conditionType.id as conditionType.label for conditionType in vm.conditionTypes"
+			data-ng-change="vm.resetModelValue(1)">
 		<option label="Válassz kategóriát!"></option>
 	</select>
 	<span ng-if="vm.ngModel.conditionType === 'TEMP'">
-		&nbsp;a&nbsp;
+		&nbsp;a(z)&nbsp;
 		<select class="form-control"
 				data-ng-model="vm.ngModel.conditionValue1"
 				data-ng-options="sensor as sensor.name for sensor in vm.sensors track by sensor.sensorid">
@@ -15,7 +16,66 @@
 		</select>
 		&nbsp;-ban/ben&nbsp;
 	</span>
-	<span ng-if="vm.ngModel.conditionType !== 'RELAY' && vm.ngModel.conditionType !== 'DAY'">
+	<span ng-if="vm.ngModel.conditionType === 'WEATHER'">
+		&nbsp;a(z)&nbsp;
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue1"
+				data-ng-options="weatherTime.id as weatherTime.label for weatherTime in vm.weatherTimes"
+				data-ng-change="vm.resetModelValue(2)">
+			<option label="Válassz időpontot!"></option>
+		</select>
+		&nbsp;a(z)&nbsp;
+		<select class="form-control"
+				data-ng-model="vm.ngModel.conditionValue2"
+				data-ng-options="weatherType.id as weatherType.label for weatherType in vm.weatherTypes | filter:vm.weatherTypeIsDayFilter"
+				data-ng-change="vm.resetModelValue(3)">
+			<option label="Válassz típust!"></option>
+		</select>
+		<span ng-if="vm.ngModel.conditionValue2 !== 'WEATHER_TYPE'">
+			<select class="form-control"
+					data-ng-model="vm.ngModel.condition"
+					data-ng-options="condition.sign as (vm.weatherTypeTimeFilter() !== 'NORMAL' ? (vm.weatherTypeTimeFilter() === 'PAST' ? condition.labelPast : condition.labelFuture) : condition.label) for condition in vm.conditions">
+				<option label="Válassz feltételt!"></option>
+			</select>
+		</span>
+		<span ng-if="vm.ngModel.conditionValue2 === 'TEMP' || vm.ngModel.conditionValue2 === 'TEMP_CURRENT' || vm.ngModel.conditionValue2 === 'TEMP_MAX' || vm.ngModel.conditionValue2 === 'TEMP_MIN'">
+			<input class="form-control"
+				   data-ng-model="vm.ngModel.conditionValue3"
+				   placeholder="Írj be értéket!"
+				   min-value="-50"
+				   max-value="120"
+				   only-real-number />&nbsp;&deg;C
+		</span>
+		<span ng-if="vm.ngModel.conditionValue2 === 'HUMIDITY' || vm.ngModel.conditionValue2 === 'PRECIP_PROBABILITY'">
+			<input class="form-control"
+				   data-ng-model="vm.ngModel.conditionValue3"
+				   placeholder="Írj be értéket!"
+				   min-value="0"
+				   max-value="100"
+				   only-real-number />&nbsp;%
+		</span>
+		<span ng-if="vm.ngModel.conditionValue2 === 'WIND_SPEED'">
+			<input class="form-control"
+				   data-ng-model="vm.ngModel.conditionValue3"
+				   placeholder="Írj be értéket!"
+				   min-value="0"
+				   max-value="500"
+				   only-real-number />&nbsp;km/h
+		</span>
+		<span ng-if="vm.ngModel.conditionValue2 === 'WEATHER_TYPE'">
+			<select class="form-control"
+					data-ng-model="vm.ngModel.condition"
+					data-ng-options="condition.sign as (vm.weatherTypeTimeFilter() !== 'NORMAL' ? (vm.weatherTypeTimeFilter() === 'PAST' ? condition.labelPast : condition.labelFuture) : condition.label) for condition in vm.conditions | filter: {boolComparable: true}">
+				<option label="Válassz feltételt!"></option>
+			</select>
+			<select class="form-control"
+					data-ng-model="vm.ngModel.conditionValue3"
+					data-ng-options="weatherCharacteristic.value as weatherCharacteristic.label for weatherCharacteristic in vm.weatherCharacteristics">
+				<option label="Válassz értéket!"></option>
+			</select>
+		</span>
+	</span>
+	<span ng-if="vm.ngModel.conditionType !== 'RELAY' && vm.ngModel.conditionType !== 'DAY' && vm.ngModel.conditionType !== 'WEATHER'">
 		<select class="form-control"
 				data-ng-model="vm.ngModel.condition"
 				data-ng-options="condition.sign as condition.label for condition in vm.conditions">
@@ -26,7 +86,9 @@
 		<input class="form-control"
 			   data-ng-model="vm.ngModel.conditionValue2"
 			   placeholder="Írj be értéket!"
-			   only-real-number />
+			   min-value="-50"
+			   max-value="120"
+			   only-real-number />&nbsp;&deg;C
 	</span>
 	<span ng-if="vm.ngModel.conditionType === 'DAY'">
 		<select class="form-control"

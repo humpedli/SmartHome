@@ -156,23 +156,11 @@ function SettingsRelayAutomationTabController($modal, $log, SensorDataService, R
 		}
 		if(!angular.isUndefinedOrNull(subCondition.conditionType)) {
 			if (subCondition.conditionType === 'TEMP') {
-				if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva érzékelő!');
-				}
-				if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva hőmérséklet!');
-				}
+				validateTempSubCondition(subCondition, i, j, errorList);
 			} else if(subCondition.conditionType === 'RELAY') {
-				if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva relé!');
-				}
-				if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
-						'.</b> feltételénél nincs kiválasztva állapot!');
-				}
+				validateRelaySubCondition(subCondition, i, j, errorList);
+			} else if(subCondition.conditionType === 'WEATHER') {
+				validateWeatherSubCondition(subCondition, i, j, errorList);
 			} else {
 				if(angular.isUndefinedOrNull(subCondition.conditionValue1)) {
 					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
@@ -182,6 +170,52 @@ function SettingsRelayAutomationTabController($modal, $log, SensorDataService, R
 		}
 
 		return errorList;
+	}
+
+	/**
+	 * Validates a temp sub condition
+	 */
+	function validateTempSubCondition(subCondition, i, j, errorList) {
+		if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva érzékelő!');
+		}
+		if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva hőmérséklet!');
+		}
+	}
+
+	/**
+	 * Validates a relay sub condition
+	 */
+	function validateRelaySubCondition(subCondition, i, j, errorList) {
+		if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva relé!');
+		}
+		if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva állapot!');
+		}
+	}
+
+	/**
+	 * Validates a weather sub condition
+	 */
+	function validateWeatherSubCondition(subCondition, i, j, errorList) {
+		if(angular.isUndefinedOrNull(subCondition.conditionValue1)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva időpont!');
+		}
+		if(angular.isUndefinedOrNull(subCondition.conditionValue2)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva típus!');
+		}
+		if(angular.isUndefinedOrNull(subCondition.conditionValue3)) {
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+				'.</b> feltételénél nincs kiválasztva érték!');
+		}
 	}
 
 	/**

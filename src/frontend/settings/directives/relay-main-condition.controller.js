@@ -56,7 +56,8 @@ function RelayMainCondition($scope, $log, OPERATIONS) {
 			condition: null,
 			conditionid: null,
 			conditionValue1: null,
-			conditionValue2: null
+			conditionValue2: null,
+			conditionValue3: null
 		};
 
 		vm.ngModel.subConditions.push({
