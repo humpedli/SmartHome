@@ -76,25 +76,7 @@ function randomString($length = 10) {
 
 include BASE_DIR . DS . 'includes' . DS . 'database.php';
 
-class Model {
-
-    private static $db;
-
-    public function __construct() { 
-
-    }
-
-    public static function DBInit() {
-
-        if (!self::$db) {
-            self::$db = new Database();
-        }
-        return self::$db;
-        
-    }
-
-}
-
+include BASE_DIR . DS . 'models' . DS . 'model.php';
 include BASE_DIR . DS . 'models' . DS . 'model.auth.php';
 include BASE_DIR . DS . 'models' . DS . 'model.users.php';
 include BASE_DIR . DS . 'models' . DS . 'model.sensors.php';
