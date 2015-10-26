@@ -35,6 +35,8 @@ include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.auth.php';
 include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.sensors.php';
 include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.relays.php';
 include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.automation.php';
+include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.weather.php';
+include BASE_DIR . DS . 'endpoints' . DS . 'endpoint.settings.php';
 
 $app->run();
 

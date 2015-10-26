@@ -139,7 +139,7 @@ class AutomationModel extends Model {
         return $result;
     }
 
-    public function addRelayCondition($operationid, $type, $cond, $value1, $value2) {
+    public function addRelayCondition($operationid, $type, $cond, $value1, $value2, $value3) {
 
         if(isset($operationid) && isset($type) && isset($value1)) {
             try {
@@ -149,7 +149,8 @@ class AutomationModel extends Model {
                         relay_conditions.type = '" . $this->db->secure($type) . "',
                         relay_conditions.cond = '" . $this->db->secure($cond) . "',
                         relay_conditions.value1 = '" . $this->db->secure($value1) . "',
-                        relay_conditions.value2 = '" . $this->db->secure($value2) . "'
+                        relay_conditions.value2 = '" . $this->db->secure($value2) . "',
+                        relay_conditions.value3 = '" . $this->db->secure($value3) . "'
                 ";
                 $this->db->query($sql);
 
@@ -164,7 +165,7 @@ class AutomationModel extends Model {
 
     }
 
-    public function editRelayCondition($conditionid, $operationid, $type, $cond, $value1, $value2) {
+    public function editRelayCondition($conditionid, $operationid, $type, $cond, $value1, $value2, $value3) {
 
         if(isset($operationid) && isset($type) && isset($value1)) {
             try {
@@ -174,7 +175,8 @@ class AutomationModel extends Model {
                         relay_conditions.type = '" . $this->db->secure($type) . "',
                         relay_conditions.cond = '" . $this->db->secure($cond) . "',
                         relay_conditions.value1 = '" . $this->db->secure($value1) . "',
-                        relay_conditions.value2 = '" . $this->db->secure($value2) . "'
+                        relay_conditions.value2 = '" . $this->db->secure($value2) . "',
+                        relay_conditions.value3 = '" . $this->db->secure($value3) . "'
                     WHERE conditionid = '" . intval($conditionid) . "';
                 ";
                 $this->db->query($sql);
@@ -259,6 +261,7 @@ class AutomationModel extends Model {
                             'condition' => $condition['cond'],
                             'conditionValue1' => $condition['value1'],
                             'conditionValue2' => $condition['value2'],
+                            'conditionValue3' => $condition['value3'],
                         );
 
                         if($condition['type'] == 'TEMP') {
@@ -316,12 +319,12 @@ class AutomationModel extends Model {
                                 if($conditionid == null) {
                                     $this->addRelayCondition($operationid, $condition['conditionType'],
                                         $condition['condition'], $condition['conditionValue1']['sensorid'],
-                                        $condition['conditionValue2']);
+                                        $condition['conditionValue2'], null);
                                     $conditionid = $this->db->lastID();
                                 } else {
                                     $this->editRelayCondition($conditionid, $operationid,
                                         $condition['conditionType'], $condition['condition'],
-                                        $condition['conditionValue1']['sensorid'], $condition['conditionValue2']);
+                                        $condition['conditionValue1']['sensorid'], $condition['conditionValue2'], null);
                                 }
 
                                 $processedConditions[] = $conditionid;
@@ -334,12 +337,32 @@ class AutomationModel extends Model {
                                 if($conditionid == null) {
                                     $this->addRelayCondition($operationid, $condition['conditionType'],
                                         $condition['condition'], $condition['conditionValue1']['relayid'],
-                                        $condition['conditionValue2']);
+                                        $condition['conditionValue2'], null);
                                     $conditionid = $this->db->lastID();
                                 } else {
                                     $this->editRelayCondition($conditionid, $operationid,
                                         $condition['conditionType'], $condition['condition'],
-                                        $condition['conditionValue1']['relayid'], $condition['conditionValue2']);
+                                        $condition['conditionValue1']['relayid'], $condition['conditionValue2'], null);
+                                }
+
+                                $processedConditions[] = $conditionid;
+                        } else {
+                            return 'Invalid parameters!';
+                        }
+                    } else if($condition['conditionType'] == 'WEATHER') {
+                        if(isset($condition['condition']) &&
+                            isset($condition['conditionValue2']) &&
+                            isset($condition['conditionValue3'])) {
+                                if($conditionid == null) {
+                                    $this->addRelayCondition($operationid, $condition['conditionType'],
+                                        $condition['condition'], $condition['conditionValue1'],
+                                        $condition['conditionValue2'], $condition['conditionValue3']);
+                                    $conditionid = $this->db->lastID();
+                                } else {
+                                    $this->editRelayCondition($conditionid, $operationid,
+                                        $condition['conditionType'], $condition['condition'],
+                                        $condition['conditionValue1'], $condition['conditionValue2'],
+                                        $condition['conditionValue3']);
                                 }
 
                                 $processedConditions[] = $conditionid;
@@ -351,12 +374,12 @@ class AutomationModel extends Model {
                             if($conditionid == null) {
                                 $this->addRelayCondition($operationid, $condition['conditionType'],
                                     $condition['condition'], $condition['conditionValue1'],
-                                    $condition['conditionValue2']);
+                                    $condition['conditionValue2'], null);
                                 $conditionid = $this->db->lastID();
                             } else {
                                 $this->editRelayCondition($conditionid, $operationid, $condition['conditionType'],
                                     $condition['condition'], $condition['conditionValue1'],
-                                    $condition['conditionValue2']);
+                                    $condition['conditionValue2'], null);
                             }
 
                             $processedConditions[] = $conditionid;
