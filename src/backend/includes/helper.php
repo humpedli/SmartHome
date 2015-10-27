@@ -65,6 +65,16 @@ class Helper {
         }
 
     }
+
+    public static function removeDayNight($icon) {
+
+        $searchArray = array('-day', '-night');
+        $replaceArray = array('', '');
+
+        return str_replace($searchArray, $replaceArray, $icon);
+
+    }
+
 }
 
 ?>

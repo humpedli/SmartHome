@@ -16,7 +16,18 @@ class SettingsModel extends Model {
         $this->db->query($sql);
         $results = $this->db->results();
 
-        return $results;
+        if(count($results) > 0) {
+            $reduced = array_reduce(
+                $results,
+                function(&$result, $item){
+                    $result[$item['settingkey']] = $item['value'];
+                    return $result;
+                },
+                array()
+            );
+        }
+
+        return $reduced;
     }
 
     public function getSetting($settingkey) {

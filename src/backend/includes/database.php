@@ -57,6 +57,56 @@ class Database {
 
 	}
 
+	public function massiveInsert($table, $array) {
+
+		if(isset($table) && isset($array)) {
+			$columns = implode(', ', array_keys($array));
+			$values = implode('\', \'', $this->secure(array_values($array)));
+			$query = "INSERT INTO " . $this->secure($table) . " (" . $columns . ") VALUES ('" . $values . "');";
+
+			if($this->result = $this->connection->query($query)) {
+				if(is_object($this->result)) {
+					$this->count = $this->result->num_rows;
+				}
+				return true;
+			} else {
+				throw new Exception('Sikertelen adatbázis kérés!\n' . $this->connection->error . " " . $query);
+				return false;
+			}
+		}
+
+	}
+
+	public function massiveUpdate($table, $array, $where) {
+
+		if(isset($table) && isset($array) && isset($where)) {
+			$query = 'UPDATE ' . $this->secure($table) . ' SET ';
+
+			$arrayParts = array();
+			foreach ($array as $key => $value) {
+				$arrayParts[] = $key . ' = \'' . $value . '\'';
+			}
+			$query .= implode(', ', $arrayParts) . ' WHERE ';
+
+			$whereParts = array();
+			foreach ($where as $key => $value) {
+				$whereParts[] = $key . ' = \'' . $value . '\'';
+			}
+			$query .= implode(' AND ', $whereParts) . ';';
+
+			if($this->result = $this->connection->query($query)) {
+				if(is_object($this->result)) {
+					$this->count = $this->result->num_rows;
+				}
+				return true;
+			} else {
+				throw new Exception('Sikertelen adatbázis kérés!\n' . $this->connection->error . " " . $query);
+				return false;
+			}
+		}
+
+	}
+
 	public function result() {
 		if($this->count > 0) {
 			$data = $this->result->fetch_assoc();
