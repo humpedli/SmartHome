@@ -30,6 +30,11 @@ class WeatherModel extends Model {
 
     public function syncWeather() {
 
+        /*
+         * 14 requests per syncWeather call
+         * Cron: HH:15 and HH:45 -> 48 calls/day -> 48x14 requests/day = 672 requests/day
+         */
+
         require_once BASE_DIR . DS . 'libraries' . DS . 'ForecastTools' . DS . 'Forecast.php';
 
         $settingsModel = new SettingsModel();
@@ -111,7 +116,7 @@ class WeatherModel extends Model {
             }
 
             $hourlyData = array(
-                'timeid' => 't' . $key,
+                'timeid' => 'tp' . $key,
                 'tempcurrent' => number_format($hour->getTemperature(), 1),
                 'tempapparent' => number_format($hour->getApparentTemperature(), 1),
                 'tempmin' => '',
@@ -135,36 +140,76 @@ class WeatherModel extends Model {
             }
         }
 
-        /*
+        // Get weather for previous 12 hours
         $requests = array();
-        for ($i = 12; $i > 0; $i--) {
-          $requests[] = array(
-            'latitude'  => $latitude,
-            'longitude' => $longitude,
-            'time'      => strtotime("-$i hours"),
-            'units'     => 'si'
-          );
+        for ($i = 1; $i <= 12; $i++) {
+            $requests[] = array(
+                'latitude'  => $settings['CITY_LATITUDE'],
+                'longitude' => $settings['CITY_LONGITUDE'],
+                'time'      => strtotime('-' . $i . ' hours', mktime(date('H'), 0, 0, date('n'), date('j'), date('Y'))),
+                'units'     => 'si'
+            );
         }
-        for ($i = 0; $i <= 12; $i++) {
-          $requests[] = array(
-            'latitude'  => $latitude,
-            'longitude' => $longitude,
-            'time'      => strtotime("+$i hours"),
-            'units'     => 'si'
-          );
-        }
-
         $responses = $forecast->getData($requests);
 
-        foreach ($responses as $response) {
-          if ($currently = $response->getCurrently()) {
-            $time = date("Y-m-d H", $currently->getTime());
-            $temp = $currently->getTemperature()
-                    ? number_format($currently->getTemperature(), 1) . 'C'
-                    : "unknown";
-            echo "$time:00 órakkor: $temp<br />\n";
-          }
-        }*/
+        foreach($responses as $key => $response) {
+            if($hour = $response->getCurrently()) {
+                $hourlyData = array(
+                    'timeid' => 'tm' . ($key + 1),
+                    'tempcurrent' => number_format($hour->getTemperature(), 1),
+                    'tempapparent' => number_format($hour->getApparentTemperature(), 1),
+                    'tempmin' => '',
+                    'tempmax' => '',
+                    'humidity' => number_format($hour->getHumidity() * 100, 2),
+                    'windspeed' => number_format($hour->getWindSpeed(), 1),
+                    'precipprobability' => number_format($hour->getPrecipProbability() * 100, 2),
+                    'weathertype' => Helper::removeDayNight($hour->getIcon()),
+                    'sunrise' => '',
+                    'sunset' => '',
+                    'datatime' => date('Y-m-d H:i:s', $hour->getTime())
+                );
+
+                $isWeatherExists = $this->getWeather($hourlyData['timeid']);
+                if($isWeatherExists) {
+                    $this->db->massiveUpdate('weather', array_slice($hourlyData, 1), array_slice($hourlyData, 0, 1));
+                } else {
+                    $this->db->massiveInsert('weather', $hourlyData);
+                }
+            }
+        }
+
+        // Get daily weather for yesterday
+        $response = $forecast->getData(
+            $settings['CITY_LATITUDE'],
+            $settings['CITY_LONGITUDE'],
+            strtotime('-1 days', mktime(0, 0, 0, date('n'), date('j'), date('Y'))),
+            'si'
+        );
+
+        $dailyArray = $response->getDaily();
+        if($day = $dailyArray[0]) {
+            $dailyData = array(
+                'timeid' => 'yesterday',
+                'tempcurrent' => '',
+                'tempapparent' => '',
+                'tempmin' => number_format($day->getTemperatureMin(), 1),
+                'tempmax' => number_format($day->getTemperatureMax(), 1),
+                'humidity' => number_format($day->getHumidity() * 100, 2),
+                'windspeed' => number_format($day->getWindSpeed(), 1),
+                'precipprobability' => number_format($day->getPrecipProbability() * 100, 2),
+                'weathertype' => Helper::removeDayNight($day->getIcon()),
+                'sunrise' => date('Y-m-d H:i:s', $day->getSunriseTime()),
+                'sunset' => date('Y-m-d H:i:s', $day->getSunsetTime()),
+                'datatime' => date('Y-m-d H:i:s', $day->getTime())
+            );
+
+            $isWeatherExists = $this->getWeather($dailyData['timeid']);
+            if($isWeatherExists) {
+                $this->db->massiveUpdate('weather', array_slice($dailyData, 1), array_slice($dailyData, 0, 1));
+            } else {
+                $this->db->massiveInsert('weather', $dailyData);
+            }
+        }
 
     }
 
