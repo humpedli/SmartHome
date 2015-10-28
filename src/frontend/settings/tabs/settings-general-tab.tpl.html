@@ -1,49 +1,62 @@
 <div class="panel panel-default" ng-controller="SettingsGeneralTabController as vm">
 	<div class="panel-body general-settings">
-		<div class="row settings-row">
-			<div class="col-sm-3">
-				<strong>Forecast.io API kulcs:</strong>
-			</div>
-			<div class="col-sm-6">
+		<form name="form" role="form" data-novalidate>
+			<div class="form-group">
+				<label for="apikey">Forecast.io API kulcs:</label>
 				<input type="text"
+					   id="apikey"
 					   class="form-control"
 					   data-ng-model="vm.settings.FORECAST_APIKEY"
-					   placeholder="API kulcs" />
+					   placeholder="API kulcs"
+					   required/>
 			</div>
-		</div>
-		<div class="row settings-row">
-			<div class="col-sm-3">
-				<strong>Helyadatok:</strong>
+			<div class="form-group">
+				<label for="city">Helyadatok:</label>
+				<div class="input-group">
+					<input type="text"
+						   id="city"
+						   class="form-control"
+						   data-ng-model="vm.settings.CITY_NAME"
+						   data-ng-change="vm.clearCoordinates()"
+						   placeholder="Helység"
+						   required />
+					<span class="input-group-btn">
+						<button class="btn btn-primary" data-ng-click="vm.validateAddress()">Ellenőrzés</button>
+					</span>
+				</div>
 			</div>
-			<div class="col-sm-6">
+			<div class="form-group">
 				<input type="text"
-					   class="form-control"
-					   data-ng-model="vm.settings.CITY_NAME"
-					   data-ng-change="vm.clearCoordinates()"
-					   placeholder="Városnév" />
-				<input type="text"
+					   id="latitude"
 					   class="form-control"
 					   data-ng-model="vm.settings.CITY_LATITUDE"
 					   readonly="readonly"
-					   placeholder="Szélességi fok" />
+					   placeholder="Szélességi fok"
+					   required />
 				<input type="text"
+					   id="longitude"
 					   class="form-control"
 					   data-ng-model="vm.settings.CITY_LONGITUDE"
 					   readonly="readonly"
-					   placeholder="Hosszúsági fok" />
-				<div ng-if="vm.getGoogleMapsUrl(vm.settings.CITY_LATITUDE, vm.settings.CITY_LONGITUDE)">
-					<img class="preview-map"
-						 src="{{vm.getGoogleMapsUrl(vm.settings.CITY_LATITUDE, vm.settings.CITY_LONGITUDE)}}" />
+					   placeholder="Hosszúsági fok"
+					   required />
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<google-map ng-model="vm.settings"
+								width="640"
+								height="300"
+								zoom="9"></google-map>
 				</div>
 			</div>
-			<div class="col-sm-3">
-				<button class="btn btn-primary" data-ng-click="vm.validateAddress()">Ellenőrzés</button>
+			<div class="form-group">
+				<button type="button"
+						class="btn btn-success"
+						data-ng-disabled="form.$invalid"
+						data-ng-click="vm.save()">
+					Beállítások mentése
+				</button>
 			</div>
-		</div>
-		<div class="form-group">
-			<button type="button" class="btn btn-success" data-ng-click="vm.save()">
-				Beállítások mentése
-			</button>
-		</div>
+		</form>
 	</div>
 </div>

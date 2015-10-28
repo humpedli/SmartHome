@@ -28,6 +28,7 @@ class SettingsModel extends Model {
         }
 
         return $reduced;
+
     }
 
     public function getSetting($settingkey) {
@@ -37,6 +38,31 @@ class SettingsModel extends Model {
         $result = $this->db->result();
 
         return $result;
+
+    }
+
+    public function saveSettings($settings) {
+
+        if(isset($settings)) {
+            try {
+                foreach($settings as $key => $setting) {
+                    $sql = "
+                        UPDATE settings
+                        SET settings.value = '" . $this->db->secure($setting) . "'
+                        WHERE settingkey = '" . $this->db->secure($key) . "';
+                    ";
+                    $this->db->query($sql);
+                }
+
+                return true;
+            }
+            catch(Exception $e) {
+                return $e->getMessage();
+            }
+        } else {
+            return 'Invalid parameters!';
+        }
+
     }
 
 }

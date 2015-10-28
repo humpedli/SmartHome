@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('smartHome')
-	.controller('RelaySubCondition', RelaySubCondition);
+	.controller('RelaySubConditionController', RelaySubConditionController);
 
 /**
  * Controller for relay sub condition directive
  */
 /*@ngInject*/
-function RelaySubCondition($scope, CONDITIONS, CONDITION_TYPES, DAY_OPTIONS, OPERATIONS, WEATHER_TIMES, WEATHER_TYPES,
-						   WEATHER_CHARACTERISTICS) {
+function RelaySubConditionController($scope, CONDITIONS, CONDITION_TYPES, DAY_OPTIONS, OPERATIONS, WEATHER_TIMES,
+									 WEATHER_TYPES, WEATHER_CHARACTERISTICS) {
 
 	// controllerAs with vm
 	var vm = this;
@@ -89,7 +89,6 @@ function RelaySubCondition($scope, CONDITIONS, CONDITION_TYPES, DAY_OPTIONS, OPE
 		if(valueFrom > 0 && valueFrom <= maxModelValueCount) {
 			for(var i = valueFrom; i <= maxModelValueCount; i++) {
 				vm.ngModel['conditionValue' + i] = null;
-				console.log(vm.ngModel);
 			}
 		}
 	}

@@ -7,7 +7,7 @@ angular.module('smartHome')
  * Controller for settings
  */
 /*@ngInject*/
-function SettingsController(Utils) {
+function SettingsController(relaysData, sensorsData, settingsData, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
@@ -16,6 +16,10 @@ function SettingsController(Utils) {
 	 * Constructor, initialize
 	 */
 	function init() {
+		vm.relays = relaysData;
+		vm.sensors = sensorsData;
+		vm.settings = settingsData;
+
 		// tabs DTO object
 		vm.settingsTabs = {
 			general: {

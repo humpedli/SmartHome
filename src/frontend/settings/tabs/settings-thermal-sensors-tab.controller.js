@@ -7,13 +7,12 @@ angular.module('smartHome')
  * Controller for settings thermal sensors tab
  */
 /*@ngInject*/
-function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Utils) {
+function SettingsThermalSensorsTabController($scope, $modal, $log, SensorDataService, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
 
 	// Wired functions
-	vm.getSensorsList = getSensorsList;
 	vm.addSensor = addSensor;
 	vm.editSensor = editSensor;
 	vm.removeSensor = removeSensor;
@@ -23,14 +22,14 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 	 * Constructor, initialize
 	 */
 	function init() {
-		getSensorsList();
+		vm.sensors = $scope.$parent.vm.sensors;
 	}
 	init();
 
 	/**
 	 * Gets all sensor data from backend
 	 */
-	function getSensorsList() {
+	function refreshSensorsList() {
 		SensorDataService.query(function(data) {
 			vm.sensors = data;
 			$log.debug('Thermal sensor list loaded');
@@ -71,7 +70,7 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 			addSensor: function (formData) {
 				if(!checkIfSensorIsAlreadyAdded(formData)) {
 					SensorDataService.save(formData).$promise.then(function () {
-						getSensorsList();
+						refreshSensorsList();
 
 						$log.debug('Thermal sensor added: ' + formData.sensorid);
 						modal.hide();
@@ -110,7 +109,7 @@ function SettingsThermalSensorsTabController($modal, $log, SensorDataService, Ut
 				sensor: sensor,
 				removeSensor: function () {
 					sensor.$remove().then(function () {
-						getSensorsList();
+						refreshSensorsList();
 
 						$log.debug('Thermal sensor deleted: ' + sensor.sensorid);
 						modal.hide();

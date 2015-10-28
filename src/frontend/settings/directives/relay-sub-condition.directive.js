@@ -6,8 +6,6 @@ angular.module('smartHome')
 
 /**
  * Directive for relay sub condition
- * @returns {*}
- * @constructor
  */
 function relaySubCondition() {
 	var name = 'relay-sub-condition';
@@ -19,7 +17,7 @@ function relaySubCondition() {
 			ngModel: '=',
 			ngChange: '&'
 		},
-		controller: 'RelaySubCondition',
+		controller: 'RelaySubConditionController',
 		controllerAs: 'vm',
 		bindToController: true
 	};

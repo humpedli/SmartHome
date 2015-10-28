@@ -22,6 +22,20 @@ function SettingsRouteConfig($stateProvider) {
 					controller: 'SettingsController',
 					controllerAs: 'vm'
 				}
+			},
+			resolve: {
+				/*@ngInject*/
+				'sensorsData': function (SensorDataService) {
+					return SensorDataService.query().$promise;
+				},
+				/*@ngInject*/
+				'relaysData': function (RelayDataService) {
+					return RelayDataService.query().$promise;
+				},
+				/*@ngInject*/
+				'settingsData': function (SettingsDataService) {
+					return SettingsDataService.query().$promise;
+				}
 			}
 		});
 

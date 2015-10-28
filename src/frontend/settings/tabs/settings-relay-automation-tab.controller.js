@@ -7,15 +7,12 @@ angular.module('smartHome')
  * Controller for settings relay automation tab
  */
 /*@ngInject*/
-function SettingsRelayAutomationTabController($modal, $log, SensorDataService, RelayDataService,
-											  AutomationDataService, Utils) {
+function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDataService, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
 
 	// Wired functions
-	vm.getSensorsList = getSensorsList;
-	vm.getRelaysList = getRelaysList;
 	vm.addMainCondition = addMainCondition;
 	vm.removeMainCondition = removeMainCondition;
 	vm.save = save;
@@ -26,31 +23,12 @@ function SettingsRelayAutomationTabController($modal, $log, SensorDataService, R
 	function init() {
 		vm.mainConditions = [];
 
-		getSensorsList();
-		getRelaysList();
+		vm.sensors = $scope.$parent.vm.sensors;
+		vm.relays = $scope.$parent.vm.relays;
+
 		loadExistingAutomation();
 	}
 	init();
-
-	/**
-	 * Gets all sensor data from backend
-	 */
-	function getSensorsList() {
-		SensorDataService.query(function(data) {
-			vm.sensors = data;
-			$log.debug('Thermal sensor list loaded');
-		});
-	}
-
-	/**
-	 * Gets all relay data from backend
-	 */
-	function getRelaysList() {
-		RelayDataService.query(function(data) {
-			vm.relays = data;
-			$log.debug('Relay list loaded');
-		});
-	}
 
 	/**
 	 * Load existing automation helper

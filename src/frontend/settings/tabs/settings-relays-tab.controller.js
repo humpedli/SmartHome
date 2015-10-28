@@ -7,13 +7,12 @@ angular.module('smartHome')
  * Controller for settings relays tab
  */
 /*@ngInject*/
-function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataService, Utils) {
+function SettingsRelaysTabController($scope, $modal, $log, RelayDataService, SocketDataService, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
 
 	// Wired functions
-	vm.getRelaysList = getRelaysList;
 	vm.addRelay = addRelay;
 	vm.editRelay = editRelay;
 	vm.removeRelay = removeRelay;
@@ -25,14 +24,14 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 	 * Constructor, initialize
 	 */
 	function init() {
-		getRelaysList();
+		vm.relays = $scope.$parent.vm.relays;
 	}
 	init();
 
 	/**
 	 * Gets all relay data from backend
 	 */
-	function getRelaysList() {
+	function refreshRelaysList() {
 		RelayDataService.query(function(data) {
 			vm.relays = data;
 			$log.debug('Relay list loaded');
@@ -73,7 +72,7 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 			addRelay: function (formData) {
 				if(!checkIfRelayIsAlreadyAdded(formData)) {
 					RelayDataService.save(formData).$promise.then(function () {
-						getRelaysList();
+						refreshRelaysList();
 
 						$log.debug('Relay added: ' + formData.relayid);
 						modal.hide();
@@ -112,7 +111,7 @@ function SettingsRelaysTabController($modal, $log, RelayDataService, SocketDataS
 				relay: relay,
 				removeRelay: function () {
 					relay.$remove().then(function () {
-						getRelaysList();
+						refreshRelaysList();
 
 						$log.debug('Relay deleted: ' + relay.relayid);
 						modal.hide();

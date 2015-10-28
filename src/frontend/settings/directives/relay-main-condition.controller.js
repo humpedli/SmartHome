@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('smartHome')
-	.controller('RelayMainCondition', RelayMainCondition);
+	.controller('RelayMainConditionController', RelayMainConditionController);
 
 /**
  * Controller for relay main condition directive
  */
 /*@ngInject*/
-function RelayMainCondition($scope, $log, OPERATIONS) {
+function RelayMainConditionController($scope, $log, OPERATIONS) {
 
 	// controllerAs with vm
 	var vm = this;

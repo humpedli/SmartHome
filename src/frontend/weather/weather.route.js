@@ -28,6 +28,9 @@ function WeatherRouteConfig($stateProvider) {
 				/*@ngInject*/
 				'weatherData': function (WeatherDataService) {
 					return WeatherDataService.query().$promise;
+				},
+				'settingsData': function (SettingsDataService) {
+					return SettingsDataService.query().$promise;
 				}
 			}
 		});

@@ -6,8 +6,6 @@ angular.module('smartHome')
 
 /**
  * Directive for relay main condition
- * @returns {*}
- * @constructor
  */
 function relayMainCondition() {
 	var name = 'relay-main-condition';
@@ -19,7 +17,7 @@ function relayMainCondition() {
 			ngModel: '=',
 			ngChange: '&'
 		},
-		controller: 'RelayMainCondition',
+		controller: 'RelayMainConditionController',
 		controllerAs: 'vm',
 		bindToController: true
 	};

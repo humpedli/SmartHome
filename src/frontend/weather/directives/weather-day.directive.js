@@ -6,8 +6,6 @@ angular.module('smartHome')
 
 /**
  * Directive for day weather
- * @returns {*}
- * @constructor
  */
 function weatherDay() {
 	var name = 'weather-day';

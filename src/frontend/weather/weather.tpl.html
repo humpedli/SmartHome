@@ -9,5 +9,93 @@
 		<weather-day title="Ma" ng-model="vm.weather.today"></weather-day>
 		<weather-day title="Holnap" ng-model="vm.weather.tomorrow"></weather-day>
 		<weather-day title="Holnapután" ng-model="vm.weather.tomorrow_after"></weather-day>
+		<div class="col-xs-12 col-md-6 col-lg-8">
+			<div class="thumbnail">
+				<div class="caption weather-information">
+					<h3>Információ</h3>
+					<hr />
+					<div>
+						<strong>Helység: </strong>
+						<span>{{vm.settings.CITY_NAME}}</span></div>
+					<div>
+						<strong>Legutolsó szinkronizáció: </strong>
+						<span>{{vm.weather.t.datatime | amDateFormat:'YYYY-MM-DD HH:mm'}}</span>
+					</div>
+					<div class="weather-map">
+						<google-map ng-model="vm.settings"
+									width="640"
+									height="155"
+									zoom="9"></google-map>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Külső hőmérséklet</h3>
+					<weather-hourly-chart chart-id="temp"
+										  ng-model="vm.weather"
+										  height="245"
+										  unit="°C"
+										  color="#337ab7"
+										  y-axis-text="Hőmérséklet (°C)"
+										  series-title="Hőmérséklet"
+										  series-type="tempcurrent">
+					</weather-hourly-chart>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Relatív páratartalom</h3>
+					<weather-hourly-chart chart-id="humidity"
+										  ng-model="vm.weather"
+										  height="245"
+										  unit="%"
+										  color="#5cb85c"
+										  y-axis-text="Páratartalom (%)"
+										  series-title="Páratartalom"
+										  series-type="humidity">
+					</weather-hourly-chart>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Szélsebesség</h3>
+					<weather-hourly-chart chart-id="windspeed"
+										  ng-model="vm.weather"
+										  height="245"
+										  unit="km/h"
+										  color="#f0ad4e"
+										  y-axis-text="Szélsebesség (km/h)"
+										  series-title="Szélsebesség"
+										  series-type="windspeed">
+					</weather-hourly-chart>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Csapadék esélye</h3>
+					<weather-hourly-chart chart-id="precipprobability"
+										  ng-model="vm.weather"
+										  height="245"
+										  unit="%"
+										  color="#777777"
+										  y-axis-text="Csapadék esélye (%)"
+										  series-title="Csapadék esélye"
+										  series-type="precipprobability">
+					</weather-hourly-chart>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

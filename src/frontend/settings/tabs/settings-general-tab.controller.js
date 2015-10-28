@@ -7,7 +7,7 @@ angular.module('smartHome')
  * Controller for settings general tab
  */
 /*@ngInject*/
-function SettingsGeneralTabController($modal, $log, SettingsDataService, GoogleDataService, Utils) {
+function SettingsGeneralTabController($scope, $modal, $log, SettingsDataService, GoogleDataService, Utils) {
 
 	// controllerAs with vm
 	var vm = this;
@@ -15,20 +15,20 @@ function SettingsGeneralTabController($modal, $log, SettingsDataService, GoogleD
 	// Wired functions
 	vm.clearCoordinates = clearCoordinates;
 	vm.validateAddress = validateAddress;
-	vm.getGoogleMapsUrl = getGoogleMapsUrl;
+	vm.save = save;
 
 	/**
 	 * Constructor, initialize
 	 */
 	function init() {
-		getSettings();
+		vm.settings = $scope.$parent.vm.settings;
 	}
 	init();
 
 	/**
 	 * Gets all relay data from backend
 	 */
-	function getSettings() {
+	function refreshSettings() {
 		SettingsDataService.query(function(data) {
 			vm.settings = data;
 			$log.debug('Settings loaded');
@@ -41,18 +41,6 @@ function SettingsGeneralTabController($modal, $log, SettingsDataService, GoogleD
 	function clearCoordinates() {
 		vm.settings.CITY_LATITUDE = null;
 		vm.settings.CITY_LONGITUDE = null;
-	}
-
-	/**
-	 * Get static google maps url
-	 */
-	function getGoogleMapsUrl(latitude, longitude) {
-		if(!angular.isUndefinedOrNull(latitude) && !angular.isUndefinedOrNull(longitude)) {
-			return 'https://maps.googleapis.com/maps/api/staticmap?center=' + latitude + ',' + longitude +
-				'&zoom=9&size=640x300&scale=2&maptype=roadmap&markers=color:red%7C' + latitude + ',' + longitude;
-		}
-
-		return null;
 	}
 
 	/**
@@ -82,6 +70,18 @@ function SettingsGeneralTabController($modal, $log, SettingsDataService, GoogleD
 
 				$log.error('Address invalid: ' + error);
 			});
+	}
+
+	/**
+	 * Saves settings data on backend
+	 */
+	function save() {
+		if(!angular.isUndefinedOrNull(vm.settings)) {
+			SettingsDataService.save(vm.settings).$promise.then(function () {
+				refreshSettings();
+				$log.debug('Settings saved');
+			});
+		}
 	}
 
 }
