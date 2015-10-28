@@ -6,7 +6,8 @@ angular.module('smartHome')
 function Utils() {
 
 	return {
-		getTemplateUrl: getTemplateUrl
+		getTemplateUrl: getTemplateUrl,
+		capitalizeFirstLetter: capitalizeFirstLetter
 	};
 
 	/**
@@ -28,6 +29,13 @@ function Utils() {
 	 */
 	function getTemplateUrl(viewName) {
 		return 'views/' + camelCaseToDashed(viewName) + '.tpl.html';
+	}
+
+	/**
+	 * Capitalize first letter
+	 */
+	function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
 }

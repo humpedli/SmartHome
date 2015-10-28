@@ -5,7 +5,6 @@ angular.module('smartHome')
 
 /**
  * Controller for settings
- * @param Utils
  */
 /*@ngInject*/
 function SettingsController(Utils) {

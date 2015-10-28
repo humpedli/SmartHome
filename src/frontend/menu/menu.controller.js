@@ -5,7 +5,6 @@ angular.module('smartHome')
 
 /**
  * Controller for menu
- * @param $rootScope
  */
 /*@ngInject*/
 function MenuController($rootScope, SocketDataService) {

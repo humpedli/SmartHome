@@ -1,0 +1,52 @@
+.weather-container {
+
+  &.gray * {
+    color: #999999 !important;
+  }
+
+  .skycon-container {
+    text-align: center;
+
+    .skycon canvas {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  h4 {
+    margin-top: 5px;
+  }
+
+  .sun-times {
+    margin-top: 10px;
+
+    .icon + .icon {
+      margin-left: 10px;
+    }
+  }
+
+  .temperature-datas {
+    table {
+      td {
+        text-align: left;
+        padding: 0 5px 0 0;
+
+        & + td {
+          padding: 0 5px;
+        }
+      }
+    }
+  }
+
+  .other-datas {
+    table {
+      margin: 20px auto 10px auto;
+
+      td {
+        text-align: left;
+        padding: 2px 10px;
+      }
+    }
+  }
+
+}

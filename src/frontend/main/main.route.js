@@ -27,7 +27,7 @@ function MainRouteConfig($stateProvider) {
 			resolve: {
 				/*@ngInject*/
 				'authorize': function (AuthService) {
-					return AuthService.authorize();
+					return AuthService.authorize().$promise;
 				}
 			}
 		});

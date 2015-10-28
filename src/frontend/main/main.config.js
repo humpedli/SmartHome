@@ -9,7 +9,7 @@ angular
  */
 /*@ngInject*/
 function SmartHomeConfig($urlRouterProvider, $httpProvider, $locationProvider,
-    httpRequestInterceptorCacheBusterProvider, $logProvider, ENV) {
+    httpRequestInterceptorCacheBusterProvider, $logProvider, highchartsNGProvider, ENV) {
 
 	// Setup cache buster for api calls
     httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/], true);
@@ -26,4 +26,7 @@ function SmartHomeConfig($urlRouterProvider, $httpProvider, $locationProvider,
 
 	// Enable pure URL-s (only in production mode, because it requires htaccess file)
 	$locationProvider.html5Mode(ENV.production);
+
+	// HighCharts dependency load
+	highchartsNGProvider.lazyLoad();
 }

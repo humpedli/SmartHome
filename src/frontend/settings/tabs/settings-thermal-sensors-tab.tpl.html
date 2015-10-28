@@ -18,8 +18,8 @@
 					<td>{{sensor.sensorid}}</td>
 					<td><input type="text" class="form-control" data-ng-model="sensor.name"
 							   data-ng-change="vm.editSensor(sensor)" data-ng-model-options="{ debounce: 500 }"/></td>
-					<td>{{sensor.lastvalue}}</td>
-					<td>{{sensor.lasttime}}</td>
+					<td style="color: {{sensor.lastvalue | tempColorFilter}}">{{sensor.lastvalue | number: 1}} °C</td>
+					<td>{{sensor.lasttime | amDateFormat:'YYYY-MM-DD HH:mm'}}</td>
 					<td>
 						<button type="button" class="btn btn-primary" data-ng-click="vm.moveSensor(sensor, 'up')">
 							<i class="icon icon-circle-up"></i>

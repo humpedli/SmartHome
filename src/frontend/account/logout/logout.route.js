@@ -18,7 +18,7 @@ function LogoutRouteConfig($stateProvider) {
 			resolve: {
 				/*@ngInject*/
 				'logout': function (AuthService) {
-					AuthService.logout();
+					return AuthService.logout().$promise;
 				}
 			}
 		});

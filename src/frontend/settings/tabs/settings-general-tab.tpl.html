@@ -1,5 +1,49 @@
 <div class="panel panel-default" ng-controller="SettingsGeneralTabController as vm">
-	<div class="panel-body">
-		Ide jönnek majd az általános beállítások.
+	<div class="panel-body general-settings">
+		<div class="row settings-row">
+			<div class="col-sm-3">
+				<strong>Forecast.io API kulcs:</strong>
+			</div>
+			<div class="col-sm-6">
+				<input type="text"
+					   class="form-control"
+					   data-ng-model="vm.settings.FORECAST_APIKEY"
+					   placeholder="API kulcs" />
+			</div>
+		</div>
+		<div class="row settings-row">
+			<div class="col-sm-3">
+				<strong>Helyadatok:</strong>
+			</div>
+			<div class="col-sm-6">
+				<input type="text"
+					   class="form-control"
+					   data-ng-model="vm.settings.CITY_NAME"
+					   data-ng-change="vm.clearCoordinates()"
+					   placeholder="Városnév" />
+				<input type="text"
+					   class="form-control"
+					   data-ng-model="vm.settings.CITY_LATITUDE"
+					   readonly="readonly"
+					   placeholder="Szélességi fok" />
+				<input type="text"
+					   class="form-control"
+					   data-ng-model="vm.settings.CITY_LONGITUDE"
+					   readonly="readonly"
+					   placeholder="Hosszúsági fok" />
+				<div ng-if="vm.getGoogleMapsUrl(vm.settings.CITY_LATITUDE, vm.settings.CITY_LONGITUDE)">
+					<img class="preview-map"
+						 src="{{vm.getGoogleMapsUrl(vm.settings.CITY_LATITUDE, vm.settings.CITY_LONGITUDE)}}" />
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn-primary" data-ng-click="vm.validateAddress()">Ellenőrzés</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-success" data-ng-click="vm.save()">
+				Beállítások mentése
+			</button>
+		</div>
 	</div>
 </div>

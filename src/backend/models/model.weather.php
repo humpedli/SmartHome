@@ -16,7 +16,7 @@ class WeatherModel extends Model {
         $this->db->query($sql);
         $results = $this->db->results();
 
-        return $results;
+        return array_column($results, null, 'timeid');
     }
 
     public function getWeather($timeid) {

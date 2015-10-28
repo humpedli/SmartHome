@@ -1,0 +1,13 @@
+<div class="well">
+	<h1>Időjárás</h1>
+
+	<div class="row">
+		<weather-hour title="Előző órában" ng-model="vm.weather.tm1" color="'#999999'"></weather-hour>
+		<weather-hour title="Most" ng-model="vm.weather.t"></weather-hour>
+		<weather-hour title="Következő órában" ng-model="vm.weather.tp1"></weather-hour>
+		<weather-day title="Tegnap" ng-model="vm.weather.yesterday" color="'#999999'"></weather-day>
+		<weather-day title="Ma" ng-model="vm.weather.today"></weather-day>
+		<weather-day title="Holnap" ng-model="vm.weather.tomorrow"></weather-day>
+		<weather-day title="Holnapután" ng-model="vm.weather.tomorrow_after"></weather-day>
+	</div>
+</div>

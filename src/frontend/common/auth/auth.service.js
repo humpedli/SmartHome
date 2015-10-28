@@ -49,15 +49,24 @@ function AuthService($rootScope, $q, $log, Principal, AuthDataService) {
 	 * Logout user
 	 */
 	function logout() {
-		$log.debug(name + ': Logging out...');
+		return $q(function (resolve, reject) {
+			$log.debug(name + ': Logging out...');
 
-		AuthDataService.logout().$promise
-			.then(function () {
-				$log.debug(name + ': Logged out!');
+			AuthDataService.logout().$promise
+				.then(function () {
+					$log.debug(name + ': Logged out!');
 
-				Principal.authenticate(null);
-				$rootScope.$broadcast('Auth:loginRequired');
-			});
+					Principal.authenticate(null);
+					$rootScope.$broadcast('Auth:loginRequired');
+
+					return resolve(null);
+				})
+				//If there was an error
+				.catch(function (error) {
+					$log.error(name + ': ' + error);
+					return reject(error);
+				});
+		});
 	}
 
 	/**

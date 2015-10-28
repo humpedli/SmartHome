@@ -27,11 +27,15 @@ function DashboardRouteConfig($stateProvider) {
 			resolve: {
 				/*@ngInject*/
 				'sensorsData': function (SensorDataService) {
-					return SensorDataService.query();
+					return SensorDataService.query().$promise;
 				},
 				/*@ngInject*/
 				'relaysData': function (RelayDataService) {
-					return RelayDataService.query();
+					return RelayDataService.query().$promise;
+				},
+				/*@ngInject*/
+				'weatherData': function (WeatherDataService) {
+					return WeatherDataService.query().$promise;
 				}
 			}
 		});

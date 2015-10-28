@@ -17,7 +17,7 @@
 						<div class="col-xs-6 vcenter">
 							<strong>Jelenlegi állapot:</strong>
 						</div><!--
-						--><div class="col-xs-6 vcenter relay-status" ng-class="{'green': relay.status}">
+                        --><div class="col-xs-6 vcenter relay-status" ng-class="{'green': relay.status}">
 							{{(relay.status ? 'Bekapcsolva' : 'Kikapcsolva')}}
 							<i class="icon icon-info"
 							   data-placement="top-right"
@@ -31,7 +31,7 @@
 						<div class="col-xs-6 vcenter">
 							<strong>Üzemmód:</strong>
 						</div><!--
-						--><div class="col-xs-6 vcenter">
+                        --><div class="col-xs-6 vcenter">
 							<select class="form-control relay-state-select"
 									data-ng-model="relay.state"
 									data-ng-change="vm.switchRelayState(relay)">
@@ -60,15 +60,25 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="row">
+		<weather-hour title="Most" ng-model="vm.weather.t"></weather-hour>
+		<div class="col-xs-12 col-md-6 col-lg-8">
+			<div class="thumbnail">
+				<highchart id="hourlyWeather" config="vm.hourlyWeatherConfig"></highchart>
+			</div>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-xs-6 col-sm-3" ng-repeat="sensor in vm.sensors">
 			<div class="thumbnail sensor-container">
 				<div class="caption">
 					<h4>{{sensor.name}}</h4>
-					<h6>{{sensor.lasttime}}</h6>
+					<h6>{{sensor.lasttime | amDateFormat:'YYYY-MM-DD HH:mm'}}</h6>
 					<br/>
 					<h4>
-						<strong style="color: {{vm.getSensorColorByTemp(sensor)}}">
+						<strong style="color: {{sensor.lastvalue | tempColorFilter}}">
 							{{sensor.lastvalue | number: 1}} °C
 						</strong>
 					</h4>
