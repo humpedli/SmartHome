@@ -204,8 +204,19 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 			AutomationDataService.save(vm.mainConditions).$promise.then(function () {
 				vm.mainConditions = [];
 				loadExistingAutomation();
-
 				$log.debug('Automation saved');
+
+				$modal({
+					title: 'Sikeres mentés',
+					content: 'Sikeresen elmentettük a módosításokat!',
+					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+				});
+			}).catch(function () {
+				$modal({
+					title: 'Hiba',
+					content: 'Hiba történt a módosítások mentése közben!',
+					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+				});
 			});
 		}
 	}

@@ -80,6 +80,18 @@ function SettingsGeneralTabController($scope, $modal, $log, SettingsDataService,
 			SettingsDataService.save(vm.settings).$promise.then(function () {
 				refreshSettings();
 				$log.debug('Settings saved');
+
+				$modal({
+					title: 'Sikeres mentés',
+					content: 'Sikeresen elmentettük a módosításokat!',
+					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+				});
+			}).catch(function () {
+				$modal({
+					title: 'Hiba',
+					content: 'Hiba történt a módosítások mentése közben!',
+					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+				});
 			});
 		}
 	}

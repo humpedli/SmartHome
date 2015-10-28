@@ -44,6 +44,8 @@ class SettingsModel extends Model {
     public function saveSettings($settings) {
 
         if(isset($settings)) {
+            $getOldCity = $this->getSetting('CITY_NAME');
+
             try {
                 foreach($settings as $key => $setting) {
                     $sql = "
@@ -52,6 +54,12 @@ class SettingsModel extends Model {
                         WHERE settingkey = '" . $this->db->secure($key) . "';
                     ";
                     $this->db->query($sql);
+
+                    // resync weather if city is changed
+                    if($key == 'CITY_NAME' && $getOldCity['value'] != $setting) {
+                        $weatherModel = new WeatherModel();
+                        $weatherModel->syncWeather();
+                    }
                 }
 
                 return true;
