@@ -119,7 +119,7 @@ angular.module('smartHome')
 		},
 		{
 			id: 't',
-			label: 'jelenlegi órában',
+			label: 'jelenleg',
 			past: false,
 			future: false,
 			day: false
