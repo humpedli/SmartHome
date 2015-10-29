@@ -31,14 +31,14 @@
 				data-ng-change="vm.resetModelValue(3)">
 			<option label="Válassz típust!"></option>
 		</select>
-		<span ng-if="vm.ngModel.conditionValue2 !== 'WEATHER_TYPE'">
+		<span ng-if="vm.ngModel.conditionValue2 !== 'weathertype'">
 			<select class="form-control"
 					data-ng-model="vm.ngModel.condition"
 					data-ng-options="condition.sign as (vm.weatherTypeTimeFilter() !== 'NORMAL' ? (vm.weatherTypeTimeFilter() === 'PAST' ? condition.labelPast : condition.labelFuture) : condition.label) for condition in vm.conditions">
 				<option label="Válassz feltételt!"></option>
 			</select>
 		</span>
-		<span ng-if="vm.ngModel.conditionValue2 === 'TEMP' || vm.ngModel.conditionValue2 === 'TEMP_CURRENT' || vm.ngModel.conditionValue2 === 'TEMP_MAX' || vm.ngModel.conditionValue2 === 'TEMP_MIN'">
+		<span ng-if="vm.ngModel.conditionValue2 === 'tempcurrent' || vm.ngModel.conditionValue2 === 'tempmax' || vm.ngModel.conditionValue2 === 'tempmin'">
 			<input class="form-control"
 				   data-ng-model="vm.ngModel.conditionValue3"
 				   placeholder="Írj be értéket!"
@@ -46,7 +46,7 @@
 				   max-value="120"
 				   only-real-number />&nbsp;&deg;C
 		</span>
-		<span ng-if="vm.ngModel.conditionValue2 === 'HUMIDITY' || vm.ngModel.conditionValue2 === 'PRECIP_PROBABILITY'">
+		<span ng-if="vm.ngModel.conditionValue2 === 'humidity' || vm.ngModel.conditionValue2 === 'precipprobability'">
 			<input class="form-control"
 				   data-ng-model="vm.ngModel.conditionValue3"
 				   placeholder="Írj be értéket!"
@@ -54,7 +54,7 @@
 				   max-value="100"
 				   only-real-number />&nbsp;%
 		</span>
-		<span ng-if="vm.ngModel.conditionValue2 === 'WIND_SPEED'">
+		<span ng-if="vm.ngModel.conditionValue2 === 'windspeed'">
 			<input class="form-control"
 				   data-ng-model="vm.ngModel.conditionValue3"
 				   placeholder="Írj be értéket!"
@@ -62,7 +62,7 @@
 				   max-value="500"
 				   only-real-number />&nbsp;km/h
 		</span>
-		<span ng-if="vm.ngModel.conditionValue2 === 'WEATHER_TYPE'">
+		<span ng-if="vm.ngModel.conditionValue2 === 'weathertype'">
 			<select class="form-control"
 					data-ng-model="vm.ngModel.condition"
 					data-ng-options="condition.sign as (vm.weatherTypeTimeFilter() !== 'NORMAL' ? (vm.weatherTypeTimeFilter() === 'PAST' ? condition.labelPast : condition.labelFuture) : condition.label) for condition in vm.conditions | filter: {boolComparable: true}">

@@ -48,7 +48,7 @@ function SettingsRelaysTabController($scope, $modal, $log, RelayDataService, Soc
 					$modal({
 						title: 'Hiba!',
 						content: 'Ez a relé már létezik!',
-						templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+						templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 					});
 					return true;
 				}

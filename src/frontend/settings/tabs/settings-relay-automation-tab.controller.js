@@ -93,7 +93,7 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 			$modal({
 				title: 'Hiba!',
 				content: errorList.join('<br>'),
-				templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+				templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 			});
 
 			return false;
@@ -209,13 +209,13 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 				$modal({
 					title: 'Sikeres mentés',
 					content: 'Sikeresen elmentettük a módosításokat!',
-					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 				});
 			}).catch(function () {
 				$modal({
 					title: 'Hiba',
 					content: 'Hiba történt a módosítások mentése közben!',
-					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 				});
 			});
 		}

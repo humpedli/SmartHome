@@ -65,7 +65,7 @@ function SettingsGeneralTabController($scope, $modal, $log, SettingsDataService,
 				$modal({
 					title: 'Hiba!',
 					content: 'Érvénytelen városnév!',
-					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 				});
 
 				$log.error('Address invalid: ' + error);
@@ -84,13 +84,13 @@ function SettingsGeneralTabController($scope, $modal, $log, SettingsDataService,
 				$modal({
 					title: 'Sikeres mentés',
 					content: 'Sikeresen elmentettük a módosításokat!',
-					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 				});
 			}).catch(function () {
 				$modal({
 					title: 'Hiba',
 					content: 'Hiba történt a módosítások mentése közben!',
-					templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+					templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 				});
 			});
 		}

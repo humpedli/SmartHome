@@ -6,43 +6,43 @@
 angular.module('smartHome')
 	.constant('WEATHER_TYPES', [
 		{
-			id: 'TEMP_CURRENT',
+			id: 'tempcurrent',
 			label: 'kinti hőmérséklet',
 			onlyHourly: true,
 			onlyDaily: false
 		},
 		{
-			id: 'TEMP_MAX',
+			id: 'tempmax',
 			label: 'kinti maximum hőmérséklet',
 			onlyHourly: false,
 			onlyDaily: true
 		},
 		{
-			id: 'TEMP_MIN',
+			id: 'tempmin',
 			label: 'kinti minimum hőmérséklet',
 			onlyHourly: false,
 			onlyDaily: true
 		},
 		{
-			id: 'HUMIDITY',
+			id: 'humidity',
 			label: 'relatív páratartalom',
 			onlyHourly: false,
 			onlyDaily: false
 		},
 		{
-			id: 'WIND_SPEED',
+			id: 'windspeed',
 			label: 'szél sebessége',
 			onlyHourly: false,
 			onlyDaily: false
 		},
 		{
-			id: 'PRECIP_PROBABILITY',
+			id: 'precipprobability',
 			label: 'csapadék esélye',
 			onlyHourly: false,
 			onlyDaily: false
 		},
 		{
-			id: 'WEATHER_TYPE',
+			id: 'weathertype',
 			label: 'időjárás jellege',
 			onlyHourly: false,
 			onlyDaily: false

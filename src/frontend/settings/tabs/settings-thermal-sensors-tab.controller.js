@@ -46,7 +46,7 @@ function SettingsThermalSensorsTabController($scope, $modal, $log, SensorDataSer
 					$modal({
 						title: 'Hiba!',
 						content: 'Ez az érzékelő már létezik!',
-						templateUrl: Utils.getTemplateUrl('ModalWithoutFooter')
+						templateUrl: Utils.getTemplateUrl('ModalWithFooter')
 					});
 					return true;
 				}

@@ -424,6 +424,7 @@ class AutomationModel extends Model {
     public function runAutomation() {
         $relaysModel = new RelaysModel();
         $sensorsModel = new SensorsModel();
+        $weatherModel = new WeatherModel();
 
         function statusDecider($conditionsAreApplied, $operation) {
             if($conditionsAreApplied) {
@@ -451,7 +452,8 @@ class AutomationModel extends Model {
                                 $condition['value2'], $condition['cond']);
                         }
                         if($condition['type'] == 'DAY') {
-                            $conditionsAreApplied &= Helper::determineCurrentDay($condition['value1'], $condition['cond']);
+                            $conditionsAreApplied &= Helper::determineCurrentDay($condition['value1'],
+                                $condition['cond']);
                         }
                         if($condition['type'] == 'DATE') {
                             $setDate = new DateTime($condition['value1']);
@@ -476,13 +478,45 @@ class AutomationModel extends Model {
                                 $conditionsAreApplied &= false;
                             }
                         }
+                        if($condition['type'] == 'WEATHER') {
+                            $weather = $weatherModel->getWeathers();
+                            $time = $condition['value1'];
+                            $weathertype = $condition['value2'];
+                            $value = $condition['value3'];
+
+                            if($time == 't' || $time == 'yesterday' || $time == 'today' || $time == 'tomorrow' ||
+                                $time == 'tomorrow_after') {
+                                $conditionsAreApplied &= Helper::compare($weather[$time][$weathertype], $value,
+                                    $condition['cond']);
+                            } else {
+                                $startValue = intval(substr($time, 2));
+                                $direction = substr($time, 1, 1);
+                                $boolResult = true;
+
+                                if($direction == 'm') {
+                                    for($m = $startValue; $m >= 1; $m--) {
+                                        $boolResult &= Helper::ompare($weather['tm' + $m][$weathertype], $value,
+                                            $condition['cond']);
+                                    }
+                                } else {
+                                    for($p = $startValue; $p <= 12; $p++) {
+                                        $boolResult &= Helper::compare($weather['tm' + $p][$weathertype], $value,
+                                            $condition['cond']);
+                                    }
+                                }
+
+                                $conditionsAreApplied &= $boolResult;
+                            }
+                        }
                     }
                 }
 
                 if(array_key_exists($operation['relayid'], $relayStates)) {
-                    $relayStates[$operation['relayid']] |= statusDecider($conditionsAreApplied, $operation['operation']);
+                    $relayStates[$operation['relayid']] |= statusDecider($conditionsAreApplied,
+                        $operation['operation']);
                 } else {
-                    $relayStates[$operation['relayid']] = statusDecider($conditionsAreApplied, $operation['operation']);
+                    $relayStates[$operation['relayid']] = statusDecider($conditionsAreApplied,
+                        $operation['operation']);
                 }
             }
 
