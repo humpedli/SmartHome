@@ -1,62 +1,86 @@
 'use strict';
 
-angular
-	.module('smartHome')
+angular.module('smartHome')
 	.directive('onlyRealNumber', onlyRealNumber);
+
 
 /**
  * Directive which allows only real number entered in input field
  */
-/*@ngInject*/
 function onlyRealNumber() {
 	return {
 		require: '?ngModel',
 		restrict: 'A',
 		link: function(scope, element, attrs, ngModelCtrl) {
+			var resetToZero;
 
-			/* Code snippet from GitHub
-			 * https://github.com/nitishkumarsingh13/Angularjs-Directive-Accept-Number-Only
-			 * */
-			scope.$watch(attrs.ngModel, function(newValue, oldValue) {
+			// parse attribute
+			function parseAttribute(attribute) {
+				if (angular.isUndefinedOrNull(attribute)) {
+					resetToZero = undefined;
+				}
+				else {
+					resetToZero = Boolean(attribute);
+				}
+			}
+			parseAttribute(attrs.resetToZero);
 
-				var splitArray = String(newValue).split('');
+			// validate function
+			function validate(val) {
+				if (angular.isDefined(val)) {
+					var numString = String(val).replace(/[^0-9.\-]*/g, ''); // only accept 0-9 and . and -
+					numString = numString.replace(/^\./g, ''); // cannot be started with .
+					numString = numString.replace(/\.(.*?)\./g, '\.$1'); // more points are not allowed
+					numString = numString.replace(/\-(.*?)\-/g, '\-$1'); // more minus are not allowed
 
-				if(splitArray[0] === '-') {
-					newValue = String(newValue).replace('-', '');
-					ngModelCtrl.$setViewValue(newValue);
+					// more than 2 decimals are not allowed
+					var splitNum = numString.split('.');
+					if(splitNum.length > 1) {
+						numString = splitNum[0] + '.' + splitNum[1].substr(0, 2);
+					}
+
+					// remove minus sign, if it is not at string start
+					var indexOfMinus = numString.indexOf('-');
+					if(indexOfMinus > 0) {
+						numString = numString.slice(0, indexOfMinus) + numString.slice(indexOfMinus + 1);
+					}
+
+					if (String(val) !== numString) {
+						ngModelCtrl.$setViewValue(numString);
+						ngModelCtrl.$render();
+						return numString;
+					}
+				}
+				return val;
+			}
+
+			ngModelCtrl.$parsers.push(validate);
+
+			// ignore if user hits space
+			element.bind('keypress', function(event) {
+				if(event.keyCode === 32) {
+					event.preventDefault();
+				}
+			});
+
+			// if user leaves the input empty, then reset it to zero
+			element.on('blur', function () {
+				if (resetToZero && element.val() === '') {
+					ngModelCtrl.$setViewValue('0');
 					ngModelCtrl.$render();
 				}
 
-				if(splitArray[0] === '.') {
-					newValue = String(newValue).replace('.', '');
-					ngModelCtrl.$setViewValue(newValue);
+				// remove . if there is no decimal after that
+				var elem = element.val();
+				if(elem.substr(elem.length - 1) === '.') {
+					ngModelCtrl.$setViewValue(elem.substr(0, (elem.length - 1)));
 					ngModelCtrl.$render();
 				}
+			});
 
-				var n = String(newValue).split('.');
-				if(n[1]) {
-					var n2 = n[1].slice(0, 2);
-					newValue = [n[0], n2].join('.');
-					ngModelCtrl.$setViewValue(newValue);
-					ngModelCtrl.$render();
-				}
-
-
-				if (splitArray.length === 0) {
-					return;
-				}
-				if (splitArray.length === 1 && (splitArray[0] === '-' || splitArray[0] === '.' )) {
-					return;
-				}
-				if (splitArray.length === 2 && newValue === '-.') {
-					return;
-				}
-
-				/*Check it is number or not.*/
-				if (isNaN(newValue)) {
-					ngModelCtrl.$setViewValue(oldValue);
-					ngModelCtrl.$render();
-				}
+			//if reset-to-zero changes, we refresh the resetToZero value
+			scope.$watch(attrs.resetToZero, function(val) {
+				parseAttribute(val);
 			});
 
 		}
