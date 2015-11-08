@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Privat terulet"
+AuthUserFile /volume1/web/web/dist/cron/.htpasswd
+Require valid-user

@@ -15,6 +15,7 @@ function weatherHour() {
 		restrict: 'E',
 		scope: {
 			ngModel: '=',
+			dayModel: '=',
 			color: '=',
 			title: '@'
 		}

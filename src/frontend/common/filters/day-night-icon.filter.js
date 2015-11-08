@@ -12,9 +12,9 @@ angular
 function dayNightIconFilter($window) {
 	return function (icon, sunrise, sunset) {
 		if(icon === 'clear' || icon === 'partly-cloudy') {
-			var sunriseDate = $window.moment(sunrise).format('Hm').replace(/^0+/, '');
-			var sunsetDate = $window.moment(sunset).format('Hm').replace(/^0+/, '');
-			var currentDate = $window.moment().format('Hm').replace(/^0+/, '');
+			var sunriseDate = parseInt($window.moment(sunrise).format('Hm').replace(/^0+/, ''));
+			var sunsetDate = parseInt($window.moment(sunset).format('Hm').replace(/^0+/, ''));
+			var currentDate = parseInt($window.moment().format('Hm').replace(/^0+/, ''));
 
 			if(sunriseDate < currentDate && sunsetDate > currentDate) {
 				return icon + '-day';
