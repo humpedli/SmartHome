@@ -392,11 +392,13 @@ gulp.task('watch', ['index'], function () {
 /**
  * Start a dev webserver
  */
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 gulp.task('serve', ['index', 'watch'], function () {
     gulp.src(paths.build)
         .pipe($.webserver({
             livereload: true,
             open: true,
+			https: true,
             host: (IS_HOST_DEFINED) ? $.util.env.host : undefined,
             port: 8000,
             proxies: [{
