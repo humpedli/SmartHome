@@ -3,6 +3,6 @@
     "name": "production",
     "production": true,
     "apiEndpoint": "/api/",
-    "socketEndpoint": "nas.kinsztler.hu:9000"
+    "socketEndpoint": "http://nas.kinsztler.hu:9000"
   }
 }

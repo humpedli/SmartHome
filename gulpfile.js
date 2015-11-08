@@ -401,7 +401,7 @@ gulp.task('serve', ['index', 'watch'], function () {
             port: 8000,
             proxies: [{
                 source: '/api/',
-                target: 'http://nas.kinsztler.hu/api/'
+                target: 'https://nas.kinsztler.hu/api/'
             }]
         }));
 });
