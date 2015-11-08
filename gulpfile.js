@@ -45,7 +45,7 @@ files = {
     fonts: 'assets/fonts/**/*',
     icons: 'assets/icons/**/*',
 	backendMain: ['backend/.htaccess', 'backend/index.php'],
-	cron: ['backend/cron/*']
+	cron: ['backend/cron/.htaccess', 'backend/cron/.htpasswd', 'backend/cron/*']
 };
 
 files.styles = [files.css, '**/main.less'];
