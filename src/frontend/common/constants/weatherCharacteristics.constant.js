@@ -26,7 +26,7 @@ angular.module('smartHome')
 			label: 'ónos esős idő'
 		},
 		{
-			value: 'rain',
+			value: 'snow',
 			label: 'havas idő'
 		},
 		{
