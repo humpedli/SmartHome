@@ -27,6 +27,6 @@ angular.module('smartHome')
 		},
 		{
 			id: 'WEATHER',
-			label: 'az időjárás jelentés alapján'
+			label: 'az időjárás-jelentés alapján'
 		}
 	]);

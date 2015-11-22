@@ -109,10 +109,10 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 		var errorList = [];
 
 		if(angular.isUndefinedOrNull(mainCondition.relay)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoportban nincs kiválasztva relé!');
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoportban nincs kiválasztva relé!');
 		}
 		if(angular.isUndefinedOrNull(mainCondition.operation)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoportban nincs kiválasztva művelet!');
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoportban nincs kiválasztva művelet!');
 		}
 
 		return errorList;
@@ -125,11 +125,11 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 		var errorList = [];
 
 		if(angular.isUndefinedOrNull(subCondition.conditionType)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva kategória!');
 		}
 		if(angular.isUndefinedOrNull(subCondition.condition) && subCondition.conditionType !== 'RELAY') {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva feltétel!');
 		}
 		if(!angular.isUndefinedOrNull(subCondition.conditionType)) {
@@ -141,7 +141,7 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 				validateWeatherSubCondition(subCondition, i, j, errorList);
 			} else {
 				if(angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+					errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 						'.</b> feltételénél nincs kiválasztva érték!');
 				}
 			}
@@ -155,11 +155,11 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 	 */
 	function validateTempSubCondition(subCondition, i, j, errorList) {
 		if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva érzékelő!');
 		}
 		if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva hőmérséklet!');
 		}
 	}
@@ -169,11 +169,11 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 	 */
 	function validateRelaySubCondition(subCondition, i, j, errorList) {
 		if (angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva relé!');
 		}
 		if (angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva állapot!');
 		}
 	}
@@ -183,15 +183,15 @@ function SettingsRelayAutomationTabController($scope, $modal, $log, AutomationDa
 	 */
 	function validateWeatherSubCondition(subCondition, i, j, errorList) {
 		if(angular.isUndefinedOrNull(subCondition.conditionValue1)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva időpont!');
 		}
 		if(angular.isUndefinedOrNull(subCondition.conditionValue2)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva típus!');
 		}
 		if(angular.isUndefinedOrNull(subCondition.conditionValue3)) {
-			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltétel csoport <b>' + (j + 1) +
+			errorList.push('A(z) <b>' + (i + 1) + '.</b> feltételcsoport <b>' + (j + 1) +
 				'.</b> feltételénél nincs kiválasztva érték!');
 		}
 	}
